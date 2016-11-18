@@ -1,0 +1,17 @@
+W pliku "main.h" znajduj± siê deklaracje wszystkich funkcji z pliku "mazelib.h". 
+Znajduj± siê tu równie¿ deklaracje struktury zawieraj±cej punkt i struktury danych w której program przechowuje labirynt.
+W "main.h" mo¿na te¿ ustawiæ odstêpy czasowe miêdzy poszczególnymi krokami algorytmu w czasie dzia³ania krokowego.
+
+W pliku "funkcje.c" znajduja siê wszystkie funkcje, które mia³y byæ umieszczone w pliku "mazelib.c".
+Dodatkowo znajduj± siê tu te¿ dwie funkcjê:
+
+void Rysuj();
+void DlugosciLini(void);
+
+Plik "main.c" jest g³ównym plikiem programu (odpowiednik "maze.c").
+W pliku tym mo¿na ustawiæ wielko¶c tablicy "path[]" u¿ywanej w funkcji "FindFath" oraz wielko¶æ NoSolution.
+Plik oprócz funkcji "main" zawiera funkcje "SolveMaze", "FindPath", "ShortestPathLength".
+
+Po zakoñczeniu dzia³ania programu wynik zapisywany jest do pliku "out".
+
+W plikach rozpoczynaj±cych siê nazw± "labirynt" znajduja siê przyk³adowe labirynty.

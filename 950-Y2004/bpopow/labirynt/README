@@ -1,0 +1,15 @@
+Nie mam w domu niestety sieci, wiec nie moglem skorzystac z Pana
+gotowego schematu. 
+
+maze.c - program glowny zawierajacy f-e main() i WezLiczbe().
+mazelib.c - biblioteka f-i potrzbnych do rozw. labiryntu
+mazelib.h - naglowki niektorych f-i
+
+UWAGA!
+Program nalezy wywolac: 
+./maze [plik zawierajacy labirynt]
+
+Zalaczylem Panu dwa moje labirynty (test, test2), czyli np:
+./maze test
+
+Bartosz Popow

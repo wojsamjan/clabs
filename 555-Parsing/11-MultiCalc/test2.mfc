@@ -1,0 +1,8 @@
+x=0; y=1;
+if (x<y) print x; print y;
+exec
+if (x>y) print x; print y; z=2;
+print z; if(x>y) print x; else print y;
+exec
+while (x<=4) { x=x+1; print x; }
+exec

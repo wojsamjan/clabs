@@ -1,0 +1,78 @@
+17.X.2003
+
+Pseudo kod funkcji `SolveMaze':
+
+------------------------------------------------------------
+
+Je¶li bie¿±cy kwadrat jest na zewn±trz labiryntu, zwróæ TRUE
+  wskazuj±c w ten sposób, ¿e znaleziono sie¿kê do 
+  wyj¶cia z labiryntu.
+Je¶li bie¿±cy kwadrat jest ju¿ zaznaczony, zwróæ FALSE 
+  wskazuj±c w ten sposób, ¿e szli¶my ju¿ t± ¶cie¿k±.
+Zaznacz bie¿±cy kwadrat.
+FOR (ka¿dego kierunku N, E, S, W) {
+   IF (tego kierunku nie blokuje ¶ciana) {
+      Przesuñ siê z bie¿±cego kwadratu o jeden kwadrat 
+         we wskazanym kierunku.
+      Spróbuj znale¼æ wyj¶cie z labiryntu z tego kwadratu
+         wo³aj±c funkcjê rekurencyjnie.
+      Je¶li wywo³anie pokazuje, ¿e jest wyj¶cie z labiryntu,
+         zwróæ TRUE aby to potwierdziæ.
+   }
+Odznacz bie¿±cy kwadrat.
+Zwróæ FALSE, wskazuj±c w ten sposób, ¿e w ¿adnym z czterech
+   kierunków nie prowadzi droga do wyj¶cia.
+
+
+-----------------------------------------------------------------------
+
+ZADANIE
+
+Do wyj¶cia z labiryntu mo¿e prowadziæ wiele ¶cie¿ek.
+Napisaæ funkcjê o prototypie:
+  
+   int ShortestPathLength(pointT pt);
+
+zwracaj±c± d³ugo¶æ najkrótszej drogi prowadz±cej do wyj¶cia 
+z labiryntu z podanego punktu. Je¶li nie ma ¶cie¿ki
+prowadz±cej do wyj¶cia, to funkcja ShortestPathLength powinna
+zwróciæ sta³± NoSolution, gdzie warto¶æ NoSolution jest wiêksza
+od maksymalnej mo¿liwej d³ugo¶ci sie¿ki, np.
+
+   #define NoSolution  1000000
+
+-----------------------------------------------------------------------
+
+ZADANIE
+
+Napisaæ funkcjê o prototypie:
+
+   int FindPath(pointT pt, pointT path[], int pathSize);
+
+która parametrami, oprócz pozycji pocz±tkowej `pt', s±
+tablica `path' rozmiaru `pathSize'.
+Kiedy funkcja `FindPath' koñczy dzia³anie, to tablica
+path powinna zawieraæ wspó³rzêdne punktów od pt 
+do wyj¶cia z labiryntu. Funkcja powinna zwracaæ liczbê
+punktów na ¶cie¿ce path lub 0 je¶li z podanego punktu
+nie ¶cie¿ki do wyj¶cia z labiryntu.
+
+Na przyk³ad, u¿ycie FindPath w poni¿szej main poni¿ej
+spowoduje wy¶wietlenie wspó³rzêdnych punktów prowadz±cych
+do wyj¶cia:
+
+int main()
+{
+  pointT path[MaxPath];
+  int i, len;
+
+  ReadMazeMap(MazeFile);
+  len=FindPath(GetStartPosition(),path,MaxPath);
+  if (len==0) 
+     printf("Nie ma wyj¶cia z labiryntu.");
+  else {
+     printf("¦cie¿ka prowadz±ca do wyj¶cia:\n");
+     for (i=0; i<len; i++)
+        printf("\t(%d,%d)\n",path[i].x,path[i].y);
+  }
+}

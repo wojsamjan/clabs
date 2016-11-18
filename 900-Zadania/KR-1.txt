@@ -1,0 +1,47 @@
+
+$Revision: 1.1 $
+$Date: 2004/03/07 15:22:21 $
+
+ZADANIA K&R, Rozdzia³ 1:
+
+1. Napisz program, który -- przepisuj±c wej¶cie na wyj¶cie --
+   bêdzie zastêpowaæ jednym znakiem odstêpu ka¿dy ci±g z³o¿ony
+   z jednego lub kilku takich znaków. (KR 1.9)
+
+2. Jak móg³by¶ sprawdziæ poprawno¶æ programu zliczaj±cego s³owa?
+   Jaki rodzaj danych wej¶ciowych najlepiej nadaje siê do
+   demaskowania b³êdów, je¶li tu wystêpuj±? (KR 1.11)
+
+3. Napisaæ program, który ka¿de s³owo wej¶ciowe wypisze w osobnym
+   wierszu. (KR 1.12)
+
+4. Napisz program tworz±cy histogram czêsto¶ci wystêpowania
+   ró¿nych znaków pochodz±cych z wej¶cia. (KR 1.14)
+
+5. Napisz now± wersjê programu przekszta³cania temperatur,
+   w której przekszta³ceñ tych wykonuje funkcja. (KR 1.15)
+
+6. Popraw g³ówn± funkcjê programu szukaj±cego najd³u¿szego
+   wiersza tak, aby program zawsze poprawnie wypisywa³ rozmiar
+   dowolnie d³ugich wierszy i tylko tyle tekstu, ile 
+   jest mo¿liwe. (KR 1.16)
+
+7. Napisz program wypisuj±cy wszystkie wiersze wej¶ciowe
+   d³u¿sze ni¿ 80 znaków. (KR 1.17)
+
+8. Napisz program, który bêdzie pomijaæ pocz±tkowe znaki
+   odstêpu i tabulacji oraz usuwaæ ca³kowicie bia³e (puste)
+   wiersze. (KR 1.18)
+
+9. Napisz program, który ``³amie'' d³ugie wiersze wej¶ciowe
+   na dwa lub wiêcej krótszych wierszy po ostatnim znaku ró¿nym
+   od znaku odstêpu lub tabulacji, mieszcz±cym siê przed
+   n-t± pozycj± wej¶cia. Zapewnij, aby Twój program postêpowa³
+   inteligentnie z bardzo d³ugimi wierszami oraz wtedy, gdy
+   przed wskazan± pozycj± nie wyst±pi ¿aden znak odstêpu
+   lub tabulacji. (KR 1.22)
+
+10. Napisz program usuwaj±cy wszystkie komentarze z dowolnego
+  programu w jêzyku C. Nie zapomnij o w³a¶ciwym traktowaniu
+  sta³ych znakowych i napisowych. Komentarze jêzyka C nie mog±
+  byæ zagnie¿d¿one. (KR 1.23)

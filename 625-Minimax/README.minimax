@@ -1,0 +1,100 @@
+17.X.2003
+
+Implementacja algorytmu MINIMAX.
+-----------------------------------------------------------------------
+
+szukamy pozycji, w której przeciwnik mo¿e wykonaæ
+najgorszy z mo¿liwych najlepszych ruchów (st±d nazwa).
+
+drzewo gry.
+
+ocena dowolnego ruchu jest liczb± przeciwn± oceny pozycji
+wykonywanej przez przeciwnika.
+
+[przyk³ad]
+
+stateT -- struktura w której zapisujemy stan gry
+moveT  -- struktura w której odnotowujemy pojedynczy ruch
+
+Czym jest ruch, stan w grze w nim, kó³ko i krzy¿yk, szachy.
+
+1. Ograniczenie g³êboko¶ci przeszukiwania rekurencyjnego.
+2. Powinno byæ mo¿liwe przyporz±dkowanie oceny ka¿demu 
+   ruchowi i ka¿dej pozycji w grze.
+   Oceny powinny byæ liczbami, takimi ¿e np. ocena -5
+   z punktu widzenia jednego gracza jest równowa¿na ocenie
+   +5 z punktu widzenia przeciwnika.
+   Maksymalna ocena, któr± bêdziemy nazywaæ `WinningPosition',
+   powinna wskazywaæ na pozycjê, w której gracz maj±cy ruch
+   na pewno wygrywa. Symetrycznie, po drugiej stronie osi, mamy
+   `LosingPosition', wskazuj±c±, ¿e gracz wykonuj±cy ruch
+   zawsze przegra. Zwyczajowo przyjmujemy, ¿e `WinningPosition>0'.
+
+Pseudokod:
+
+moveT FindBestMove(stateT state, int depth, int *pRating)
+{
+   for (ka¿dego mo¿liwego ruchu lub je¶li mamy pewn± wygran±) {
+      Wykonaj ruch.
+      Oceñ powsta³± pozycjê i dodaj jeden do poziomu rekursji `depth'.
+      Zapamiêtaj ruch o najmniejszej ocenie do tej pory.
+      Wycofaj ruch i odtwórz poprzedni stan.
+   }
+   Zapisz ocenê ruchu, korzystaj±c z podanego wska¼nika.
+   Zwróæ najlepszy ruch.
+}
+
+moveT FindBestMove(stateT state, int depth, int *pRating)
+{
+   moveT moveArray[MaxMoves], move, bestMove;
+   int i, nMoves, rating, minRating;
+
+   nMoves=GenerateMoveList(state,moveArray);
+   if (nMoves==0)
+      Error("Nie mo¿na wykonaæ ruchu");
+   minRating=WinningPosition+1;
+   for (i=0; i<nMoves && minRating!=LosingPosition; i++) {
+      move=moveArray[i];
+      MakeMove(state,move);
+      rating=EvaluatePosition(state,depth+1);
+      if (rating<minRating) {
+         bestMove=move;
+         minRating=rating;
+      }
+      RetractMove(state,move);
+   }
+   *pRating=-minRating;
+   return bestMove;
+}
+
+
+EvaluateStaticPosition -- kodowana osobno dla ka¿dej gry.
+
+
+int EvaluatePosition(stateT state, int depth)
+{
+  int rating;
+
+  if (GameIsOver(state) || depth>=MaxDepth) {
+    return EvaluateStaticPosition(state);
+  }
+  (void) FindBestMove(state,depth,&rating);
+  return rating;
+}
+
+-----------------------------------------------------------------------
+
+Kó³ko i krzy¿yk.
+
+         1 | 2 | 3
+        ---|---|---
+         4 | 5 | 6
+        ---|---|---
+         7 | 8 | 9
+
+         typedef moveT int;   // na które pole
+
+         typedef struct {
+            char board[3*3+1];
+            playerT whoseTurn;
+         } *stateT;

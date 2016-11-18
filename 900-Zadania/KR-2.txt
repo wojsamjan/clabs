@@ -1,0 +1,38 @@
+
+$Revision: 1.1 $
+$Date: 2004/03/07 16:00:06 $
+
+ZADANIA K&R, Rozdzia³ 2:
+
+1. Napisz funkcjê `htoi(s)', która zamieni ci±g cyfr
+   szesnastkowych na równowa¿n± mu liczbê ca³kowit±.
+   W funkcji nale¿y uwzglêdniæ, ¿e ci±g mo¿e zaczynaæ siê od `0x'
+   lub `0X'. Dozwolonymi cyframi szestnastkowymi s±:
+   cyfry od `0' do `9' i litery od `a' do `f' oraz od `A' do `F'.
+   (KR 2.3)
+   Wskazówka: Wykorzystaæ funkcjê opisan± w rozdziale 2.7,
+   strony 69-70.
+
+2. Napisz _inn±_ wersjê funkcji `squeeze(s1,s2)' tak aby z tekstu w
+   argumencie `s1' usuwa³a ka¿dy znak wystêpuj±cy w tek¶cie
+   argumentu `s2'. (KR 2.4)
+   Oryginalna funkcja jest opisana w rozdziale 2.8, strona 75.
+
+3. Napisz funkcjê `any(s1,s2)', która zwraca albo pozycjê
+   pierwszego wyst±pienia dowolnego znaku z `s2' w tek¶cie
+   argumentu `s1', albo -1, je¶li tekst w `s1' nie zawiera ¿adnego
+   znaku z `s2'. (KR 2.5)
+
+4. Napisz funkcjê `expand(s1,s2)', która przepisuj±c tekst z
+   argumentu `s1' do `s2', rozwija skrócone zapisy typu `a-z' do
+   równowa¿nych im pe³nych ci±gów `abc...xyz'. Uwzglêdnij wielkie
+   i ma³e litery alfabetu oraz cyfry. B±d¼ równie¿ przygotowany na
+   obs³u¿enie zapisów w rodzaju `a-b-c' oraz `a-z0-9', a tak¿e
+   `-a-z'. Przyjmij, ¿e pocz±tkowe i koñcowe znaki `-' s±
+   traktowane literalnie. (KR 3.3)
+
+
+Uwaga:
+--------------------
+   Do wszystkich zadañ przygotowaæ zestawy danych
+   do testowania poprawno¶ci implementacji. 

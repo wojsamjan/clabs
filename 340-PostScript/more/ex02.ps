@@ -1,0 +1,15 @@
+%!PS
+
+% Prostok±t
+
+% A4 = 210 mm x 297 mm
+
+/mm { 2.8346 mul } def      % procedura
+
+[1 0 12 sin 1 0 0 ] concat  % pochyl uk³ad wspó³rzêdnych
+
+10 mm setlinewidth          % gruba kreska
+0 0 1 setrgbcolor           % kolor niebieski
+20 mm 20 mm 84 mm 100 mm    % x y szeroko¶æ wysoko¶æ
+rectstroke                  % rysuj prostok±t
+showpage                    % poka¿ stronê

@@ -1,0 +1,13 @@
+
+ZADANIE.
+---------------------------------------------------
+
+Zaimplementować wszystkie funkcje opisane w pliku 
+`simpio.h'.
+
+Użyj twojej implementacji tych funkcji, zamiast 
+implementacji autora biblioteczki cslib, kompilując 
+programy `euclid.c' i `oddeven.c'
+ 
+Wskazówka: Skorzystaj z którejś z funkcji z rodziny 
+ `scanf'.

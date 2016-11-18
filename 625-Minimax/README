@@ -1,0 +1,44 @@
+17.X.2003
+
+-----------------------------------------------------------------------
+
+ZADANIE:
+
+W najbardziej znanym wariancie gry w NIM, 
+¿etony s± u³o¿one w trzech rzêdach, np.
+
+rz±d 0:  o o o 
+
+rz±d 1:  o o o o
+
+rz±d 2:  o o o o o
+
+W jednym ruchu mo¿na zabraæ dowoln± liczbê ¿etonów, pod warunkiem,
+¿e wszystkie zabierane ¿etony znajduj± siê w tym samym rzêdzie.
+Gracz zabieraj±cy ostatni ¿eton przegrywa.
+
+Napisz program graj±cy w tê grê, który u¿ywa algorytmu `minimax'. 
+
+Pocz±tkowa konfiguracja podana powy¿ej (3, 4 i 5 ¿etonów rzêdzie)
+jest typowa, ale Twój program powinien daæ siê ³atwo zaadoptowaæ
+to dowolnej liczby ¿etonów w ka¿dym rzêdzie.
+
+-----------------------------------------------------------------------
+
+ZADANIE
+
+Napisaæ w `curses' interfejs u¿ytkownika do gry w NIM albo do
+gry w kó³ko i krzy¿yk.
+
+Zob. nc-hanoi.c, man ncurses, 
+     /usr/share/doc/ncurses-devel-5.2/ncurses-intro.html
+     oraz przyk³ady umieszczone w katalogu
+     /usr/share/doc/ncurses-devel-5.2/test.
+
+-----------------------------------------------------------------------
+
+ZADANIE (szachowe)
+
+Napisaæ program korzystaj±cy z rekurencji z powrotami znajduj±cy
+(i pokazuj±cy) drogê konika przez wszystkie kwadraty szachownicy.
+Ka¿dy kwadrat konik mo¿e odwiedziæ tylko raz.

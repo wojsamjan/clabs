@@ -1,0 +1,28 @@
+% Plik: przyklad03.ps
+
+% Zmienna:
+%
+%  /pi 3.14 def
+
+% Procedura:
+
+/box {
+  0 72 rlineto
+  72 0 rlineto
+  0 -72 rlineto
+  closepath
+} def
+
+% Program glowny
+
+newpath % pierwsze pudelko
+  252 324 moveto box
+  0 setgray fill
+newpath % drugie pudelko
+  270 360 moveto box
+  0.4 setgray fill
+newpath % drugie pudelko
+  288 396 moveto box
+  0.8 setgray fill
+
+showpage

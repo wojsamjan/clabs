@@ -1,0 +1,56 @@
+
+   KJP2 
+   W. Bzyl 11 XI 2002
+
+
+   UWAGA (zob. D. Knuth, Sztuka Programowania, T. 1): 
+
+   Często spotykamy listy, dla których wstawianie, usuwanie
+   i dostęp do wartości dotyczy w głównej mierze pierwszego lub
+   ostatniego elementu. Mamy dla nich nawet specjalne nazwy:
+
+  `stos' (ang. stack)  to lista, dla której operacje wstawiania
+            i usuwania (a zazwyczaj również odczytu) elementu
+            dotyczą jednego końca listy;
+
+  `kolejka' (ang. queue)  to lista, dla której operacje wstawiania
+            dotyczą jednego końca, a operacja usuwania
+            (i zazwyczaj operacje odczytu) drugiego końca;
+
+  `kolejka dwustronna'  (ang. deque = double-ended queue) to lista,
+            dla której wszystkie operacje wstawiania oraz usuwania
+            (i zazwyczaj operacje odczytu) dotyczą dowolnego końca
+            listy.
+
+   ZADANIA DO WYKONANIA:
+
+   1. Czy interfejs `list.h' może być interfejsem dla stosu?
+      kolejki? kolejki dwustronnej?
+
+      Uwaga: W zad. 2 i 3 przyjąć, że wyrażenia arytmetyczne
+             składają się z cyfr, nawiasów `(' i `)' oraz znaków
+             `+', `-', `*' oraz `/'. 
+
+   2. Napisać kalkulator dla wyrażeń arytmetycznych zapisanych
+      w odwrotnej notacji polskiej (RPN = Reverse Polish
+      Notation).
+      Przykład: 6 5 2 3 + 8 * + 3 + *  =>  288
+
+   3. Napisać program konwertujący wyrażenia arytmetyczne do
+      odwrotnej notacji polskiej.
+      Przykład: a+b*c+(d*e+f)*g  =>  a b c * + d e * f g * +
+
+   4. Napisać program dodający/odejmujący wielomiany jednej
+      zmiennej. 
+      Przykład: (1+20x^20-15x^5) - (-15x^5+1) = 20x^20
+   
+   5. Napisać program mnożący/dzielący wielomiany jednej zmiennej.
+      Przykład: (1-x) * (1+x) = 1 - x^2.
+
+   6. Zad. 4 i 5 dla wielomianów wielu zmiennych.
+
+   7. Zaprojektować i zaimplementować bibliotekę dla dodawania
+      i mnożenia liczb całkowitych dowolnej precyzji.
+      Obliczyć rozkład cyfr 0--9 dla 2^2002.
+      (Odszukać w internecie taką bibliotekę; skorzystać z niej
+      w obliczeniach rozkładu powyżej.)

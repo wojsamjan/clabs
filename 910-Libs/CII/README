@@ -1,0 +1,2 @@
+~/.rpmmacros:  %_topdir	  /home/kjp/rpm
+               uwaga: trzeba też utworzyć strukturę katalogów taką jak w /usr/src/redhat

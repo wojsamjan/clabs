@@ -1,0 +1,38 @@
+
+Przykłady należy przeglądać w następującej kolejności:
+
+man rand
+
+randtest.c
+cointest.c
+
+random.h
+
+dicetest.c
+dicetest2.c
+
+random.c
+
+craps.c
+
+gccx -- skrypt do kompilacji programów przykłądowych
+
+
+---
+
+Gier hazardowych jest bez liku.  Ale tylko z sześcioma z nich spotkamy
+się w kasynie.
+
+Są to: bakarat, blackjack, ruletka, poker,
+automaty do gry (jednoręki bandyta) i craps,
+czyli gra w kości.
+
+Najprostszą i najbardziej rozpowszechnioną odmianą
+craps jest przewidywanie sumy oczek wyrzuconych
+dwoma kostkami.
+
+Współczesna wersja craps pojawiła się na początku
+XIX w. w Nowym Orleanie. Autorstwo przypisuje
+się czarnoskórym niewolnikom z brzegów Missisipi.
+Do tej pory craps jest najpopularniejsze w amerykańskich
+kasynach.

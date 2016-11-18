@@ -1,0 +1,9 @@
+// $ANTLR 2.7.2: index.g -> HTMLIndexerTokenTypes.txt$
+HTMLIndexer    // output token vocab name
+HEADER=4
+OTHER=5
+ANCHOR=6
+ANCHOR_=7
+HEADER_=8
+TAG_GUTS=9
+WS=10

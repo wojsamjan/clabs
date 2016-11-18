@@ -1,0 +1,82 @@
+
+#  $URL: http://manta.univ.gda.pl/svn/wb/labs/c/551-Bison/README $
+#  $Revision: 89 $
+
+
+  LR(1) parsing               Analiza sk³adniowa LR(1) z jenym tokenem podgl±du
+  `shift / reduce' parsing    Analiza sk³adniowa `przesuñ / zredukuj'
+
+calc0: 
+
+   E :  E+T      1
+     |  T        2
+   T :  T*F      3
+     |  F        4
+   F :  (E)      5
+     |  liczba   6
+
+
+   powy¿sza gramatyka jest jednoznaczna:  bison calc0.y
+   
+   
+
+     Stos                       Symbole pozosta³e na wej¶ciu       akcja
+     ------------------------   -----------------------------
+                                1+2*3#
+ 1                          1   +2*3#                              przesuñ
+ 2                          F   +2*3#                              zredukuj 6
+ 3                         F+   2*3#                               przesuñ
+ 4                        F+2   *3#                                przesuñ
+ 5                        F+F   *3#                                zredukuj 6
+ 6                       F+F*   3#                                 przesuñ
+ 7                      F+F*3   #                                  przesuñ
+ 8                      F+F*F   #                                  zredukuj 6
+ 9                      F+T*F   #                                  zredukuj 4
+10                        F+T   #                                  zredukuj 3
+11                        T+T   #                                  zredukuj 4
+12                        E+T   #                                  zredukuj 2
+13                          E   #                                  zredukuj 1
+
+
+(2)    (5)     (8)      (9)       (10)          (11)          (12)          
+
+   F      F+F     F+F*F    F+T*F      F+   T       T+   T         E +   T    
+   |      | |     | | |    | | |      |   /|\ 	   |   /|\   	  |    /|\ 
+   1      1 2     1 2 3    1 F 3      1  T * F	   F  T * F  	  T   T * F
+                             |           |   |	   |  |   |  	  |   |   |
+                             2           F   3     1  F   3  	  F   F   3
+                                         |    	      |      	  |   |    
+                                         2     	      2      	  1   2    
+(13)
+           E
+         / | \
+        /  |  \
+       E   +   T  
+       |      /|\ 
+       T     T * F
+       |     |   |
+       F     F   3
+       |     |    
+       1     2    
+
+
+  U¿ywanie gramatyk niejednoznacznych w Bisonie (Dragon Book, s. 247)
+
+  wyr     :  wyr '+' wyr
+          |  wyr '*' wyr
+          |  '(' wyr ')'
+          |  LICZBA
+          ;
+
+  konflikty przesuniêcie/redukcja:
+
+    bison -v ex1.y    (ex1.output zawiera opis konfliktów)
+
+  Powy¿sze konflikty rozstrzygamy przypisuj±c
+  symbolom terminalnym ³±czno¶æ i priorytety:
+
+  %left '+'
+  %left '*'    wy¿szy priorytet, bo nastêpuje po '+'
+
+  zob. calc1.y
+

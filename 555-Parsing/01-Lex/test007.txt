@@ -1,0 +1,8 @@
+TEST PROGRAMU 07.l
+
+#input 07.l
+Pliku poni¿ej nie w³±czamy
+  #input 07.l
+#input 07.l
+
+KONIEC TESTU.

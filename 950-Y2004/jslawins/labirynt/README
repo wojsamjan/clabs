@@ -1,0 +1,172 @@
+   14.01.2002
+
+*  Przygotowa³ Szymon Kochañski <skochans@manta.univ.gda.pl>
+
+
+1. Algorytm generowania labiryntu. Definicja labiryntu doskona³ego.
+
+Sama idea algorytmu zosta³a zaczerpniêta ze strony:
+
+     http://www.flint.umich.edu/Departments/ITS/crac/maze.algorithm.html
+
+Przedstawiony tam (w postaci s³ownej) algorytm jest niezwykle
+prymitywny, ale ,,w prostocie si³a'', i choæ stworzony przeze mnie
+algorytm jest du¿o bardziej skomplikowany (wprowadzi³em m.in. dwa
+rodzaje ¶cian), to jednak tamten by³ ,,ziarenkiem'', które pchnê³o 
+mnie do dzia³ania i przekona³o, ¿e generowanie labiryntów wcale 
+nie jest problemem a¿ tak trudnym, jakby siê wydawa³o. 
+Ale do rzeczy...
+
+Oznaczenia:
+
+    '#' -- ¶ciana ,,zwyk³a'', czyli ,,rozwalalna''
+    '@' -- ¶ciana ,,nierozwalalna''
+    ' ' -- ¶cie¿ka
+
+ ###########   	Na pocz±tku stwórzmy planszê i zape³nijmy j± ¶cianami
+ ###########
+ ###########
+ ###########
+ ###########
+ ###########
+ ###########
+ ###########
+ ###########
+ ###########
+ ###########
+
+
+@@@@@@@@@@@@@	Teraz dla pewno¶ci otoczmy nasz± planszê 
+@###########@	,,niezniszczlnym'' murem.
+@###########@
+@###########@
+@###########@
+@###########@
+@###########@
+@###########@
+@###########@
+@###########@	(Co prawda mój algorytm poradzi³by sobie i bez tego,
+@###########@	ale ,,pewno¶ci nigdy za wiele'').
+@###########@
+@@@@@@@@@@@@@
+
+@@@@@@@@@@@@@	No to teraz trzeba siê zdecydowaæ od czego zacz±æ.	
+@###########@	Proponujê zacz±æ w lewym górnym rogu.
+@# #########@	Burzymy jedn± ¶cianê.
+@###########@
+@###########@
+@###########@
+@###########@
+@###########@
+@###########@
+@###########@
+@###########@
+@###########@
+@@@@@@@@@@@@@
+
+@@@@@@@@@@@@@	Teraz wybieramy punkt oddalony o dwa od bie¿±cego punktu,
+@###########@	sprawdzamy czy jest ,,rozwalaln±'' ¶cian± i czy jest otoczony
+@#   #######@	przez ¶ciany. Je¶li te warunki s± spe³nione i ¶ciana po
+@###########@	drodze te¿ jest rozwalaln± ¶cian±, to idziemy do tego punktu
+@###########@	rozwalaj±c ¶cianê po drodze. Punkt, do którego doszli¶my 
+@###########@	oznaczamy jako ¶cie¿kê.
+@###########@
+@###########@	Ja poszed³em poziomo, ale równie dobrze mo¿na by³o i¶æ pionowo.
+@###########@
+@###########@
+@###########@
+@###########@
+@@@@@@@@@@@@@
+
+@@@@@@@@@@@@@ 	Powtarzamy tê procedurê losowo wybieraj±c kierunek w¶ród 
+@###########@	wszystkich dostêpnych.
+@#   #   ###@
+@### ### ###@	Je¿eli wejdziemy w ,,¶lep± uliczkê'', to cofamy siê do miejsca
+@###     ###@	gdzie mieli¶my wiêcej mo¿liwo¶ci. Ja to rozwi±za³em
+@###########@	za pomoc± rekurencji, ale s± te¿ inne sposoby.
+@###########@
+@###########@
+@###########@
+@###########@
+@###########@
+@###########@
+@@@@@@@@@@@@@
+
+@@@@@@@@@@@@@	A tak mo¿e wygl±daæ przyk³adowy labirynt wygenerowany przez
+@###########@	algorytm.
+@#   #     #@
+@### ### # #@
+@# #     # #@
+@# ####### #@
+@# #       #@
+@# # ### ###@
+@#     #   #@
+@### # #####@
+@#   #     #@
+@###########@	
+@@@@@@@@@@@@@
+
+(porównaj z: http://www.flint.umich.edu/Departments/ITS/crac/maze.algorithm.html)
+
+
+Co ciekawe, labirynt wygenerowany w ten sposób jest tzw. labiryntem
+doskona³ym, co oznacza, ¿e nie ma on pêtli, cykli ani niedostêpnych
+obszarów. Z ka¿dego punktu prowadzi dok³adnie jedna droga do dowolnego
+innego punktu labiryntu. Taki labirynt ma zawsze dok³adnie jedno
+rozwi±zanie. (Definicja na podstawie: http://www.astrolog.org/labyrnth/glossary.htm
+http://www.astrolog.org/labyrnth/algrithm.htm)
+
+Ze wzglêdu na specyficzne w³a¶ciwo¶ci labiryntów doskona³ych wej¶cie
+(pocz±tek) i wyj¶cie (koniec) mo¿na umie¶ciæ w dowolnym punkcie.
+
+Algorytm jest uniwersalny i pozwala genrowaæ labirynty o kszta³tach 
+innych ni¿ prostok±t.
+
+
+                               @@@
+                               @ @
+                             @@@ @@@
+                             @   # @
+                           @@@ ### @@@
+                           @   #   # @
+                         @@@## # ### @@@
+                         @       #     @
+                       @@@ ######### # @@@
+                       @   #   #   # #   @
+                     @@@ # # ### # # ### @@@
+                     @   #   #   # # #   # @
+                   @@@ ##### ### # # ### # @@@
+                   @     #       #     #     @
+                   @@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+
+2. Algorytm rozwi±zywania labiryntu.
+
+Do przechodzenia labiryntu u¿y³em algorytmu przedstawionego na
+wyk³adzie dr W³odzimierza Bzyla. Algorytm ten jest opisany m.in. 
+na stronie http://www.astrolog.org/labyrnth/algrithm.htm
+(pod nazw± ,,Recursive backtracker'') oraz na
+http://webpages.charter.net/kevinast/AmazingMazes pod nazw± ,,NESW''.
+
+3. Ciekawe adresy.
+
+Poniewa¿ wcale nie tak ³atwo jest odnale¼æ ciekawe strony dotycz±ce
+labiryntów, poni¿ej zamieszczam kilka adresów.
+
+http://www.mazebuilder.com/
+   Generowanie labiryntów online. Ró¿ne kszta³ty (tak¿e w kszta³cie s³ów).
+
+http://www.billsgames.com/mazegenerator/
+   Jeszcze jedna strona generuj±ca labirynty online.
+
+http://webpages.charter.net/kevinast/AmazingMazes
+   Du¿o teorii. Przyk³adowe kody zród³owe. Aplety testujace skutecznosc 
+   ró¿nych algorytmów przechodzacych labirynty. Skarbnica wiedzy.
+
+http://web.kyoto-inet.or.jp/people/eisaku/e_maze/ 
+   Du¿a kolekcja labiryntów o ciekawych kszta³tach. Dobre do wydrukowania 
+   i powieszenia sobie na scianê. :)
+
+http://www.billsgames.com/invisiblemaze/
+   Interaktywna gra polegajaca na przechodzeniu stopniowo ods³aniajacego siê
+   labiryntu. Doskona³a zabawa dla dzieci (i nie tylko). 

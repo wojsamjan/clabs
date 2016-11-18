@@ -1,0 +1,36 @@
+% Plik: przyklad08.ps
+
+% Kolko Adobe: stan graficzny i petla
+
+% Procedury
+
+/Helvetica-BoldOblique findfont 30 scalefont setfont
+
+/oshow { % stos: (napis)
+  true charpath
+  stroke
+} def
+
+/circleofAdobe {
+  15 15 345 {
+    gsave
+      rotate
+      0 0 moveto
+      (Adobe) oshow
+    grestore
+  } for
+} def
+
+% Program glowny
+
+250 400 translate
+
+0.5 setlinewidth
+circleofAdobe
+
+0 0 moveto
+(Adobe Systems) true charpath
+gsave 1 setgray fill grestore
+stroke
+
+showpage

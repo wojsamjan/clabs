@@ -1,0 +1,23 @@
+
+18.III.2004		                           <matwb@univ.gda.pl>
+----------------------------------------------------------------------
+
+CSV -- Comma Separated Values (Warto¶ci Oddzielone Przecinkami)
+
+SPECYFIKACJA:
+
+1. Znakiem oddzielaj±cym pola danych jest przecinek.
+2. Pole mog± obejmowaæ cudzys³owy: "...".
+3. Pole ujête w znaki cudzys³owu nie mo¿e zawieraæ znaku nowego
+   wiersza, ale mo¿e zawieraæ przecinek.
+4. Pole ujête w znaki cudzys³owu mo¿e zawieraæ znak cudzys³owu.
+   W tym przypadku znak cudzys³owu jest przedstawiony przez "".
+5. Pole danych mo¿e byæ puste. £añcuch pusty i "" przedstawiaj±
+   pole puste.
+6. Bia³e znaki na pocz±tku i na koñcu pola s± zachowywane.
+
+PRZYK£ADY:
+
+    "LU",86.25,"11/4/1998","2:19PM",+4.0625
+    "A,B","C""D","
+    ,"",

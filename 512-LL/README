@@ -1,0 +1,17 @@
+
+   Rozwi±zaæ kolejno zadania podane w plikach:
+
+            FrontBackSplit.c (Zadanie 9)
+	    RemoveDuplicates.c  (Zadanie 10)
+	    MoveNode.c  (Zadanie 11)
+	    AlternatingSplit.c (Zadanie 12)
+	    ShuffleMerge.c (Zadanie 13)
+	    SortedMerge.c (Zadanie 14)
+	    MergeSort.c (Zadanie 15)
+
+   Techniki, do wykorzystania w rozwi±zaniach zosta³y
+   omówione na wyk³adzie i znajdziesz je w pliku:
+
+	    ../510-LL/list_techniques.c
+
+   Powodzenia!

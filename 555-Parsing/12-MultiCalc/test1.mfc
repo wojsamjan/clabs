@@ -1,0 +1,10 @@
+x=0; y=3; z=101; u=1001;
+while (x<y) { print x; x=x+1; } print u;
+x=0;
+if (x<z) print x; else print z; print x;
+if (x>z) print x; else print z;
+z=PI/2;
+while (x!=100) { x=x+1; z=sin(z);  }
+print z;
+exec
+

@@ -1,0 +1,78 @@
+
+$URL: http://manta.univ.gda.pl/svn/wb/labs/c/610-Maze/README.maze $
+$Revision: 234 $
+
+
+Pseudo kod funkcji `SolveMaze':
+
+------------------------------------------------------------
+
+Jeśli bieżący kwadrat jest na zewnątrz labiryntu, zwróć TRUE
+  wskazując w ten sposób, że znaleziono ścieżkę do wyjścia z labiryntu.
+Jeśli bieżący kwadrat jest już zaznaczony, zwróć FALSE 
+  wskazując w ten sposób, że szliśmy już tą ścieżką.
+Zaznacz bieżący kwadrat.
+FOR (każdego kierunku N, E, S, W) {
+   IF (tego kierunku nie blokuje ściana) {
+      Przesuń się z bieżącego kwadratu o jeden kwadrat we wskazanym kierunku.
+      Spróbuj znaleźć wyjście z labiryntu z tego kwadratu wołając funkcję rekurencyjnie.
+      Jeśli wywołanie pokazuje, że jest wyjście z labiryntu, zwróć TRUE aby to potwierdzić.
+   }
+Odznacz bieżący kwadrat.
+Zwróć FALSE, wskazując w ten sposób, że w żadnym z czterech
+   kierunków nie prowadzi droga do wyjścia.
+
+
+-----------------------------------------------------------------------
+
+ZADANIE
+
+Do wyjścia z labiryntu może prowadzić wiele ścieżek.
+Napisać funkcję o prototypie:
+  
+   int ShortestPathLength(pointT pt);
+
+zwracającą długość najkrótszej drogi prowadzącej do wyjścia 
+z labiryntu z podanego punktu. Jeśli nie ma ścieżki
+prowadzącej do wyjścia, to funkcja ShortestPathLength powinna
+zwrócić stałą NoSolution, gdzie wartość NoSolution jest większa
+od maksymalnej możliwej długości sieżki, np.
+
+   #define NoSolution  1000000
+
+-----------------------------------------------------------------------
+
+ZADANIE
+
+Napisać funkcję o prototypie:
+
+   int FindPath(pointT pt, pointT path[], int pathSize);
+
+która parametrami, oprócz pozycji początkowej `pt', są
+tablica `path' rozmiaru `pathSize'.
+Kiedy funkcja `FindPath' kończy działanie, to tablica
+path powinna zawierać współrzędne punktów od pt 
+do wyjścia z labiryntu. Funkcja powinna zwracać liczbę
+punktów na ścieżce path lub 0 jeśli z podanego punktu
+nie ścieżki do wyjścia z labiryntu.
+
+Na przykład, użycie funkcji FindPath w funkcji main poniżej
+spowoduje wyświetlenie współrzędnych punktów prowadzących
+do wyjścia:
+
+int main()
+{
+  pointT path[MaxPath];
+  int i, len;
+
+  ReadMazeMap(MazeFile);
+  len=FindPath(GetStartPosition(),path,MaxPath);
+  if (len==0) 
+     printf("Nie ma wyjścia z labiryntu.");
+  else {
+     printf("Ścieżka prowadząca do wyjścia:\n");
+     for (i=0; i<len; i++)
+        printf("\t(%d,%d)\n", path[i].x, path[i].y);
+  }
+}
+

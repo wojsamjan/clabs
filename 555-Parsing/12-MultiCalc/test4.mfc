@@ -1,0 +1,10 @@
+procedure moja { z = z + 2; }
+procedure druga { z = z +10; }
+z=0;
+moja;
+moja;
+moja;
+print z;
+druga;
+print z;
+exec

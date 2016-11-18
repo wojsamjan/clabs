@@ -1,0 +1,16 @@
+%!PS
+
+/middle { 300 320 } def			% mniej wiecej ¶rodek kartki A4
+					% to (300,420)
+/Serduszko {
+    0 0 moveto
+    500 500 125 625 0 500 curveto	% prawa strona
+    -125 625 -500 500 0 0 curveto	% lewa strona
+} def
+
+middle translate
+0.75 dup scale
+Serduszko
+1 0 0 setrgbcolor
+fill
+showpage

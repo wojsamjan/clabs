@@ -1,0 +1,26 @@
+% Plik: przyklad07.ps
+
+% Gwiazdka: stan graficzny (graphic state)
+
+/starside {
+  72 0 lineto            % dodaj linie do sciezki
+  currentpoint translate % przesun poczatek ukladu wspolrzednych
+  -144 rotate            % obroc uklad wspolrzednych
+} def
+
+/star { % stos: x y
+  moveto
+  currentpoint translate
+  4 { starside } repeat
+  closepath
+  gsave
+    0.5 setgray fill
+  grestore
+  stroke
+} def
+
+% Program glowny
+
+200 200 star
+
+showpage

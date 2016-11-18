@@ -1,0 +1,37 @@
+
+      $URL: http://manta.univ.gda.pl/svn/wb/labs/c/530-TabliceHaszujace/README $
+      $Revision: 168 $
+
+      Uwaga: 
+
+      program ten nie rozpoznaje poprawnie słów jeśli napisy są kodowane
+      wielobajtowo, na przykład jeśli są kodowane w UTF-8
+
+
+      Propozycje zadań
+
+   1. Przerobić program `wf' tak aby rozpoznawał polskie znaki
+      diakrytyczne, jeśli zmienna `LANG' ma wartość `pl_PL'
+      Wskazówka: skorzystać z kodu programu `tl.c'.
+
+   2. Napisać program `miesiac', który po podaniu o nazwy miesiąca
+      w lini poleceń wypisze, jego numer:
+
+         $miesiac kwiecień
+         IV
+    
+   3. Napisać program, który po wczytaniu do hasza listy polskich
+      słów z pliku `/usr/dict/words-pl' (ok. 1 mln słów) wypisze
+      statystkę hasza. W tym celu zmodyfikuj kod `tables.c'
+      Nowy kod umieść w pliku `tables2.c'. Oto przykładowy wynik:
+
+         $hasz_test
+            0:  10
+            1:  23
+            .    .
+            .    .
+         1001:   2
+
+      gdzie 10 oznacza, że w kubełku nr 0 zostało umieszczonych na
+      liście 10 słów, w kubełku 1 -- 23 słowa, i w ostatnim kubełku --
+      2 słowa.

@@ -1,0 +1,1 @@
+/QuasiChancery-MediumItalic (qzcmi.pfb)	;

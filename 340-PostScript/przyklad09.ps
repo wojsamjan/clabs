@@ -1,0 +1,41 @@
+% Plik: przyklad09.ps
+
+% Obcinanie / Przycinanie (Clipping)
+
+% Procedury
+
+/trojkat {
+  newpath
+  0 0 moveto
+  144 0 lineto
+  72 200 lineto
+  closepath
+} def
+
+/liniepionowe {
+  newpath
+  0 9 144 {
+    0 moveto
+    0 216 rlineto
+  } for
+  stroke
+} def
+
+/liniepoziome {
+  newpath
+  0 10 200 {
+    0 exch moveto
+    144 0 rlineto
+  } for
+  stroke
+} def
+
+% Program glowny
+
+230 300 translate
+
+trojkat clip
+liniepionowe
+liniepoziome
+
+showpage

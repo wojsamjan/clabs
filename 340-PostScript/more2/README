@@ -1,0 +1,17 @@
+
+$Revision: 1.1 $
+$Date: 2004/11/14 15:17:58 $
+
+
+Patterns: desenie, wzorce, szablony, wykrój, ozdabiaæ wzorem
+
+Aby malowaæ korzystaj±c deseniów, nale¿y:
+
+  1. zaprogramowaæ szablon deseniu
+  2. utworzyæ deseñ
+  3. wybraæ deseñ do malowania
+  4. malowaæ, korzystaj±c z funkcji fill, stroke, show, imagemask
+
+ 
+heart.ps    -- szablon deseniu
+drawpat.ps  -- przyk³ad malowania zapomoc± deseniu

@@ -1,0 +1,31 @@
+%!PS
+
+% Specjalne efekty: ¶cie¿ki obcinania
+% Dostêpne fonty: zob. Fontmap.GS
+
+% A4 = 210 mm x 297 mm
+
+/mm { 2.8346 mul } def     % procedura
+
+/zakreskuj { % stos: kolor
+  setrgbcolor
+  105 mm 25 mm moveto
+  0 150 mm rlineto
+  180 mm setlinewidth
+  [ 10 mm 10 mm ] 0 setdash  %
+  stroke
+} def 
+
+0 .5 .5 setrgbcolor
+/ZapfChancery-MediumItalic findfont
+165 mm scalefont           % wybierz font i powiêksz go
+setfont                    % ustwa go jko font bie¿acy
+10 mm 45 mm moveto         % ustaw bie¿±cy punkt
+(W) show
+1 .7 0 zakreskuj
+10 mm 45 mm moveto
+(W) false charpath clip    % ustaw ¶cie¿kê obcinania
+newpath
+.7 0 0 zakreskuj
+
+showpage                   % poka¿ stronê

@@ -1,0 +1,815 @@
+<HTML>
+<HEAD>
+<TITLE>WWW4: Grammar Specification of HTML3</TITLE>
+<META NAME="Topics" CONTENT="OTHER: Techniques for creating Web Software, Tuning Benchmarking & Performance">
+<META NAME="Keyword" CONTENT="HTML3, Cascading Style Sheets, grammar, document data structures, parsing, GUI editing">
+</HEAD>
+<BODY>
+<H1>LALR Grammar Specification of HTML3 - Automatically Generating a Parser that Builds Tree Representation of HTML Document</H1>
+
+<ADDRESS><A HREF="http://www.iki.fi/~sampo/">Sampo Kellom&auml;ki</A><BR>
+<A HREF="http://www.hut.fi/">Helsinki University of Technology</A>,<BR> 
+<A HREF="http://www.cs.hut.fi/">Laboratory of Information Processing Science</A>
+</ADDRESS>
+<CODE>&lt;sampo@iki.fi&gt;</CODE><P>
+
+<DL>
+<DT><STRONG>Abstract:</STRONG>
+<DD>A grammatical specification of the syntax of the HyperText Markup Language 3 and the cascading style sheets proposal is presented. Effort needed to implement document parser is reduced by generating it from the specification. This allows quick incorporation of new features of the HTML3 language in the parser while maintaining conformance with the specification. The parser produces a parse tree that is a useful representation of the document. Tree representation is needed for multipass layout computations and to support a GUI based HTML3 document editor. The grammar specification is contrasted with the SGML style Document Type Definition for HTML3. Strategies for lexical analysis and the associated abstractions are related to existing work. The grammar is presented in appendix.
+
+<DT><STRONG>Keywords:</STRONG>
+<DD>HTML3, Cascading Style Sheets, grammar, document data structures, parsing, GUI editing
+</DL>
+<HR> 
+<H2><A NAME="Introduction">1. Introduction</A></H2>
+
+<P>As the HyperText Markup Language standard evolves to a rich, increasingly complex language, the need for precise and well defined parsing methods grows. Single pass methods are no longer adequate to render deeply nested structures, such as tables and math, and graphical-user-interface-based editing of the documents places additional demands on the parser and the data structures it generates. The parser should produce a useful tree representation from the document by assembling together elements represented by an object oriented class hierarchy of the HTML elements.
+
+<P>The problem of writing parsers that accurately reflect the specifications of the language was solved by the programming language community already in the seventies <A HREF="#AhoEA86">[Aho et al. 86]</A>. Automatic generation of parser reduces the implementation effort and helps to quickly incorporate new features of the specification to the parser. The parser is guaranteed to be correctly implemented to the extent that the grammar is able to specify the language.
+
+<P>We seek to facilitate the creation of accurate HTML3 parsers that make direct use of the specification of HTML3. Grammars are able to describe nearly all aspects of the content model that DTD <CODE>ELEMENT</CODE> declarations are able to specify and in some cases even constructs that DTD can not describe. Thus the level of correctness of the generated parser is expected to be high.
+
+<P>Parse tree provides a good starting point in deriving a useful hierarchical representation of the document. The tree representation can be used for layout computations, and editing operations can be performed on trees in a consistent way that preserves the correct structure of the document.
+
+<P>The parser performs the task of structuring tokens, produced by lexical analysis, to trees used by the graphical user interface. The lexical analyzer is written separately or adapted from existing software. It feeds the parser via a token buffer. Data is tokenized only once and appended to the token buffer as it comes from the network. Parsing can be invoked at any time to produce a version of the document for the data that has arrived thus far. The bulk of the work goes into tokenizing the data. The input to the parser is only a fraction of the original data, thus invoking parser is cheap and can be done repeatedly. 
+  
+<P><A HREF="HTML3-grammar-fig1.gif"><IMG SRC="HTML3-grammar-fig1.gif" ALT="Network - Lexical Analysis (using libwww SGML parser) - Parser - GUI pipeline"></A><BR>
+Figure 1: Relation of parser to the other components of a browser and the role of libwww.
+
+<H3>1.1 Related Work</H3>
+
+<P>Good work has been done to precisely define the syntax of HTML using SGML declaration and DTD <A HREF="#Raggett95">[Raggett95]</A>. Unfortunately many parsers have an ad hoc approach, which fails to make best use of the precise specification. Ideally a parser should be able to take the SGML declaration and the DTD for a given application and parse the input correctly. In fact, this approach was chosen by James Clark in his SP general SGML parser <A HREF="#Clark95">[Clark95]</A> and his earlier work, the SGMLS parser. His parsers are general SGML parsers which concentrate on extracting structure of any conforming document. However, hard-coding DTD into the parser provides performance gains and does not particularly limit the applications of the parser. Also, it should be noted that DTD does not capture all aspects of the HTML3 specification. A grammar-based specification is more general and can reflect non-SGML sublanguages that are or will be part of HTML, e.g. style sheets, mathematics, URIs, and non-SGML attribute values, such as shapes or unit-qualified numbers.
+
+<P>Parsers for HTML are readily available, but the grammar approach has not been used. Probably the most widely used parser is the stream-based SGML parser that comes with libwww from CERN <A HREF="#Frystyk95">[Frystyk95]</A>. The CERN parser reads a character stream and outputs a mixed tag and character stream. It implements SGML declaration-dependent parts, such as concrete syntax for delimiters, in a hard-coded way and takes as an argument a primitive DTD which describes accepted tags and their accepted parameters. The value of the DTD argument is usually hard-coded in the library at compile time. The DTD argument contains information almost exclusively from the ATTLIST declarations of the DTD and does not reflect the specification of the structure-at-large, e.g. which tags are allowed inside FORM or MATH element. The libwww has also HTML parser module specification, but accompanying documentation suggests replacing it with a custom built module in all but most trivial cases.
+
+<P>Hounslow discusses data structures that the parsing process should produce <A HREF="#Hounslow95">[Hounslow95]</A>. He proposes using two fold system of constructing trees from tags and containers. Our trees have elements as nodes and they combine properties of Hounslow's tags and containers. Our approach is simpler, but the abstraction is essentially the same.
+
+<H3>1.2 Our Work</H3>
+
+<P>We describe the conversion of the HTML3 DTD to a grammar suitable for generating a parser. Conversion is done in a systematic way that preserves the meaning of the DTD to the extent practically possible. Some of the constructs, e.g. attributes and entities, are better checked in lexical analysis while some, e.g. nested anchors, are deferred to the semantic actions.
+
+<P>The grammar we provide reflects the specification of the document structure at large as described by the ELEMENT declarations of the DTD. The resulting grammar is assumed to consume tokens at roughly the level of abstraction as output by the libwww SGML parser, i.e. attributes have already been parsed and entities recognized. From the grammar it is possible to build a parser that would use the libwww SGML parser for lexical analysis, though we chose to use our own lexical analyzer that provides similar abstraction using a C++ class hierarchy.
+
+<P>This paper describes work in progress. Our goal is to build an editing tool that allows authoring of multipart documents. Our graphical user interface will allow creation of links by point and click techniques. The parser provides fundamental groundwork that will allow us to support advanced editing operations.
+
+<P>The current work is based on HTML3 draft specification <A HREF="#Raggett95">[Raggett95]</A>, which contains the SGML declaration and document type definition, and Cascading Style Sheets draft specification <A HREF="#Lie95">[Lie95]</A>, which discusses the syntax of the style sheets only informally through examples.
+
+<H3>1.3 Introduction to Formalisms</H3>
+
+<P>HTML documents are written in a markup language consisting of <EM>tags</EM> that delimit text. Usually tags are used to indicate the logical role of the text. A sequence of a start tag, text, and an end tag is called an <EM>element</EM>. Element is said to contain the text and can hence be called a <EM>container</EM>. Element can contain only specific types of text and other elements.
+
+<P>The purpose of a <EM>document type definition</EM> (DTD) is to indicate precisely which other elements, and in what arrangement, an element can contain - i.e. element's <EM>content model</EM>. DTD is a convention used by Standard Generalized Markup Language <A HREF="#Goldfarb90">[Goldfarb90]</A> to indicate the content model and allowed attributes. DTD consists of two types of declarations:
+
+<DL>
+<DT><CODE>ELEMENT</CODE> declarations
+<DD>have the name of the element, two flags that indicate whether start tag and end tag may be omitted, and a description of the content model. Content model expressions are covered later. Inclusions and exclusions are added with a minus or plus sign after the content model. They augment content model transitively, i.e. all elements used by the content model will implicitly assume the inclusions and exclusions of the parent element. Consider the hypothetical declaration of element FOO that has an optional end tag, should contain a BAR followed by any number of FOOs, and has inclusion of POOHs:<BR>
+<CODE>&lt;!ELEMENT FOO - O (BAR, FOO*) +POOH&gt;</CODE>
+ 
+<DT><CODE>ATTLIST</CODE> declarations
+<DD>have an element name followed by a list of attributes that the element takes. For each attribute a name, a type or allowed values, and a default are given. Following declares that FOO requires label attribute whose type is NAME and may optionally have an align attribute, which defaults to middle if not given:<BR>
+<CODE>&lt;!ATTLIST FOO label NAME #REQUIRED align (top|middle|bottom) middle&gt;</CODE> 
+</DL>
+
+<P><EM>Grammars</EM> are another way of describing syntaxes of languages <A HREF="#AhoEA86">[Aho et al. 86]</A>. Grammars consist of productions like <CODE>foo_content --> BAR foos; foos --> /* Empty */ | FOO foos;</CODE> which expresses the content model, but not the inclusion of POOH, of <CODE>ELEMENT</CODE> declaration for foo. Vertical bar indicates alternative and concatenation means that both elements should appear and in that order. By convention tokens are written in upper case letters and nonterminals in lower case letters.
+
+<H2><A NAME="DTD-to-Grammar">2. Converting DTD to Grammar</A></H2>
+
+<P>The grammar has to be written with two things in mind: the correspondence to the underlying DTD should always be clear, and derivation of the document should reflect the data structures that are to be generated. It is imperative that the meaning of the grammar corresponds to the DTD, as otherwise we could not rely on the parser - a mere image of its specification. In this section we discuss ways to maintain this correspondence.
+
+<H3>2.1 An Automated Approach</H3>
+
+<P>Direct correspondence of grammar to DTD can be maintained if the grammar is generated automatically from the DTD - after all, DTD is a very grammar-like notation. The Online Computer Library Center provides a service that does exactly this. Their Fred system <A HREF="#OCLC">[OCLC]</A> is able, among other things, to mechanically transform DTD to Backus Naur Form <A HREF="#AhoEA86">[Aho et al. 86]</A> and vice versa.
+
+<P>We experimented with Fred and its output provided some insights as to how the grammar should be written, but it also became evident that Fred, while transforming abstract grammar, required considerable post processing of the output. The BNF would first have to be converted into Bison <A HREF="#Bison">[Bison]</A> parser generator format (while a mechanical process, still an additional nuisance) and then annotated with the semantic actions to produce tree structures. Furthermore, productions generated by Fred were often in an awkward order for generation of the tree structures. The whole process became too rigid and, as showing correspondence of DTD to handwritten grammar is not difficult either, we chose to write the grammar from scratch.
+
+<H3>2.2 Tokens and Plain Text</H3>
+
+<P>ELEMENT declarations of the DTD provide a grammar, albeit not one suitable for parser generation, whose nodes are the elements. Most elements are also containers, so we assume a rough equivalence between elements and containers. The lexical analyzer produces a stream  of open tags (from here on, just <EM>tags</EM>) and end tags. They are the terminals or <EM>tokens</EM> of the grammar.
+
+<P>Plain text between the tokens is attached to the tokens and does not constitute a token in its own right. This allows plain text to be inserted between any tags. DTD does not specify <A HREF="#Raggett95">[Raggett95, pg. 181]</A> that HEAD element may contain PCDATA (i.e. plain text), so our approach prevents us from detecting errors where extraneous plain text appears, such as
+
+<BLOCKQUOTE>
+<CODE>&lt;HTML&gt;&lt;HEAD&gt;misplaced plain text&lt;TITLE&gt;Error Demo...</CODE></BLOCKQUOTE>
+
+<P>If needed semantic actions or other processing can catch these errors later, but just ignoring the misplaced text works just as well. According to SGML <A HREF="#Goldfarb90">[Goldfarb90]</A> conventions, arbitrary amount of white space is allowed even if PCDATA is not. In the body of the document plain text is allowed between any tags. To make things simple, and to keep with tradition of allowing lax input, we decided to allow plain text - white space included - everywhere. We do not believe correctness of the documents is seriously hampered, and certainly most current browsers allow it.
+
+<H3>2.3 Mapping ELEMENT Declarations to Grammar</H3>
+
+<P>The grammar has a production for each ELEMENT declaration. The left hand side (LHS) of the production contains name of the element and the right hand side (RHS) contains the content model of the element. The following shows a prototypical mapping:
+
+<BLOCKQUOTE>
+DTD: <CODE>&lt;!ELEMENT <VAR>elem</VAR> - - <VAR>elem_contents</VAR> &gt;</CODE><BR>
+Grammar: <CODE><VAR>elem</VAR>  --> <VAR>ELEM</VAR>_TAG <VAR>elem_contents</VAR> <VAR>ELEM</VAR>_END ;</CODE>
+</BLOCKQUOTE>
+
+<P>If omitting start or end tags is allowed for the element, then there is one production for each combination. Consider the BODY element declaration<BR>
+<CODE>&lt;!ELEMENT BODY O O <VAR>body_contents</VAR> &gt;</CODE><BR>
+written as the following four productions (<VAR>body_contents</VAR> stands for the actual content model):
+<BLOCKQUOTE>
+<PRE>html_doc_body  -->
+	  BODY_TAG  <VAR>body_contents</VAR>  BODY_END
+	| BODY_TAG  <VAR>body_contents</VAR>
+	| <VAR>body_contents</VAR>  BODY_END
+	| <VAR>body_contents</VAR>
+	;
+</PRE>
+</BLOCKQUOTE>
+
+<P>ENTITY declarations make straight forward productions with entity name on LHS and entity value on RHS. Sometimes entities are used in the <VAR>element name</VAR> field of the ELEMENT declaration. In this case a separate production was written for each element that the entity stands for. This technique was used especially with the character level markup declarations.
+
+<H3>2.4 Translating SGML DTD syntax to Grammar Constructs</H3>
+
+<P>Usually each content model is further elaborated with additional productions. The SGML syntax for content model expressions <A HREF="#Goldfarb90">[Goldfarb90, pg. 291]</A> has regular-expression-like constructs that had to be expanded in the grammar as follows:
+<DL>
+
+<DT><CODE>*</CODE> star - match zero or more occurrences of a construct
+<DD>For each <CODE><VAR>content_elem</VAR>*</CODE> a new nonterminal has been introduced:<BR><CODE><VAR>content_elem</VAR>s --> <VAR>content_elem</VAR> <VAR>content_elem</VAR>s | /* Empty */ ;</CODE>
+
+<DT><CODE>+</CODE> plus - match one or more occurrences of a construct
+<DD>For each <CODE><VAR>content_elem</VAR>+</CODE> a new nonterminal has been introduced:<BR><CODE><VAR>content_elem</VAR>s --> <VAR>content_elem</VAR> <VAR>content_elem</VAR>s | <VAR>content_elem</VAR> ;</CODE>
+
+<DT><CODE>?</CODE> question mark - optionally match an occurrence of a construct
+<DD>If all uses of an element are optional, the element has an additional empty production (c.f. CREDIT, CAPTION). If a construct is optional only in the content model at hand, then the content model has two productions: one with the construct and one without.
+
+<DT><CODE>,</CODE> comma - concatenation of constructs
+<DD>Nonterminals representing constructs are written one after another.
+
+<DT><CODE>|</CODE> vertical bar - match one and only one of the alternative constructs
+<DD>Set of alternative constructs are grouped under one nonterminal which has one production for each alternative, e.g. <CODE>dd|dt</CODE> is written as <CODE>dl_item --> dd | dt;</CODE> Alternative constructs occur often in entities, in which case the entity name is written as the nonterminal.
+
+<DT><CODE>&amp;</CODE> ampersand - match all the constructs once in any order
+<DD>This is difficult to express in a compact way in Bison grammar. Usually these are written as a recursive production that uses a nonterminal that contains the alternatives. Semantic rules are relied on to check that all constructs indeed appear and that none appear twice.
+
+<DT><CODE>()</CODE> parentheses - group constructs 
+<DD>Group of constructs is represented by a nonterminal whose name can be thought to appear in lieu of the parenthesised expression.
+</DL>
+
+<H3>2.5 Inclusions and Exclusions in Content Models</H3>
+
+<P>Content models can contain inclusions and exclusions which add or remove certain elements from the content model. Grammars generally do not have a mechanism like this. Inclusion can be achieved by adding the element to be included in all relevant nonterminals of the content model <EM>and</EM> transitively in all nonterminals that are indirectly used. To avoid leaking an allowed element to unintended contexts, it might be necessary to redefine parallel sets of nonterminals with and without inclusion. Clearly this can become cumbersome. In our grammar inclusions and exclusions have been dealt with case by case and various strategies have been used.
+
+<OL>
+<LI>In the DTD inclusion is used to add SPOT element to content model of the BODY element. Apparent intention seems to be that SPOT can appear anywhere, inside any container, in the body of the document. As character level markup can appear virtually everywhere, we added SPOT under <CODE>text</CODE> nonterminal. Since the MATH element can not contain <CODE>text</CODE> we added SPOT to <CODE>math_content</CODE> nonterminal, and for the same reason in <CODE>pre_allowed</CODE>. These three cases cover most of the possible places, leaving out only some elements that can contain only plain text, e.g. OPTION, TEXTAREA, TEXT, and obsoleted XMP, LISTING, and PLAINTEXT.
+
+<LI>The content model of PRE element is constructed by excluding from <CODE>text</CODE> the tags that are not allowed inside PRE. This was rewritten by introducing a special nonterminal <CODE>pre_allowed</CODE> which enumerates the allowed elements. It is similar to definition of <CODE>text</CODE>, but indicates more directly what is allowed in PRE.
+
+<LI>Declaration of the MATH element <A HREF="#Raggett95">[Raggett95, pg.178]</A>:
+<BLOCKQUOTE><CODE>&lt;!ELEMENT MATH - - (#PCDATA)* -(%notmath) +(%math) &gt;</CODE></BLOCKQUOTE>
+<P>is really convoluted and we failed to understand the exact purpose of it. First, it is clear that any plain text and entities are allowed, but exclusion of %notmath is really puzzling as those elements were never part of the content model - has the intention been to imply that other <CODE>text</CODE> elements are still allowed? Finally, the math tags are added to the content model. We resolved this by introducing the nonterminal <CODE>formula</CODE> that enumerates all tags that are allowed in MATH element. In fact, other math related elements are declared to have one or more formulas.
+
+<LI>The FORM element allows, in addition to <CODE>body_content</CODE>, some form-specific elements that are added using inclusion. Later these same elements are excluded from content models of SELECT and TEXTAREA. Would it not have been better to declare content model of FORM to directly have these tags (e.g. <CODE>(%body.content|INPUT|SELECT|TEXTAREA)*</CODE>)? Direct declaration does not have the transitive effect that had to be eliminated later. At any rate, in the grammar FORM content model is represented directly by nonterminal  <CODE>form_content</CODE>, which has as alternatives <CODE>body_content</CODE> and form specific elements. 
+
+<LI>The FORM also has exclusion of nested FORM elements. This makes sense, but would have been cumbersome to write in the Bison grammar. Here we rely on semantic actions to catch the error.
+
+<LI>FIG element excludes nested IMG and FIG elements. The Bison grammar does not check for this, we rely on semantic actions to prevent this from happening.
+
+<LI>The A element excludes nested anchors. Again the Bison grammar does not reflect this and semantic actions are called for.
+</OL>
+
+<P>We agree that the use of exclusion was justified in cases where an element could not contain itself, but otherwise had the same content model that the element itself belongs to, e.g. cases 5-7. In these cases the transitive effect of exclusion was desired. However, cases 1-4 could be written without inclusion or exclusion and are more clearly expressed that way. We feel that using inclusion and exclusion in these cases should be avoided.
+
+<P>The specification of math in both the verbal and DTD part of <A HREF="#Raggett95">[Raggett95]</A> is still somewhat incomplete. Verbal explanation (pp. 92-93) makes reference to HTML math tokenizer that is supposed to recognize constants, variables, functions etc., but nowhere is this tokenizer specified in detail. The DTD can hardly be expected to contain specification of the tokenizer as SGML views all text characters on equal footing. This is an example of a case where a grammar specification could go beyond the DTD, but as of writing this, we have not yet had time to develop the idea, hence the grammar views math at the level of elements. It should be noted, however, that we do handle shortrefs and math entities properly; this is done in lexical analysis.
+
+<H3>2.6 Ambiguities</H3>
+
+<P>The grammar, as written, is ambiguous and thus strictly speaking is not LALR. It is, however, a useful specification for a parser since ambiguities can be systematically resolved using standard techniques <A HREF="#AhoEA86">[Aho et al. 86]</A>. The grammar contains several shift-reduce conflicts that Bison resolves in favor of shifting. We have inspected each case and determined that shifting makes the parser behave correctly. If grammar is stripped of error productions, shift-reduce conflicts come from two locations:
+<OL>
+<LI>ISINDEX tag can appear both in the head and body parts of the document. As it is legal to omit the end tag from HEAD element and the start tag from BODY element, the parser is not able to tell which part the ISINDEX tag belongs to if no other <CODE>head_tag</CODE> follows ISINDEX and no other <CODE>body_content</CODE> tag precedes it. Shifting resolves this in favor of ISINDEX belonging to head.
+<LI>62 shift-reduce conflicts are produced by interplay of paragraph element without closing tag and nonterminal <CODE>texts</CODE>. Problem manifests itself only if we include <CODE>text</CODE> in <CODE>body_content</CODE>. This declaration of <CODE>body_content</CODE> is deprecated in the DTD. Shifting in these cases gives the net effect of building as long paragraphs as possible. The conflicts are exhibited in two states: 
+<UL>
+<LI>31 appear at the state, that after seeing P_TAG, starts to build the <CODE>texts</CODE> run
+<LI>31 appear at the state, that after seeing some text, tries to add to the <CODE>texts</CODE>
+</UL>
+</OL>
+
+<P>One peculiarity of the grammar is that repetitive structures are built with right recursive productions (e.g. <CODE>foos --> FOO foos;</CODE>). Bison generated parsers are able to parse left recursive productions (e.g. <CODE>foos --> foos FOO;</CODE>) in constant space <A HREF="#Bison">[Bison]</A> and it would be tempting to write all repetitive structures that way. Unfortunately semantic actions for a left recursive production can naturally only construct lists that have their elements in reverse order of the input. Thus reversing lists later or maintaining a tail pointer to facilitate insertion to the end would have been needed. We used right recursive productions for sake of simplicity with the understanding that to parse a typical long document, only a few words of stack is needed for each block level element, e.g. paragraph. Bison generated parsers are able to dynamically expand the parsing stack, but even with the default setting of about 2000 words <A HREF="#Bison">[Bison]</A> almost any document can be parsed.
+
+<H2><A NAME="Lexical-Analysis">3. Lexical Analysis</A></H2>
+
+<P>The purpose of the lexical analyzer is to deal with trivial syntactic issues rapidly and to raise the level of abstraction of the input to the level assumed by the Bison grammar. In HTML context this means dealing quickly and efficiently with plain text - more than 90% of the input is plain text - and packaging the tags to data structures that are convenient to the parser. Typical input to lexical analyzer is a raw character stream and typical output is a stream of <EM>tokens</EM>.
+
+<P>As was mentioned, libwww SGML parser provides an abstraction roughly equal to lexical analyzer outlined above. If protocol or other issues so dictated, the libwww SGML parser could be adapted to perform lexical analysis for our parser. It suffers from several drawbacks, however. The most serious problem comes from the assumed control flow, while others are just performance issues. 
+
+<P>The libwww streams output data via a chain of protocol and filtering functions, i.e. lower level routines <EM>give</EM> input to the higher level. The highest level abstractions are in the end of the chain and are invoked only as the input arrives. If a higher abstraction is to be built from several lower abstractions, the higher abstraction needs to maintain state explicitly, usually the routine is passed a pointer to <EM>context</EM> which accumulates the state.
+
+<P>The Bison philosophy is completely inverse. The highest level abstraction is at control and calls the lower level abstractions to receive input, i.e. the higher level abstraction <EM>asks</EM> the lower level for input. If input is not available, the higher level abstraction blocks until the lower level abstraction is able to provide more input.
+
+<H3>3.1 Incomplete Input and Buffering</H3>
+
+<P>Buffering is needed to fit the stream philosophies together. If the parser would directly invoke protocol functions, it might block forever if the end of the document never arrives. If the parser, on the other hand, was invoked only in response to input, a similar problem would arise as the parser could not see the big picture and know when it has enough input to parse the document.
+
+<P>The parser is designed to read from a buffer of tokens. It can be invoked at any time, perhaps in response to an update event, to parse whatever input has thus far arrived. If input has not yet completely arrived, the error productions outlined later, nevertheless, allow the input to be parsed reasonably. Thus up to the token buffer level the program can be network-event driven and from there on GUI-event driven.
+
+<P>Of course big documents need a lot of buffer space. We have made a conscious decision of keeping the entire document in memory. This is generally needed for smooth operation of the GUI anyway and provides much needed simplification in the overall design. For huge documents we rely on virtual memory.
+
+<H3>3.2 Lexical Analysis Optimizations</H3>
+
+Lexical analysis is critical for the speed of the parser. For the majority of the input, which is plain text, it should perform as few copies and other operations as possible. The libwww SGML parser treats plain text like any other tokens and returns entities separately. This can lead to unnecessary copying as tokes travel through the chain of abstractions. Text runs have to be constructed from several pieces separated by single character expansions of the entities. Also the inner loop is quite large and not so likely to fit in a cache.
+
+<P>Our lexical analyzer follows a philosophy of doing common things first: hence the plain text is copied in a short tight loop and only if suspicious special characters, e.g. &lt; or &amp;, appear, is more extensive processing invoked. Likewise, a run of white space is compacted in a special tight loop. Entities are processed inline: the expansion is performed directly to the output buffer before copying any of the characters that are supposed to follow the entity. This requires direct correspondence between GUI character set and the entities. This is easy to achieve for most Latin alphabet characters. Greek letters and stretchy delimiters are allowed only in the context of the MATH element, so they do not present a problem either. Finally, as was mentioned earlier, the plain text tokens are piggybacked to tag tokens. This is a significant saving as nearly half of all the tokens are plain text tokens.
+
+<H3>3.3 Parsing Attributes</H3>
+
+<P>We made an attempt to parse attributes using a grammar. The ATTLIST declarations of the DTD were coded as grammar rules. Here again, we were able to capture some sublanguages that DTD can not specify. For example the syntax for URIs is given as in Backus-Naur-Form in <A HREF="#TimBL94">[TimBL94]</A> and was directly utilizable. Also shape attributes fit into grammars well. However, most attributes are quite simple in structure-at-large and complicated in details that the lexical analyzer should handle. Attribute productions accounted for nearly half of the productions of the grammar even before error productions were added. Unfortunately attributes often have properties that are difficult to capture in the grammar. For example, attributes are allowed to appear in arbitrary order while some attributes have constraints that they must appear at least once or may not appear twice. Accurately describing all the possible arrangements of given tag's attributes leads to combinatorial explosion in the number of productions needed.
+
+<P>As the grammar grew unmanageably large while it still was not able to thoroughly check the correctness of the attributes, we decided to adopt the current level of abstraction: lexical analyzer parses all attributes before returning a token to the parser. In future research we may attempt taking what was good about using grammar for attributes and create miniparsers just for the attributes whose structure is more complicated. Currently URIs are not parsed at all and are just passed through as strings. Currently this is adequate as our main focus is on editing, not on networking. 
+
+<P>At first we wrote the lexical analyzer using flex <A HREF="#Paxson95">[Paxson95]</A>. Quickly we realized that a hash tables were needed for identifying tag, attribute, and entity names. Using hash table and separate comparison functions also resolved the case sensitiveness dilemma: tags, attribute names and attribute values, except for strings, are case insensitive according to the HTML3 SGML declaration, while entity names are case sensitive. Accounting for both worlds was difficult in flex.
+
+<P>What lead us to finally abandon flex was the need to handle several exceptions while recognizing attributes. Consider, for example, the CLEAR attribute: it can have a symbolic value or a numeric value qualified with unit name. Further, the value may or may not be quoted. The SIZE attribute, like some others, is overloaded, i.e. its value type depends on the context where it appears. Context dependent attribute value types require the lexical analyzer to be aware of the currently open tag. This is another reason why dividing attribute processing between the lexical analysis and parser did not work. The lexer has to operate in several different modes. It would be nice if context sensitive attribute value types were eliminated from the HTML3 DTD.
+
+<P>Modes are usually expressed using <EM>initial conditions</EM> in flex. The number of initial conditions needed to account for all exceptional attributes grew so large that it is uncertain if the flex specification is clearer than a scanner written directly in C. Thus we resolved to write lexical analysis entirely in C. Still it seems that a compromise might be found between writing certain parts as miniparsers, dealing with some exceptions using C, and writing the rest with flex.
+
+<P>Our lexical analyzer adheres to SGML rules about parsing attributes, but tries to make allowance for user errors. In one case we depart from the SGML rules to allow a common user error: attributes that have URLs as values have often slash (/) characters, but users do not always quote URLs. In the SGML declaration slash is designated as null end tag (NET) enable. NETs can appear if tag minimization is turned on, which is the case with the HTML3 SGML declaration. Problem arises, if user forgets to quote the URL, as scanner should identify first nonquoted slash as NET enable and the one following that as NET. Our scanner has a special exception that inhibits this behavior.
+
+<H2><A NAME="Semantic-Actions">4. Semantic Actions and the C++ class hierarchy</A></H2>
+
+<P>The parser is a huge C switch statement that has a case for semantic action of each production. The semantic actions are written by hand and added in grammar file next to the productions. When the parser is generated Bison copies semantic actions to the right places in the switch skeleton. Semantic actions are called in depth first order as the document is parsed. These actions can be used to construct data structures that represent the document and to perform additional error checking. 
+
+<P>Desired tree representation should express containment of elements inside each other. This is especially important at the level defining blocks as the layout computations may need to make repeated iterations over some subpart of the document. Character level markup could be handled using more linear structure that would have style runs, i.e. sequence of runs of text of given font and style. Still, even at character level it is sometimes useful to have containment, e.g. cited text can have emphasis. The grammar will naturally produce a parse tree whose nodes are elements. Thus we chose to make element, augmented with fields for container, the principal unit of our trees and decided to flatten the structure at leafs after parsing if GUI text handling necessitates it.
+
+<P>From GUI perspective it was clear from the beginning that C++ class hierarchy covering every possible kind of a element was needed. As the abstraction of token boiled down to this same level, we decided to use C++ objects as tokens for communication between lexical analysis and the parser. This way, lexical analysis collects information about the token directly in the same object that will finally be used by the GUI based editor, hence maintaining intermediate structures is avoided.
+
+<P>As mentioned, the lexical analyzer instantiates the objects and collects attribute information into them. The object can conveniently check the attributes and exceptions can be dealt with by overriding attribute checking methods for the elements that have out-of-ordinary behavior. Attribute values can be collected directly into fields of the element object. Linked lists are not needed and direct access to every attribute during rendering is possible.
+
+<P>The grammar has semantic actions to group element objects to linked lists and trees as dictated by the document relationships. Most elements have simply a linked list of contained elements, but some more complex elements have several fields, e.g. FIG has in addition to normal contents also a list of OVERLAYs and CREDIT and CAPTION fields. Consider the following as a typical example of semantic actions that construct a linked list:
+<BLOCKQUOTE>
+<PRE>texts  -->
+          /* Empty */   { $$ = NULL; }
+	| text  texts	{ $1 -> next = $2; $$ = $1; }
+	| error  texts  { $$ = $2; parse_error("..some text tag.."); }
+	;
+</PRE>
+</BLOCKQUOTE>
+<P>The first production terminates the list. Second production constructs list by setting the next field of an element to point to its sister element further down the input. Last production is an example of an error production whose semantic action skips the erroneous element(s) and writes a message to error log.
+
+<H2><A NAME="Error-Strategies">5. Error Handling Strategies</A></H2>
+
+<P>Accurate handling of errors is more emphasized in parsing HTML than in traditional programming language parsers. For the latter it suffices to catch as many real errors as possible and arbitrary amount of input may be skipped to avoid cascading errors. The goal for parsing the HTML is to produce as useful presentation of the document as possible despite the errors. Generally this means losing as little input as possible while ignoring erroneously placed tags. Error recovery should also allow sensible parsing of partial input which can occur in rendering the beginning of a long document while it is still being transferred over network.
+
+<P>The lexical analyzer takes care of initial recognition of tags and it ignores tags that do not appear in the HTML3 specification at all. These are never passed to parser. Lexical analyzer also ignores unrecognized attributes. C++ classes are invoked to construct element tokens. They check that each token has only the allowed attributes, but still has all the required attributes. Thus the parser gets only legal tokens, but it has to deal with legal token appearing in wrong context, e.g. TITLE tag after BODY tag.
+
+<P>Bison uses special <CODE>error</CODE> nonterminals to recover from errors. A production containing <CODE>error</CODE> nonterminal matches erroneous construct in the context that is given around the <CODE>error</CODE> nonterminal. This can be used to discard input until error can be unambiguously contained and parsing safely resumed.
+
+<P>Fortunately HTML syntax is rather simple and usually it is easy to find unambiguous closing tag. The grammar has error productions to this effect. Most of the error productions appear in repetitive structures (e.g. <CODE>foos --> /* Empty */ | FOO foos | error foos;</CODE>). The arrangement allows semantic actions to be written such that they simply skip the erroneous token. This way minimal amount of input is lost. Sometimes it may be necessary to append to next token the plain text data that was piggybacked to the erroneous token.
+
+<P>Containers whose contents can only be characters do not usually have any nonterminals between start tag and end tag. To catch misplaced tags, however, we do need to add <CODE>error</CODE> nonterminal to these elements. As a special case it should be noted that any plain text appearing before the first tag of the document is eaten in start production as RCDATA token.
+
+<P>Note that error productions add several shift-reduce conflicts to the parser. These are not harmful and shifting provides always proper operation. The grammar with error productions contains 126 shift-reduce errors.
+
+<P>Our parser adopts policy of reporting errors and warnings for every anomaly it can detect. For example, the use of features that are marked as obsoleted or deprecated is flagged. Due to precision of grammatical parsing methods, we are able to catch all element level error situations, except for misplaced plain text as noted above.
+
+<H2><A NAME="Testing">6. Testing and Performance Results</A></H2>
+
+<P>The parser has been tested with several types of HTML3 input and found to function properly. Testing is a lot of boring work and we have not yet been able to thoroughly test every case. We have been looking for thorough set of test cases for HTML3, but so far our effort has been in vain.
+
+<P>Verification of the constructed parse trees is a major effort. It has so far been done by hand except for the small set of systematic test cases we have produced. For them we use diff. One step towards automatic checking is to print the parse tree back to HTML3 document and run it back into the parser. This type of testing has been done <EM>en masse</EM> with home pages from our student laboratory accounts. Unfortunately this material is quite simple and contains also many errors. Almost none of the homepages use HTML3 features.
+
+<P>As the construction of the editor is still in progress, we have not been able to test the parser in the environment it was developed for. Performance, however, seems promising. Thorough comparisons with other available browsers are difficult to make due to difficulty of separating the user interface overhead from the results.
+
+<P>Theoretical execution time of the lexer grows linearly with the size of the input. The lexical analyzer guarantees to scan each character of the input only once. The parser will receive only fraction of the raw input as generally tags represent less than 10% of the input. The LALR parsers are known to have near linear time complexity, so the performance is expected to be good.
+
+<H2><A NAME="Conclusions">7. Conclusions</A></H2>
+
+<P>HTML3 is rather large to be called "simple". As the grammar given in appendix evidences the number of different details has grown quite large. Current definition of HTML3 has 106 different elements which can have around 86 different attributes which in turn can have several tens of different values. The grammar has 148 nonterminals. Clearly HTML has grown out of being simple language that can be implemented on ad hoc basis.
+
+<P>We hope to have introduced a new, more rigorous, method to write HTML parsers - a method that allows us to manage the increased complexity of parsing, rendering and editing HTML3 documents. Our approach leverages on the long traditions of the programming language compiler community in parser generation and precise parsing. From our grammar others can create parsers to fit their needs by annotating it with suitable semantic actions, just like we have done to produce our parser.
+
+<P>Treating HTML documents as trees will simplify layout computations and provides natural structure for editing documents. Elements that are used as nodes of the tree double as containers to allow hierarchical structures. Using C++ class hierarchy for representing elements provides a consistent approach that endures through from lexical analysis via parser to rendering and editing. Classes have methods that support parsing, e.g. attribute checking, rendering and editing.
+
+<HR>
+<H2><A NAME="References">8. References</A></H2>
+<DL>
+<DT><A NAME="Goldfarb90">[Goldfarb90]</A>
+<DD>Charles F. Goldfarb: "The SGML Handbook", Oxford University Press Inc., New York, 1990.
+
+<DT><A NAME="Raggett95">[Raggett95]</A>
+<DD>Dave Raggett: "HyperText Markup Language Specification Version 3.0 - Internet Draft", 28th March 1995, W3C.<BR>
+&lt;URL:<A HREF="http://www.w3.org/hypertext/WWW/MarkUp/html3/CoverPage.html">http://www.w3.org/hypertext/WWW/MarkUp/html3/CoverPage.html</A>&gt;
+
+<DT><A NAME="Lie95">[Lie95]</A>
+<DD>H&aring;kon Lie: "Cascading Style Sheets: a draft specification", 3rd July, 1995, W3C.<BR>
+&lt;URL:<A HREF="http://www.w3.org/hypertext/WWW/Style/css/draft.html">http://www.w3.org/hypertext/WWW/Style/css/draft.html</A>&gt; 
+
+<DT><A NAME="Clark95">[Clark95]</A>
+<DD>James Clark: "SP - C++ based SGML parser", 21st April 1995.<BR>
+&lt;URL:<A HREF="http://www.jclark.com/sp.html">http://www.jclark.com/sp.html</A>&gt;
+
+<DT><A NAME="Frystyk95">[Frystyk95]</A>
+<DD>Henrik Frystyk: "libwww - Internals and Programmer's Guide", April 1995, W3C.<BR>
+&lt;URL:<A HREF="http://www.w3.org/hypertext/WWW/Library/User/Guide/">http://www.w3.org/hypertext/WWW/Library/User/Guide/</A>&gt;
+
+<DT><A NAME="TimBL94">[TimBL94]</A>
+<DD>Tim Berners-Lee: "Universal Resource Identifiers in WWW", RFC 1630, 12th March, 1994, CERN.<BR>
+&lt;URL:<A HREF="http://www.w3.org/hypertext/WWW/Addressing/URL/URI_Overview.html">http://www.w3.org/hypertext/WWW/Addressing/URL/URI_Overview.html</A>&gt;
+
+<DT><A NAME="Hounslow95">[Hounslow95]</A>
+<DD>P. M. Hounslow: "A Multi-Platform Application Programming Interface for the WWW", in Proceedings of <A HREF="http://www.di.uminho.pt/cnw3.html">The Portugues WWW National Conference - Internet Multimedia Information</A>, July 6-8, 1995, Minho University, Braga, Portugal.<BR>
+&lt;URL:<A HREF="http://http://www.cs.rdg.ac.uk/people/pmh/paper.html">http://http://www.cs.rdg.ac.uk/people/pmh/paper.html</A>&gt;, <A HREF="http://www.di.uminho.pt/cdrom/tmp/papers/p4/4.ps">PostScript</A>.
+
+<DT><A NAME="OCLC">[OCLC]</A>
+<DD>"Fred: The SGML Grammar Builder - Home Page", Online Computer Library Center, Inc.<BR>
+&lt;URL:<A HREF="http://www.oclc.org/fred/">http://www.oclc.org/fred/</A>&gt;
+
+<DT><A NAME="AhoEA86">[Aho et al. 86]</A>
+<DD>Alfred V. Aho, Ravi Sethi, Jeffrey D. Ullman: "Compilers - Principles, Techniques, and Tools", Addison-Wesley Publishing Company 1986.
+
+<DT><A NAME="Bison">[Bison]</A>
+<DD>"Bison Info file", Free Software Foundation, Inc. 675 Mass Ave, Cambridge, MA 02139, USA
+
+<DT><A NAME="Paxson95">[Paxson95]</A>
+<DD>Vern Paxson: "Flex(1)", Unix Man Page, 1995.
+</DL>
+<HR>
+<H2><A NAME="Grammar">Appendix: The Grammar</A></H2>
+<P>The grammar is in form suitable for Bison or YACC parser generator, provided that every occurrence of "-->" is replaced with colon and all terminals (words written in upper case letters) are declared with %token.
+<PRE>
+start  -->   RCDATA html_document  ;
+
+html_document  -->  
+	  HTML_TAG  html_doc_head  html_doc_body  HTML_END
+	| HTML_TAG  html_doc_head  html_doc_body  error  HTML_END
+	| HTML_TAG  html_doc_head  error  html_doc_body  HTML_END
+	| HTML_TAG  html_doc_head  html_doc_body
+	| HTML_TAG  html_doc_head  html_doc_body  error
+	| HTML_TAG  html_doc_head  error  html_doc_body
+	| html_doc_head  html_doc_body
+	| html_doc_head  html_doc_body  error
+	| html_doc_head  error  html_doc_body
+	;
+
+html_doc_head  -->  
+	  HEAD_TAG  head_tags  HEAD_END
+	| HEAD_TAG  error  HEAD_END
+	| HEAD_TAG  head_tags
+	| head_tags
+	;
+
+head_tags  -->  
+	  head_tag  head_tags	
+	| error  head_tags	
+	| head_tag		
+	;
+
+head_tag  -->  
+	  LINK_TAG		
+	| RANGE_TAG		
+	| BASE_TAG		
+	| META_TAG		
+	| style_container	
+	| NEXTID_TAG		
+	| title_container	
+	| ISINDEX_TAG		
+	;
+
+title_container  -->  
+	  TITLE_TAG  /* RCDATA */  TITLE_END
+	| TITLE_TAG  /* RCDATA */  error  TITLE_END
+	;
+
+style_container  -->  
+	  STYLE_TAG  style_stuff  STYLE_END
+	| STYLE_TAG  error  STYLE_END
+	;
+
+html_doc_body  -->  
+	  BODY_TAG  banner  body_contents  BODY_END
+	| BODY_TAG  banner  body_contents
+	| banner  body_contents  BODY_END
+	| banner  body_contents
+	;
+
+banner  -->  
+	  /* Empty */  
+	| BANNER_TAG  body_contents  BANNER_END
+	;
+
+body_contents  -->
+	  /* Empty. */	
+	| body_content  body_contents
+	| error  body_contents
+	;
+body_content   -->  div_container | HR_TAG | address_container	
+	| text | block | heading		
+	;
+
+/* ----------------------------------------------------------------- */
+	
+heading  -->  h1_container | h2_container | h3_container
+	| h4_container | h5_container | h6_container
+	;
+h1_container  -->  H1_TAG  texts  H1_END ;
+h2_container  -->  H2_TAG  texts  H2_END ;
+h3_container  -->  H3_TAG  texts  H3_END ;
+h4_container  -->  H4_TAG  texts  H4_END ;
+h5_container  -->  H5_TAG  texts  H5_END ;
+h6_container  -->  H6_TAG  texts  H6_END ;
+	
+paragraph  -->  
+	  P_TAG  texts  P_END
+	| P_TAG  texts
+	;
+
+div_container  -->  DIV_TAG  body_contents  DIV_END ;
+
+address_container  -->  ADDRESS_TAG  address_contents  ADDRESS_END ;
+address_contents   -->  
+	  /* Empty */	
+	| address_content  address_contents
+	| error  address_contents
+	;
+address_content    -->  text | paragraph ;
+
+/* ----------------------------------------------------------------- */
+
+anchor  -->  A_TAG  texts  A_END ;
+
+figure  -->  FIG_TAG  overlays  caption  body_contents  credit  FIG_END ;
+
+blockquote  -->
+	  BLOCKQUOTE_TAG  body_contents  credit  BLOCKQUOTE_END
+	| BQ_TAG  body_contents  credit  BQ_END
+	;
+
+overlays  -->  
+	  /* Empty. */	
+	| OVERLAY_TAG  overlays	
+	;
+credit    -->  
+	  /* Empty */	
+	| CREDIT_TAG  texts  CREDIT_END
+	;
+caption   -->  
+	  /* Empty */	
+	| CAPTION_TAG  texts  CAPTION_END
+	;
+
+footnote  -->  FN_TAG    body_contents  FN_END ;
+note      -->  NOTE_TAG  body_contents  NOTE_END ;
+
+/* ----------------------------------------------------------------- */
+
+preformatted  -->  pre_container | xmp_container		
+	| listing_container | plaintext_container	
+	;
+pre_container  -->  PRE_TAG  pre_contents  PRE_END ;
+pre_contents  -->  
+	  /* Empty */	
+	| pre_allowed  pre_contents
+	| error  pre_contents
+	;
+pre_allowed  -->  phrase | misc | underline | strike_through 
+	| teletype | italic | bold | BR_TAG | anchor | SPOT_TAG	
+	;
+
+xmp_container  -->  
+	  XMP_TAG  /* RCDATA */  XMP_END
+	| XMP_TAG  /* RCDATA */  error  XMP_END
+	;
+listing_container  -->  
+	  LISTING_TAG  /* RCDATA */  LISTING_END
+	| LISTING_TAG  /* RCDATA */  error  LISTING_END
+	;
+plaintext_container  -->  
+	  PLAINTEXT_TAG	 /* RCDATA */  PLAINTEXT_END
+	| PLAINTEXT_TAG	 /* RCDATA */  error  PLAINTEXT_END
+	| PLAINTEXT_TAG	 /* RCDATA */
+	;
+
+/* ----------------------------------------------------------------- */
+/* Character level markup */
+
+texts  -->  
+          /* Empty */   
+	| text  texts	
+	| error  texts  
+	;
+
+flows  -->
+	  /* Empty */	
+	| flow  flows	
+	| error  flows	
+	;
+
+flow   -->  text | block ;
+
+block  -->  paragraph | list | definition_list | preformatted	
+	| blockquote | form | footnote | table | figure	
+	| note | ISINDEX_TAG
+	;
+
+text     -->  subscript | superscript | bold | notmath | SPOT_TAG ;
+notmath  -->  font | phrase | special | misc ;
+special  -->  TAB_TAG | math | anchor | IMG_TAG | BR_TAG ;
+
+subscript       -->  SUB_TAG      texts  SUB_END ;
+superscript     -->  SUP_TAG      texts  SUP_END ;
+
+misc  -->  short_quote | lang | author | definition | person
+	| acronym | abbreviation | insertion | deletion	
+	;
+
+short_quote     -->  Q_TAG        texts  Q_END ;
+lang            -->  LANG_TAG     texts  LANG_END ;
+author          -->  AU_TAG       texts  AU_END ;
+definition      -->  DFN_TAG      texts  DFN_END ;
+person          -->  PERSON_TAG   texts  PERSON_END ;
+acronym         -->  ACRONYM_TAG  texts  ACRONYM_END ;
+abbreviation    -->  ABBREV_TAG   texts  ABBREV_END ;
+insertion       -->  INS_TAG      texts  INS_END ;
+deletion        -->  DEL_TAG      texts  DEL_END ;
+
+phrase  -->  emphasis | strong | code | sample | keyboard | variable | cite ;
+
+emphasis        -->  EM_TAG       texts  EM_END ;
+strong          -->  STRONG_TAG   texts  STRONG_END ;
+code            -->  CODE_TAG     texts  CODE_END ;
+sample          -->  SAMP_TAG     texts  SAMP_END ;
+keyboard        -->  KBD_TAG      texts  KBD_END ;
+variable        -->  VAR_TAG      texts  VAR_END ;
+cite            -->  CITE_TAG     texts  CITE_END ;
+
+font    -->  underline | strike_through | teletype | italic | big | small ;
+
+bold            -->  B_TAG        texts  B_END ;
+underline       -->  U_TAG        texts  U_END ;
+strike_through  -->  S_TAG        texts  S_END ;
+teletype        -->  TT_TAG       texts  TT_END ;
+italic          -->  I_TAG        texts  I_END ;
+big             -->  BIG_TAG      texts  BIG_END ;
+small           -->  SMALL_TAG    texts  SMALL_END ;
+
+/* ================================================================= */
+/* Special features */
+
+list  -->  unordered_list | ordered_list | dir_list | menu_list ;
+
+unordered_list  -->  UL_TAG  list_header  list_content  UL_END ;
+ordered_list    -->  OL_TAG  list_header  list_content  OL_END ;
+
+list_content  -->  
+	  /* Empty */  
+	| list_item  list_content
+	| error  list_content
+	;
+list_item     -->  
+	  LI_TAG  flows  LI_END
+	| LI_TAG  flows
+	;
+list_header   -->
+	  /* Empty */
+	| LH_TAG  texts  LH_END
+	| LH_TAG  texts
+	;
+
+definition_list    -->  DL_TAG  list_header  def_list_contents  DL_END ;
+def_list_contents  -->  
+	  /* Empty */  
+	| def_list_content  def_list_contents
+	| error  def_list_contents
+	;
+
+def_list_content  -->  def_title | def_definition ;
+def_title  -->  
+	  DT_TAG  texts  DT_END
+	| DT_TAG  texts
+	;
+def_definition  -->
+	  DD_TAG  flows  DD_END
+	| DD_TAG  flows
+	;
+	
+dir_list   -->  DIR_TAG   dir_list_contents  DIR_END ;
+menu_list  -->  MENU_TAG  dir_list_contents  MENU_END ;
+dir_list_contents  -->  
+	  /* Empty */  
+	| list_item  dir_list_contents
+	| error  dir_list_contents
+	;
+
+/* ----------------------------------------------------------------- */
+
+form  -->  FORM_TAG  form_contents  FORM_END ;
+
+form_contents  -->
+	  /* Empty */	
+	| form_content  form_contents
+	| error  form_contents
+	;
+form_content  -->  
+	  body_content	
+	| INPUT_TAG	
+	| select	
+	| textarea	
+	;
+
+select   -->  SELECT_TAG  options  SELECT_END ;
+options  -->
+	  /* Empty */		
+	| option  options	
+	| error  options	
+	;
+option   -->  
+	  OPTION_TAG  /* RCDATA */  OPTION_END
+	| OPTION_TAG  /* RCDATA */  error  OPTION_END
+	| OPTION_TAG  /* RCDATA */
+	;
+textarea  -->  
+	  TEXTAREA_TAG  /* RCDATA */  TEXTAREA_END
+	| TEXTAREA_TAG  /* RCDATA */  error  TEXTAREA_END
+	;
+
+/* ----------------------------------------------------------------- */
+
+table       -->  TABLE_TAG  caption  table_rows  TABLE_END ;
+table_rows  -->  
+	  table_row_tail  complete_table_rows
+	| complete_table_rows
+	;
+complete_table_rows  -->  
+	  /* Empty */	
+	| table_row  complete_table_rows
+	| error  complete_table_rows
+	;
+table_row  -->  
+	  TR_TAG  cells  TR_END
+	| TR_TAG  cells
+	;
+table_row_tail  -->
+	  cells  TR_END
+	| cell  cells
+	;
+
+cells  -->  
+	  /* Empty */	
+	| cell  cells	
+	| error  cells	
+	;
+cell   -->  table_heading | table_data ;
+
+table_heading  -->  
+	  TH_TAG  body_contents  TH_END
+	| TH_TAG  body_contents
+	;
+table_data  -->
+	  TD_TAG  body_contents  TD_END
+	| TD_TAG  body_contents
+	;
+
+/* ----------------------------------------------------------------- */
+
+math  -->  MATH_TAG  formulas  MATH_END ;
+
+atleast_one_formula  -->  formula  formulas ;
+
+formulas   -->
+	  /* Empty */
+	| formula  formulas
+	| error  formulas
+	;
+formula    -->   box | above | below | root | sqrt | array		
+	| math_text | math_sub | math_sup | math_vec | math_face	
+	| SPOT_TAG	
+	;
+math_vec   -->  vector | bar | dot | ddot | hat | tilde ;
+math_face  -->  math_bold | upright | bold_upright ;
+	
+math_text  -->  
+	  TEXT_TAG  /* RCDATA */  TEXT_END
+	| TEXT_TAG  /* RCDATA */  error  TEXT_END
+	;
+math_sub   -->  SUB_TAG  formulas  SUB_END ;
+math_sup   -->  SUP_TAG  formulas  SUP_END ;
+
+box  -->  
+	  BOX_TAG  formulas  left_clause  topover_clause  right_clause  BOX_END
+	| BOX_TAG  error  BOX_END
+	;
+left_clause  -->
+	  /* Empty */
+	| LEFT_TAG  formulas
+	;
+right_clause  -->
+	  /* Empty */
+	| RIGHT_TAG  formulas
+	;
+topover_clause  -->
+	  /* Empty */
+	| OVER_TAG  formulas
+	| ATOP_TAG  formulas
+	| CHOOSE_TAG  formulas
+	;
+
+above   -->  ABOVE_TAG  atleast_one_formula  ABOVE_END ;
+below   -->  BELOW_TAG  atleast_one_formula  BELOW_END ;
+
+vector  -->  VEC_TAG    atleast_one_formula  VEC_END   ;
+bar     -->  BAR_TAG    atleast_one_formula  BAR_END   ;
+dot     -->  DOT_TAG    atleast_one_formula  DOT_END   ;
+ddot    -->  DDOT_TAG   atleast_one_formula  DDOT_END  ;
+hat     -->  HAT_TAG    atleast_one_formula  HAT_END   ;
+tilde   -->  TILDE_TAG  atleast_one_formula  TILDE_END ;
+
+root  -->  
+	  ROOT_TAG  atleast_one_formula  OF_TAG  atleast_one_formula  ROOT_END
+	| ROOT_TAG  error  ROOT_END
+	;
+sqrt    -->  SQRT_TAG   formulas  SQRT_END ;
+
+array   -->  ARRAY_TAG  array_rows  ARRAY_END ;
+array_rows  -->  
+	  /* Empty */	
+	| array_row  array_rows
+	| error  array_rows
+	;
+array_row  -->  
+	  ROW_TAG  array_row_items  ROW_END
+	| ROW_TAG  array_row_items
+	;
+array_row_items  -->
+	  /* Empty */
+	| array_row_item  array_row_items
+	| error  array_row_items
+	;
+
+array_row_item  -->  
+	  ITEM_TAG  formulas  ITEM_END
+	| ITEM_TAG  formulas
+	;
+math_bold     -->  B_TAG   atleast_one_formula  B_END ;
+upright       -->  T_TAG   atleast_one_formula  T_END ;
+bold_upright  -->  BT_TAG  atleast_one_formula  BT_END ;
+
+/* ----------------------------------------------------------------- */
+
+style_stuff  -->  
+	  /* Empty */
+	| style_clause  style_stuff
+	| error style_stuff
+	;
+style_clause  -->  
+	  element_specs  ':'  property_assignments
+	;
+element_specs  -->  
+	  element_spec
+	| element_spec  ','  element_specs
+	;
+element_spec  -->  
+	  '*'
+	| element
+	| '/'  elements  '/'
+	| hierarchical_pattern
+	;
+hierarchical_pattern  -->  
+	  '('  element
+	| '('  element  hierarchical_pattern
+	;
+elements  -->  
+	  element
+	| element  elements
+	;
+element  -->  
+	  TAG_NAME
+	| TAG_NAME  '.'  class_specs
+	| '$'  ENVIRONMENT_ELEM_NAME
+	;
+class_specs  -->  
+	  CLASS_NAME
+	| CLASS_NAME  '.'  class_specs
+	;
+
+property_assignments  -->  
+	  property_assignment
+	| property_assignment ';'
+	| property_assignment ';' property_assignments
+
+property_assignment  -->  
+	  property_spec  '='  property_values
+	;
+property_spec  -->  
+	  PROPERTY_NAME
+	| PROPERTY_NAME '.' property_spec
+	;
+
+property_values  -->  
+	  property_value
+	| property_value property_values
+	| property_value ',' property_values
+	;
+property_value  -->  
+	  STRING
+	| '+' DIGITS
+	| '-' DIGITS
+	| DIGITS 'x'
+	| DIGITS 'X'
+	| DIGITS
+	| DIGITS UNIT
+	| '#' HEXDIGITS
+	| TAG
+	| END_TAG_BUT_NOT_END_STYLE
+	;
+</PRE>
+<HR>
+<ADDRESS>16.7.1995, sampo@iki.fi</ADDRESS>
+</BODY>
+</HTML>

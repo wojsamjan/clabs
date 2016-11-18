@@ -1,0 +1,1687 @@
+Subject: Catalog of Compiler Construction Products - Fifteenth Issue
+From: Olaf Langmack <langmack@feinarbeit.de>
+Followup-To: poster
+Approved: compilers@iecc.com
+
+Archive-name: compilers/construction-tools
+Last-modified: 1999/08/03
+Version: 15
+
+Catalog of Compiler Construction Products - Fifteenth Issue
+
+This posting may be reproduced in any form without further permission, as
+long as it is left unchanged.
+
+July 1999, Olaf Langmack.
+
+FIFTEENTH ISSUE
+
+This catalog lists products and services for the construction of programming
+language compilers and related programming tools. It covers compiler
+generators, corresponding grammars, reusable parts of compilers, reusable
+parts of other programming tools and related consulting or programming
+services.
+
+The catalog provides only technical information. Potential customers have to
+inquire at the given address about prices and licensing policies. (For a
+catalog of free software see the "Catalog of Free Compilers and
+Interpreters".)
+
+All the listed products are available now in a form suitable for production
+use. They shall exhibit professional quality and have long term support.
+
+The entries are submitted voluntarily. Apart from tracking complaints about
+inappropriate entries no quality control of the entries is applied. Therefore
+I do not assume any liability for listed entries.
+
+The catalog is posted monthly on comp.compilers and is available online at
+http://www.feinarbeit.de/CCCP/ . Updates are incorporated at least twice a year. If
+you want to submit an update send the filled form to langmack@feinarbeit.de.
+Updates that do not make use of the form or do not comply with the guidelines
+given at the end will not be considered. Entries have to be provided as ASCII
+text files. If they shall be incorporated into the respective Web pages, they
+have to be provided as HTML files as well. Detailed instructions are given at
+the end of this document.
+
+-------------------------------
+Table of Contents
+-------------------------------
+
+   * Adrian Johnstone
+   * Archelon
+   * CoCoLab
+   * Cocolsoft Computer Solutions
+   * Compiler Resources
+   * Edison Design Group
+   * GrammaTech, Inc.
+   * INRIA Rocquencourt
+   * Langmack, Feinarbeit ®
+   * MageLang Institute
+   * Mastersys
+   * Metamata
+   * Nullstone
+   * OCCL
+   * Philips Research Laboratories
+   * Siber Systems
+   * Synergistic Consultants, Inc.
+   * UniBw Muenchen
+   * Universitaet Paderborn
+   * ENTRY FORM
+
+-------------------------------
+Adrian Johnstone
+-------------------------------
+
+Address
+
+     Dr. Adrian Johnstone
+     Department of Computer Science
+     Royal Holloway, University of London
+     Egham
+     Surrey
+     United Kingdom
+
+Contact
+
+     Dr Adrian Johnstone
+     Phone +44 (0)1784 443425 Fax +44 (0)1784 443420
+     E-Mail adrian@dcs.rhbnc.ac.uk
+
+Tool
+
+     Recursive Descent Compiler generator
+     RDP
+
+     Features
+
+          RDP takes an attributed very-extended BNF and analyses it for LL(1)
+          conformance providing detailed error and warning messages. It
+          outputs ANSI C and links against a library of general purpose
+          routines that provide set handling, command line switch processing,
+          symbol table management and more. RDP is very easy to use.
+
+     Distribution
+
+          All source in ANSI C, compiler-compiler source in BNF, various
+          examples. Complete distributions available from
+          ftp://ftp.dcs.rhbnc.ac.uk/pub/rdp.
+
+     Platform
+
+          MS-DOS / Borland-C
+          MS-DOS / Microsoft C
+          Many flavours of Unix with gcc and vendors' compilers
+          Macintosh / Think C
+          Macintosh / metroWorks C
+          Acorn Archimedes
+          Amiga
+
+-------------------------------
+Archelon
+-------------------------------
+
+Address
+
+     Archelon Inc.
+     460 Forestlawn Road
+     Waterloo, Ontario
+     Canada N2K 2J6
+
+Web
+
+     http://www.archelon.com
+
+Contact
+
+     Preston Gurd
+     Phone (519)746-7925 Fax (519)746-7925
+     E-Mail rpgurd@archelon.com
+
+Tool
+
+     C compiler and related tools
+     User Retargetable Development Tools II (URDT)
+
+     Features
+
+          The URDT set includes an ANSI C compiler, compactor, assembler,
+          linker, and related tools. It allows you to "roll your own" C
+          compiler and related tools. You do retargets by writing text files,
+          which are read in by these programs when they run. Please see our
+          web page at "http://www.archelon.com" for details.
+
+     Distribution and Platform
+
+          Binary versions available for DOS (32 bit), SunOs 4.x.x, Solaris
+          2.x, HP-UX. Source licences available, as well.
+
+Component
+
+     C compiler
+     MCC ANSI C compiler
+
+     Features
+
+          You target MCC to a specific machine by writing a text file which
+          includes a machine description and code tables. You do not need to
+          know compiler internals. The compiler includes output macros which
+          allow you to output code for any assembler, as well as our own. Can
+          handle a wide variety of machines, including DSPs and
+          microprammable machines.
+
+     Distribution and Platform
+
+          Part of URDT (see above).
+
+Component
+
+     Compactor/Scheduler/Optimizing Assembler
+     MCPACK Compactor/Scheduler
+
+     Features
+
+          MCPACK gives you a way to implement low level translator tools. It
+          reads a control file, which you must write. The control file
+          describes the layout of instructions and provides procedures for
+          translating input statements into instructions. You may provide
+          rules for scheduling and compaction in the file.
+
+     Distribution and Platform
+
+          Part of URDT (see above).
+
+Component
+
+     Assembler
+     MCASR assembler
+
+     Features
+
+          MCASR is a "bit-stuffing" assembler, driven from a user written
+          text file which describes the fields of the instructions. An
+          instruction word can be up to 256 bits wide and may contain
+          multiple relocatable fields. Such a field may be set with only a
+          subset of the bits of the full address.
+
+     Distribution and Platform
+
+          Part of URDT (see above).
+
+Component
+
+     Linker
+     MCLINK linker
+
+     Features
+
+          MCLINK supports up to eight independent overlapping memory address
+          spaces, so it can, for instance, easily support DSP architectures
+          with X and Y memories.
+
+     Distribution and Platform
+
+          Part of URDT (see above).
+
+Related Services
+
+     Archelon provides consulting services for the development of compilers
+     and related tools. In particular, we provide a retargeting service for
+     our User Regargetable Development Tools.
+
+-------------------------------
+CoCoLab
+-------------------------------
+
+Address
+
+     CoCoLab
+     Dr.-Ing. Josef Grosch
+     Hagsfelder Allee 16
+     D-76131 Karlsruhe
+     Germany
+
+Contact
+
+     Josef Grosch
+     Phone +49-721-697061 Fax +49-721-661966
+     E-Mail grosch@cocolab.sub.com
+
+Tool
+
+     Toolbox for compiler construction
+     Cocktail
+
+     Features
+
+        o set of program generators for nearly all phases of a compiler
+        o designed especially for practical usability, efficiency, and the
+          generation of production quality compilers
+        o target languages are C, C++, Modula-2, and in part Ada or Eiffel
+
+     Distribution
+
+        o C source code (obfuscated)
+        o 3.5" floppy disks or DC6150 data cartridge (150MB streamer tape)
+        o documentation in Postscript-, troff- and ASCII-format
+
+     Platform
+
+        o all/UNIX
+        o PC/MS-DOS, Windows, OS/2, Linux
+
+Tool
+
+     Scanner generator
+     Rex
+
+     Features
+
+        o very efficient wrt. speed, table size, and generation time
+        o provides source position (line and column) for every token
+        o several scanners in one program are possible
+        o does not have arbitrary restrictions: unlimited token length,
+          unlimited length of lookahead, extremely big scanners
+
+     Distribution and Platform
+
+          like Cocktail
+
+Tool
+
+     Parser generator
+     Lark
+
+     Features
+
+        o generates table-driven parsers for LALR(1) and LR(1) grammars
+        o explains LR conflicts and generates very efficient parsers
+        o provides automatic error handling (reports, recovery, repair)
+        o semantic predicates can control parsing by conditions
+        o support for backtracking parsing with unlimited lookahead
+
+     Distribution and Platform
+
+          like Cocktail
+
+Tool
+
+     Parser generator
+     Ell
+
+     Features
+
+        o generates recursive descent parsers for LL(1) EBNF grammars
+        o provides automatic error handling (reports, recovery, repair)
+        o generates very efficient parsers
+        o synthesized and inherited attributes can be computed
+
+     Distribution and Platform
+
+          like Cocktail
+
+Tool
+
+     Generator for abstract syntax trees
+     Ast
+
+     Features
+
+        o generates abstract data types for attributed trees and graphs
+        o provides numerous operations on trees and graphs
+        o eases node construction and storage allocation
+        o provides ASCII and binary graph reader and writer
+        o generates interactive graph browser
+
+     Distribution and Platform
+
+          like Cocktail
+
+Tool
+
+     Generator for attribute evaluators
+     Ag
+
+     Features
+
+        o generates efficient attribute evaluators for:
+        o ordered attribute grammars (OAG)
+        o well-defined attribute grammars (WAG)
+        o "higher order" attribute grammars (HAG)
+
+     Distribution and Platform
+
+          like Cocktail
+
+Tool
+
+     Transformation of attributed trees
+     Puma
+
+     Features
+
+        o supports efficient transformation + mapping of attributed trees
+        o based on pattern matching, uses a concise Prolog-like notation
+        o areas of application include: semantic analysis, optimization,
+          source to source translation, (intermediate) code generation
+        o supports tree handling: type checking, construction, analysis
+
+     Distribution and Platform
+
+          like Cocktail
+
+Tool
+
+     Library of reusable modules
+     Reuse
+
+     Features
+
+        o subroutine library for services needed in every compiler
+        o dynamic and flexible arrays
+        o storage of strings of arbitrary length
+        o identifier table: unambiguous encoding of strings (hashing)
+        o error handler for parsers and compilers
+
+     Distribution and Platform
+
+          like Cocktail
+
+Tool
+
+     Preprocessors
+     Rpp, Lpp, L2r, Y2l, R2l
+
+     Features
+
+        o Rpp Rex preprocessor: extracts scanner description from grammar
+        o Lpp Lark preprocessor: checks attribution rules of a grammar
+        o L2r converts Lex input to Rex input
+        o Y2l converts Yacc input to Lark input
+        o R2l converts Rex input to Lex input
+
+     Distribution and Platform
+
+          like Cocktail
+
+Tool
+
+     Modula-2 -> C translator
+     Mtc
+
+     Features
+
+        o converts Modula-2 programs into readable C code (ANSI + K&R)
+        o works 100 % automatically
+        o nested procedures and modules are handled
+        o translates Modula-2 as defined in: "N. Wirth: Programming in
+          Modula-2, Third Corrected Edition"
+
+     Distribution and Platform
+
+          like Cocktail
+
+Specification
+
+     Scanner and parser description
+     COBOL 85 (ANSI X3.23 - 1985)
+
+     Tool
+
+          Rex and Lark
+
+     Distribution
+
+          like Cocktail
+
+Specification
+
+     Scanner and parser description
+     COBOL union (ANSI'74 Standard, ANSI'85 Standard, IBM OS/VS COBOL, IBM VS
+     COBOL II, IBM SAA COBOL/370, IBM DOSVS COBOL, X/Open, and Micro Focus
+     COBOL)
+
+     Tool
+
+          Rex and Lark
+
+     Distribution
+
+          like Cocktail
+
+Component
+
+     Parser and syntax tree construction
+     COBOL union (ANSI'74 Standard, ANSI'85 Standard, IBM OS/VS COBOL, IBM VS
+     COBOL II, IBM SAA COBOL/370, IBM DOSVS COBOL, X/Open,and Micro Focus
+     COBOL)
+
+     Features
+
+        o dialect is controlled by activating different sets of keywords
+        o handles COPY and REPLACE statements including REPLACING clause
+        o constructs around 70 KB of tree for 1000 source lines
+        o performs name analysis, constructs symbol table, checks names
+        o speed is 1000 lines/sec. on SPARC ELC, generated using Cocktail
+
+     Distribution and Platform
+
+          like Cocktail
+
+Component
+
+     Parser and syntax tree construction
+     PL/I (DIN 66 255, IBM OS PL/I)
+
+     Features
+
+        o a symbol table and a transformation module differentiate whether
+          constructs like F(X) are subscription, function_reference, or
+          builtin_function_reference
+        o embedded statements for SQL, CICS, and DLI are skipped
+        o is generated using Cocktail
+
+     Distribution and Platform
+
+          like Cocktail
+
+Component
+
+     Preprocessor
+     PL/I preprocessor (IBM OS PL/I)
+
+     Features
+
+        o contains scanner, parser, syntax tree, and interpreter
+        o is generated using Cocktail
+
+     Distribution and Platform
+
+          like Cocktail
+
+Specification
+
+     Scanner and parser description
+     FORTRAN-77 (ANSI X3.9 - 1978)
+
+     Tool
+
+          Rex and Lark
+
+     Distribution
+
+          like Cocktail
+
+Specification
+
+     Scanner and parser description
+     Fortran-90 (ISO/IEC 1539: 1991 (E), ANSI X3.198-1992)
+
+     Tool
+
+          Rex and Lark
+
+     Distribution
+
+          like Cocktail
+
+Related Services
+
+     Consulting, training, maintenance, development, research, projects in
+     the areas of compiler construction, programming languages, software
+     reengineering, source to source translation, dialect conversion,
+     programming convention checkers, etc.
+
+-------------------------------
+Cocolsoft Computer Solutions
+-------------------------------
+
+Address
+
+     Cocolsoft Computer Solutions
+     37 Charles Street
+     Cheltenham
+     Victoria 3192
+     Australia
+
+Web
+
+     www.cocolsoft.com.au
+
+Contact
+
+     Mr. Peter Evans
+     Fax +61 3 9584 2765
+     E-Mail info@cocolsoft.com.au
+
+Tool
+
+     Compiler generator for Delphi
+     Cogencee
+
+     Features
+
+          Use in production of scanners, parsers, compilers, interpreters,
+          language checkers, natural language processors, expert system
+          shells, scripting languages and calculators. Defines grammar in
+          Cocol (Compiler Compiler Language(EBNF)). Visual interface. Many
+          grammars supplied. Redistributables for third party tool makers.
+
+     Distribution
+
+          Standard and Professional versions. The Professional version is the
+          Delphi source code version including an Obfuscator and hashing
+          tools. Manual over 80 pages A4 size including two technical papers.
+
+     Platform
+
+          Windows 3.1
+          Windows 95 and above
+
+Component
+
+     Obfuscator
+     Obfuscator for Cocol
+
+     Tool
+
+          Obfuscates compiler language Cocol code
+
+     Distribution
+
+          Part of Cogencee Profesional. Object code only
+
+Specification
+
+     Delphi grammar
+
+     Features
+
+          For all Delphi versions
+
+     Distribution
+
+          Part of Cogencee
+
+     Platform
+
+          Windows 3.1
+          Windows 95 and above
+
+Related Services
+
+     Undertake work in the field of computer language design. Undertake work
+     in the field of human language understanding, grammar and translation.
+
+-------------------------------
+Compiler Resources
+-------------------------------
+
+Address
+
+     Compiler Resources, Inc.
+     3 Proctor Street
+     Hopkinton, MA 01748-1158
+     USA
+
+Contact
+
+     Barbara Zino
+     Phone 1 (508) 435-5016 Fax 1 (508) 435-4847
+     E-Mail compres@world.std.com
+
+Tool
+
+     OO Lexer and Parser Generator for C++ and Class Library
+     Yacc++ and the Language Objects Library
+
+     Features
+
+          Outputs C++ classes of lexers and parsers and optionally for
+          tokens, non-terminals, and rules as specified in the grammar.
+          Regular expressions integrated with BNF, LALR & LR, grammar
+          inheritance. Library support for various AST, input, error, and
+          symbol table classes. Email for complete online information.
+
+     Distribution
+
+          The Yacc++ generators are shipped as executables (sources
+          available) and the Language Objects Library is shipped as C++
+          source code and pre-compiled for supported targets. Numerous
+          examples and makefiles are included. Printed manuals include
+          Installation, Tutorial, and Reference Guides.
+
+     Platform
+
+          DEC Alpha Unix DEC C++
+          DOS/Windows Borland, Microsoft, and Watcom C++
+          HP-UX HP C++
+          OS/2 Borland and IBM C++
+          SGI IRIX SGI (Edison Design Group) C++
+          Solaris SPARCCompiler C++
+          SunOS Sun and GNU C++
+          Windows NT/95 Microsoft Visual C++
+          Portable -- other platforms by cross-compiling.
+
+ -------------------------------
+Edison Design Group
+-------------------------------
+
+Address
+
+     Edison Design Group
+     4 Norman Road
+     Upper Montclair, NJ 07043
+     USA
+
+Web
+
+     http://www.edg.com
+
+Contact
+
+     Steve Adamczyk
+     Phone +1 973 744 2620 Fax +1 973 744 8949
+     E-Mail jsa@edg.com
+
+Tool
+
+     Compiler Front End
+     EDG C++ Front End
+
+     Features
+
+          Does full syntax and semantic analysis on C++ source code,
+          producing an AST-like internal representation. Accepts most of the
+          modern features of the language, e.g., templates, exceptions, RTTI,
+          new-style casts, array new/delete, namespaces, member templates.
+          Also accepts ANSI/ISO C, several older dialects of both C and C++,
+          and Microsoft C and C++ extensions. This is a commercial product.
+
+     Distribution
+
+          Source code and internal documentation
+
+     Platform
+
+          Portable; has been used on all major Unix platforms, plus Windows
+          NT/95.
+
+-------------------------------
+GrammaTech, Inc.
+-------------------------------
+
+Address
+
+     GrammaTech, Inc.
+     One Hopkins Place
+     Ithaca, NY 14850
+     USA
+
+Contact
+
+     Jeff Burns
+     Phone 607-273-7340 Fax 607-273-8752
+     E-Mail jeff@grammatech.com
+
+Tool
+
+     CASE tool generator
+     Synthesizer Generator
+
+     Features
+
+          CASE tool generator for implementing language-sensitive editors and
+          user interfaces, including program editors, document preparation
+          systems, and program verification tools. Uses attribute grammars to
+          compute derived information about the object being edited and
+          incrementally recomputes attribute values after an editing change.
+
+     Distribution
+
+          object
+
+     Platform
+
+          SunOS, Solaris, HP-UX, IBM AIX, and Digital UNIX
+
+Related Services
+
+     The Synthesizer Generator may be licensed directly from GrammaTech or
+     GrammaTech can perform customizations or create custom implementations.
+
+-------------------------------
+INRIA Rocquencourt
+-------------------------------
+
+Address
+
+     Oscar
+     French National Institute for research in computer science and control
+     INRIA Rocquencourt
+     Domaine de Voluceau B.P 105
+     78153 Le Chesnay CEDEX
+     FRANCE
+
+Web
+
+     http://www-rocq.inria.fr/oscar/www/fnc2/
+
+Contact
+
+     Didier Parigot
+     Phone +33 1 39 63 55 46 Fax +33 1 39 63 58 84
+     E-Mail Didier.Parigot@inria.fr
+
+Tool
+
+     The FNC-2 system is a modern attribute grammar processing system that
+     aims at production-quality
+     FNC-2
+
+     Features
+
+        o set of program generators for nearly all phases of a compiler
+        o designed especially for practical usability, efficiency, and the
+          generation of production quality compilers
+
+     Distribution
+
+          Object
+
+     Platform
+
+          SunOS, Solaris, HP-UX and Linux (PC)
+
+Tool
+
+     The SYNTAX scanner and parser generator.
+     SYNTAX
+
+     Features
+
+          see http://www-rocq.inria.fr/oscar/www/syntax/
+
+     Distribution
+
+          Object
+
+     Platform
+
+          SunOS, Solaris, HP-UX and Linux (PC)
+
+-------------------------------
+Langmack, Feinarbeit ®
+-------------------------------
+
+Address
+
+     Langmack
+     Feinarbeit ®
+     Gitschiner Strasse 91 - 2. Hof
+     D-10969 Berlin
+     Germany
+
+Contact
+
+     Olaf Langmack
+     Phone +49-30-616794-61 Fax +49-30-616794-67
+     E-Mail langmack@feinarbeit.de
+
+Web
+
+     http://www.feinarbeit.de
+
+Component
+
+     Parser and syntax tree construction
+     Eiffel-3 (ETL, 2nd printing)
+
+     Features
+
+        o complete syntax analysis (vendor independent) and syntax tree
+          construction
+
+     Distribution
+
+        o C source code (obfuscated)
+        o 3.5" floppy disk
+        o documentation in RTF-format
+
+     Platform
+
+        o all/UNIX
+        o PC/MS-DOS, Windows, OS/2, Linux, Machten
+
+Component
+
+     Parser and syntax tree construction
+     Cobol 74
+
+     Features
+
+        o complete syntax analysis
+        o syntax tree construction
+        o copy/replace
+
+     Distribution
+
+        o C source code (obfuscated)
+        o 3.5" floppy disk
+        o documentation in RTF-format
+
+     Platform
+
+        o all/UNIX
+        o PC/MS-DOS, Windows, OS/2, Linux, Machten
+
+Component
+
+     Parser and syntax tree construction
+     IBM High Level Assembler, Release 2
+
+     Features
+
+        o complete syntax analysis ("High Level Assembler for MVS & VM & VSE
+          - Language Reference", IBM, Release 2, Second Edition, March 1995)
+        o syntax tree construction
+        o conditional assembly and macro substitution
+        o evaluation through online use at
+          http://www.feinarbeit.de/online_fr.html
+
+     Distribution
+
+        o C source code (obfuscated)
+        o 3.5" floppy disk
+        o documentation in RTF-format
+
+     Platform
+
+        o all/UNIX
+        o PC/MS-DOS, Windows, OS/2, Linux, Machten
+
+Component
+
+     Parser and syntax tree construction
+     COLUMBUS Assembler
+
+     Features
+
+        o syntax analysis
+        o syntax tree construction
+
+     Distribution
+
+        o C source code (obfuscated)
+        o 3.5" floppy disk
+        o documentation in RTF-format
+
+     Platform
+
+        o all/UNIX
+        o PC/MS-DOS, Windows, OS/2, Linux, Machten
+
+Tool
+
+     Transformation of attributed trees
+     Fine Eiffel, Fine ISO-C, Fine Cobol74
+
+     Features
+
+        o The Fine* products feature a parser (Eiffel-3, Cobol74 and
+        o ISO-C) integrated with a transformer generator based on "puma"
+        o (see CoCoLab). The products provide an integrated user interface
+        o and manual with down-to-earth examples and how-to information.
+
+     Distribution
+
+        o C source code (obfuscated)
+        o 3.5" floppy disk
+        o documentation in RTF-format
+
+     Platform
+
+        o all/UNIX
+        o PC/MS-DOS, Windows, OS/2, Linux, Machten
+
+Related Services
+
+     We provide consultancy and custom development related to program
+     development tools and compilers. Recent customers include Softlab
+     (Munich, Atlanta), Art+Com (Berlin) and BMW (Munich).
+
+-------------------------------
+MageLang Institute
+-------------------------------
+
+Address
+
+     MageLang Institute
+     1535 Francisco Street Suite 9
+     San Francisco, California 94123
+     USA
+
+Web
+
+     http://www.antlr.org
+
+Contact
+
+     Dr. Terence Parr
+     Phone 415 346 1070
+     E-Mail parrt@MageLang.com
+
+Tool
+
+     Parser generator
+     ANTLR 1.33
+
+     Features
+
+          ANTLR constructs human-readable recursive-descent parsers in C or
+          C++ from predicated-LL(k>1) grammars. Many context-sensitive
+          languages and languages requiring infinite lookahead are
+          recognizable with ANTLR parsers. Can automatically build ASTs. Has
+          new and powerful error recovery mechanism.
+
+     Distribution
+
+          Complete C source code, totally public domain. See WEB for
+          download.
+
+     Platform
+
+          Any platform that compiles C or C++. Specific Mac port available as
+          well as binaries/makefiles for PC compilers.
+
+Tool
+
+     Parser generator
+     ANTLR 2.00
+
+     Features
+
+          Complete rewrite in Java generating Java and soon other languages.
+          Meta-language has been redesigned. Will incorporate SORCERER tree
+          rewrite rules also by mid May 1997.
+
+     Distribution
+
+          Complete Java source code available. See WEB for dwonload.
+
+     Platform
+
+          Any platform that runs Java.
+
+Tool
+
+     AST transformer / walker (source-to-source translation)
+     SORCERER
+
+     Features
+
+          A SORCERER grammar describes AST content and structure. You may
+          annotate the grammar with actions to effect a translation or
+          manipulate the tree itself. Generates recursive-descent tree
+          walkers in C or C++ (soon Java). Same flavor/syntax as ANTLR. Not
+          tied to a parser generator or any other tool.
+
+     Distribution
+
+          Complete C source code, totally public domain. See WEB for
+          dwonload.
+
+     Platform
+
+          Any platform that compiles C or C++.
+
+Related Services
+
+     MageLang Institute continues to enhance and maintain PCCTS. We support
+     the tools via maintenance agreements, short term contracts, and
+     collaborations. We also develop custom translators and provide technical
+     assistance for language design and implementation development.
+
+-------------------------------
+Mastersys
+-------------------------------
+
+Address
+
+     MASTERSYS
+     3915 ARBOLADO DRIVE
+     WALNUT CREEK, CA 94598
+     USA
+
+Web
+
+     http://www.mastersys.com
+
+Contact
+
+     Boris Burshteyn
+     Phone 1 (510) 944 0701, Fax 1 (510) 944 5928
+     E-Mail master@mastersys.com
+
+Tool
+
+     C++ and Java Parser Generator
+     MUSKOX v4.0
+
+     Features
+
+        o Annotates C++ & Java classes and interfaces with EBNF LR(K)
+          grammars
+        o Grammar inheritance and redefinition of rules.
+        o Multiple parsers, recording/replay of trace logs, HTML
+          pretty-printing.
+        o Default and user-defined lexer and error processing.
+        o Syntactic lookaheads, semantic predicates, syntax trees.
+
+     Distribution
+
+        o Parser Generator executable.
+        o Runtime Framework C++ & Java source.
+        o Downloadable from the web site.
+        o Documentation in Postscript and Adobe PDF formats.
+
+     Platform
+
+        o PC Windows 95 & NT.
+        o Sun Sparc Solaris 2.4 and higher.
+        o Pyramid and Siemens/Nixdorff RELIANT/UNIX, DC/OSx and
+        o Sinix (please contact by email).
+
+-------------------------------
+Metamata
+-------------------------------
+
+Address
+
+     Sriram Sankar
+     Metamata, Inc.
+     2140 Peralta Blvd., Suite 213B
+     Fremont, California - 94536
+     U.S.A.
+
+Web
+
+     http://www.suntest.com/JavaCC
+
+Contact
+
+     Sriram Sankar
+     Phone 1(510)796-0915 Fax 1(510)796-0916
+     E-Mail sriram@metamata.com
+
+Tool
+
+     Parser, Scanner, and Tree Builder Generator JavaCompilerCompiler
+     (JavaCC)
+
+     Features
+
+          JavaCC is a top-down (LL(k)) parser generator for Java with
+          integrated features for generating scanners and tree builders.
+          JavaCC offers EBNF constructs, syntactic and semantic lookahead,
+          lexical states and actions, case-insensitive scanning, and the
+          ability to store white space tokens for further processing.
+
+     Distribution
+
+          Byte code files freely downloadable from our web site
+
+     Platform
+
+          Any Java compliant platform 1.0.2 or above
+
+Specification
+
+     LL(k) Java, C, C++, HTML, VHDL
+
+     Tool
+
+          JavaCC
+
+     Distribution
+
+          Freely downloadable with JavaCC distribution
+
+Related Services
+
+     Metamata Inc. offers consulting services in the area of parser
+     technology and other related areas in Java.
+
+-------------------------------
+Nullstone
+-------------------------------
+
+Address
+
+     Nullstone Corporation
+     3336 Medallion Court
+     Pleasanton, CA 94588
+     USA
+
+Web
+
+     www.nullstone.com
+
+Contact
+
+     Christopher Glaeser
+     Phone (800) 634-5990 International +1 (925) 461-5990
+     Fax +1 (925) 461-5991
+     E-Mail cdg@nullstone.com
+
+Tool
+
+     Compiler Performance Analysis Tool
+     NULLSTONE
+
+     Features
+
+          The NULLSTONE Automated Compiler Performance Analysis (tm) uses a
+          QA approach of test coverage and isolation to measure an optimizer.
+          The NULLSTONE methodology increases compiler performance by:
+             + Isolating performance regressions and defects;
+             + Identifying opportunities for improvements;
+             + Establishing development completion criteria; and
+             + Providing detailed competitive data.
+          Languages: ANSI C and Java
+
+     Distribution
+
+          Complete sources.
+
+     Platform
+
+          UNIX, WinNT, Win98, Win95, Win3.1, OS/2, DOS, MacOS. SPARC,
+          PowerPC, Pentium, x86, MIPS, 68K, and others.
+
+-------------------------------
+Siber Systems
+-------------------------------
+
+Address
+
+     Siber Systems
+     2902 Rock Manor Ct
+     Herndon, VA 20171
+     USA
+
+Web
+
+     http://www.siber.com/sct
+
+Contact
+
+     Vadim Maslov
+     Phone: +1-703-716-7770
+     E-Mail vadik@siber.com
+
+Tool
+
+     Cobol compiler/reengineering toolkit
+     CobolTransformer
+
+     Features
+
+          (1) Well-tested Cobol Parser that parses 10 most popular Cobol
+          dialects.
+          (2) Tree-based Internal Representation for Cobol programs and C++
+          library used to browse and trasform the trees.
+          (3) PrettyPrinter library that transforms tree-based Internal
+          Representation back into indented human-readable Cobol program.
+
+     Distribution
+
+          compressed encrypted TAR/ZIP file by e-mail
+
+     Platform
+
+          comes in source, tested on WIN32 (Windows 95, Windows NT), Linux,
+          SunOS, Solaris.
+
+Specification
+
+     LALR(1) with backtracking
+     Cobol, several dialects: ANSI-74, ANSI-85, OSVS, VS COBOL II, SAA,
+     MicroFocus, RyanMcFarland, RyanMcFarland-85, DOSVS
+
+     Tool
+
+          CobolTransformer
+
+     Distribution
+
+          compressed encrypted TAR/ZIP file by e-mail
+
+Related Services
+
+     Consulting for projects based on CobolTransformer
+
+-------------------------------
+Synergistic Consultants, Inc.
+-------------------------------
+
+Address
+
+     Synergistic Consultants, Inc.
+     Post Office Box 18888
+     Huntsville, AL 35804-8888
+
+Web
+
+     www.gen7software.com
+
+Contact
+
+     George W. Freas II (Chip)
+     Phone 1-256-539-1757 Fax 1-256-533-2700
+     E-Mail chip@gen7software.com
+
+Tool
+
+     Parser Generator
+     LALL - an LL(1) parser generator with lookahead
+
+     Features
+
+          A top down implementation of a parser generator for LL(1) grammars,
+          with lookahead sets. Accepts the standard Unix YACC BNF input, and
+          can optionally generate an integrated command line symbolic
+          debugger. Can convert the Unix LR(1) grammars to LL(1) grammars (or
+          pretty close). Many languages are supported: C, Pascal, Basic, CPP,
+          etc. (see the website for details:
+          http://www.gen7software.com/lall)
+
+     Distribution
+
+          Microsoft EXE file running with DOS extender DOS4GW.EXE
+
+     Platform
+
+          MS-DOS, MS-Windows (others forthcoming)
+
+Component
+
+     LALLDBUG - Integrated command line debugger for LALL
+
+Related Services
+
+     Educational software and consulting
+
+-------------------------------
+OCCL
+-------------------------------
+
+Address
+
+     Oxford and Cambridge Compilers Limited
+     55 Brampton Rd
+     Cambridge CB1 3HJ
+     UK
+
+Contact
+
+     Dave Lloyd
+     Phone (+44) 1223 572074
+     E-Mail dave@occl-cam.demon.co.uk
+
+Related Services
+
+     OCCL produces commercial compilers for Algol 68 and Fortran 90 on a
+     variety of platforms. This technology is available for bespoke
+     applications such as custom languages or tools. OCCL also provides
+     consultancy and support for other compiler toolsets such as GNU or
+     PCCTS.
+
+-------------------------------
+Philips Research Laboratories
+-------------------------------
+
+Address
+
+     Philips Research Laboratories
+     Lex Augusteijn
+     WL 11
+     Prof. Holstlaan 4
+     5656 AA Eindhoven
+     The Netherlands
+
+Web
+
+     http://www.research.philips.com/generalinfo/special/elegant/elegant.html
+
+Contact
+
+     Lex Augusteijn
+     Phone +31 40 2743938 Fax +31 40 2744004
+     E-Mail lex@natlab.research.philips.com
+
+Tool
+
+     Compiler generator based on attribute grammars
+     Elegant
+
+     Features
+
+          It accepts both LL(1) and LALR(1) grammars. Any non-cyclic
+          attribute dependency is allowed. Integrated automatic error
+          recovery. Integration with Elegant programming language for
+          back-ends. Garbage collection.
+
+     Distribution
+
+          Complete source code available, see WEB.
+
+     Platform
+
+          SunOS4, SunOS5, HP-UX-10, IRIX, Linux, Windows (cross generation)
+
+Tool
+
+     Elegant programming language
+     Elegant
+
+     Features
+
+          Subtyping (linear inheritance), polymorphic types and functions.
+          Several different lazy types and function (lambda) expressions.
+          Overloading and automatic and user definable coercions. Pattern
+          matching (= sub-type analysis) and list comprehensions. Garbage
+          collection and self generating, i.e. written in Elegant.
+
+     Distribution
+
+          Complete source code available, see WEB.
+
+     Platform
+
+          SunOS4, SunOS5, HP-UX-10, IRIX, Linux, Windows (cross generation)
+
+Tool
+
+     Scanner Generator
+     ScanGen
+
+     Features
+
+          Very efficient. Provides source position (file, line, column) for
+          every token. Seemlessly integrated with Elegant. Made with Elegant
+          and itself.
+
+     Distribution
+
+          Complete source code available, see WEB.
+
+     Platform
+
+          SunOS4, SunOS5, HP-UX-10, IRIX, Linux, Windows (cross generation)
+
+Tool
+
+     Bnf to attribute grammar compiler
+     Bnf
+
+     Features
+
+          Compiles Bnf onto attribute grammars and scanner specifications.
+          Made with Elegant.
+
+     Distribution
+
+          Complete source code available, see WEB.
+
+     Platform
+
+          SunOS4, SunOS5, HP-UX-10, IRIX, Linux, Windows (cross generation)
+
+Tool
+
+     Postscript syntax diagram generator
+     Diagrams
+
+     Features
+
+          Compiler Bnf onto postscript. Offers many ways to control the
+          lay-out. Generates printable or encapsulated postscript. Made with
+          Elegant.
+
+     Distribution
+
+          Complete source code available, see WEB.
+
+     Platform
+
+          SunOS4, SunOS5, HP-UX-10, IRIX, Linux, Windows (cross generation)
+
+-------------------------------
+UniBw Muenchen
+-------------------------------
+
+Address
+
+     Dr. Lothar Schmitz
+     UniBw Muenchen
+     Fakultaet fuer Informatik
+     Institut fuer Softwaretechnologie
+     D-85577 Neubiberg
+
+Web
+
+     http://inf2-www.informatik.unibw-muenchen.de/schmitz/sic.html
+     http://inf2-www.informatik.unibw-muenchen.de/schmitz/jaccie/jaccie.htm
+
+Contact
+
+     Lothar Schmitz
+     Phone +49 89 6004 2140 Fax +49 8106 8467
+     E-Mail lothar@informatik.unibw-muenchen.de
+
+Tool
+
+     Visual Compiler-Compiler for Teaching Purposes.
+     SIC (Smalltalk-based Interactive Compiler-compiler)
+
+     Features
+
+          Scanner-Generator, Parser-Generators (LL- and LR-styles),
+          Evaluator-Generators (including left-attributed and OAG). Browsers,
+          specialized editors, debuggers for all phases allowing processes to
+          be watched and controlled interactively. Information windows:
+          first/follow sets, parsing automata, etc.
+
+     Distribution
+
+          Smalltalk Sourcecode and Handbook (English): See WEB
+
+     Platform
+
+          Most Unix-Dialects, MS Windows (3.x, 95, NT), Mac. Requires
+          VisualWorks (2.0 or later) from ObjectShare (formerly ParcPlace).
+
+Tool
+
+     Visual Compiler-Compiler for Teaching Purposes.
+     Jaccie (Java-based compiler-compiler in an interactive environment)
+
+     Features
+
+          Produces Java-Sources "at a mouse-click". Scanner-Generator (with
+          user-defined Java actions), Parser-Generators (LL and LR styles).
+          Browsers, specialized editors, debuggers for all phases allowing
+          processes to be watched and controlled interactively. Information
+          windows: first/follow sets, parsing automata, etc.
+
+     Distribution
+
+          Java Sourcecode and Handbook (German): See WEB
+
+     Platform
+
+          Requires Java (JDK 1.1.3 or later). Jaccie has been tested on Sun
+          SPARC (Solaris 2.5) and Intel Pentium (MS Windows 95 and NT)
+          machines.
+
+-------------------------------
+Universitaet Paderborn
+-------------------------------
+
+Address
+
+     Software Engineering Group
+     Department of Electrical and Computer Engineering
+     University of Boulder
+     Boulder, CO 80309-0425
+     USA
+
+     Prof. Dr. U. Kastens
+     Universität Paderborn, FB17
+     Fürstenallee 11
+     33102 Paderborn
+     GERMANY
+
+     Dr. A. M. Sloane
+     Department of Computer Science
+     James Cook University
+     Townsville, QLD, 4811
+     AUSTRALIA
+
+Web
+
+     http://www.cs.colorado.edu/~eliuser
+     http://www.uni-paderborn.de/project-hp/eli.html
+     http://www.cs.jcu.edu.au/~tony/eli.html
+
+Contact
+
+     Matthias Jung
+     Phone +49 5251 60-6663 Fax +49 5251 60-6697
+     E-Mail mjung@uni-paderborn.de
+
+Tool
+
+     Domain-Specific Programming Environment for the Automatic Generation of
+     Complete Language Implementations.
+     Eli
+
+     Features
+
+        o Problem-oriented instead of tool-oriented
+        o Broad spectrum of tasks and solutions
+        o Little prior knowledge required
+        o Integrated system, with flexible overriding
+        o State-of-the art components
+        o Selective regeneration
+
+     Distribution
+
+          Complete Sourcecode (ANSI C) available from ftp-servers. See WEB
+          Platform Most Unix-Dialects. Eli has been tested on:
+          Sun workstation running SunOS 4.1.x using Sun C compiler
+          Sun workstation (Solaris) running SunOS 5.[45] using cc SC3.01
+          Sun workstation (Solaris) running SunOS 5.[45] using gcc 2.7.2
+          HP 9000/715 running HP-UX Version A, Release A.09.05 using cc
+          SGI, IP20 running IRIX Release 5.3 using cc
+          PC-i586 running Linux 1.3.59 using gcc version 2.7.2
+          DECstation5000 running OSF/1 V3.2 alpha using cc
+
+-------------------------------
+ENTRY FORM
+-------------------------------
+
+Address
+
+     <provider>
+     <building,department>
+     <street>
+     <state,city>
+     <country>
+
+Web
+
+     <URL>
+
+Contact
+
+     <name>
+     Phone <number> Fax <number>
+     E-Mail <address>
+
+Tool
+
+     <type>
+     <name>
+
+     Features
+
+          <text>
+
+     Distribution
+
+          <source, object, list of media>
+
+     Platform
+
+          <list of operating system and hardware>
+
+Specification
+
+     <type>
+     <programming language, version, standard>
+
+     Tool
+
+          <name>
+
+     Distribution
+
+          <list of media>
+
+Component
+
+     <type>
+     <programming language, version, standard>
+
+     Features
+
+          <text>
+
+     Distribution
+
+          <source, object, list of media>
+
+     Platform
+
+          <list of operating system and hardware>
+
+Related Services
+
+     <text>
+
+------------------------------------------------------
+GUIDELINES for using the entry form: Please replace the text in angle
+brackets (<>) with the relevant information. The form provides four topics:
+TOOL, SPECIFICATION, COMPONENT and RELATED SERVICES. There has to be at least
+one of these topics, but at most one RELATED SERVICES:
+
+   * TOOL refers to self standing software products;
+   * SPECIFICATION refers to specifications of formal languages accepted by
+     any of the tools;
+   * COMPONENT refers to software components which can be integrated with
+     software products of potential customers.
+
+The topics are described by several subtopics. Subtopics may be omitted if
+the information is available from the context. Subtopics <text> may be
+answered with up to five lines of free form ASCII text. Lines shall not be
+more than 70 characters long, they should be indented properly. All other
+subtopics shall be described with only a few words. "Feature" descriptions
+should cover input, output and implementation languages.
+
+------------------------------------------------------------------------
+END OF CATALOG 07-99
+------------------------------------------------------------------------
+
+
+URL http://www.feinarbeit.de

@@ -1,0 +1,7 @@
+/* Funkcja obliczaj±ca sumê dwóch liczb. */
+
+int add(int a, int b) {
+  int c;
+  c=a+b;
+  return c;
+}

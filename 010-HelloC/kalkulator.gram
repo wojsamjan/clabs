@@ -1,0 +1,34 @@
+
+Gramatyka
+--------------------------------------------
+
+input: /* empty */
+  | input '\n'
+  | input asgn '\n'   
+  | input exp '\n'    
+  | input error '\n'  
+
+asgn: VAR '=' exp     
+
+exp: NUMBER           
+  | VAR               
+  | asgn              
+  | '(' exp ')'       
+  | exp '+' exp       
+  | exp '-' exp       
+  | exp '*' exp       
+  | exp '/' exp       
+  | '-' exp %prec UNARYMINUS 
+  | exp '^' exp
+ 
+
+Jednostki leksykalne
+--------------------------------------------
+
+%token <sym> NUMBER VAR UNDEF
+%right '='
+%left '-' '+'
+%left '*' '/'
+%left UNARYMINUS
+%right '^'  /* potêgowanie */
+

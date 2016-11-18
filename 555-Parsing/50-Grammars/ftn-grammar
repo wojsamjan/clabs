@@ -1,0 +1,1253 @@
+---- Cut Here and unpack ----
+#!/bin/sh
+# shar:	Shell Archiver  (v1.22)
+#
+#	Run the following text with /bin/sh to create:
+#	  README
+#	  makefile
+#	  ftnlex.c
+#	  fparse.y
+#	  fmain.c
+#	  ftn.h
+#
+if test -f README; then echo "File README exists"; else
+echo "x - extracting README (Text)"
+sed 's/^X//' << 'SHAR_EOF' > README &&
+XThis is a Fortran 77 subset parser that I knocked together in about a
+Xweek.  It does a decent job of tokenizing and parsing Fortran,
+Xalthough it is quite incomplete.  It is provided as is without any
+Xclaim that it is suitable for any purpose nor with any promise of
+Xsupport.  Copying is permitted so long as it is not for direct
+Xcommercial advantage.  See the copyright notice in each source file.
+X
+XThe general strategy is as follows:
+X
+X	1.  Read each line, determine if it's a comment or
+X	continutation.
+X	2.  If not a comment, add into the current statement buffer,
+X	removing quoted literals and hollerith strings and replacing
+X	them by special tokens (a space followed by a digit.)
+X	3.  Once we have an entire statement, scan it to see if it
+X	looks like an assignment statement.  If not it must be a
+X	keyword	statement.
+X	4.  Call the yacc parser.  From this point, tokenizing is
+X	pretty simple -- see if any of the keyword or special
+X	character tokens that are allowed in the current context
+X	match, if not look for a number or a name. Statement numbers
+X	are treated as integer constants.
+X
+XThe one case where I know that I parse wrong is something like:
+X
+X	real function a(34)
+X
+Xwhich dimensions the array functiona but parses incorrectly as a function
+Xdeclaration with a bogus dummy argument.  This is hard to fix and is unlikely
+Xto cause trouble in practice.
+X
+XThe language it parses includes some invalid constructs that would
+Xneed to be kicked out semantically, e.g.:
+X
+X	dimension foo
+X
+Xbecause I treat dimension and explicit type statements the same.
+X
+XIf you want to extend this to parse more of Fortran, you'll obviously
+Xneed to add more yacc syntax (note that there is syntax in the
+Xcurrent parser that the lexer doesn't generate the tokens for,) more
+Xlexer tokens, and more lexer states.  Lexer states you'll need
+Xcertainly include:
+X
+X	-- Looking for the TO in an assign statement.
+X	-- Tokenizing format statements (unless you want to do
+X	it at runtime, a common approach)
+X	-- Looking for the zillion possible keywords in I/O
+X	statements.
+X
+XThere are doubtless more, you'll know them when you see them.
+X
+XI have run this under Microsoft C 5.1 on a PC and under GCC 1.35.  It
+Xshould work on the regular unix PCC with minimal modifications,
+Xmostly getting rid of a few ANSI function prototypes that I use and
+Xperhaps adjusting the varargs constructs in emit().  It has parsed
+Xmany of the old IBM SSP routines, so I'm fairly confident that it
+Xparses what it parses pretty well.
+X
+XIf you do anything interesting with this, I'd appreciate hearing
+Xabout it.
+X
+XJohn Levine
+XP.O. Box 349
+XCambridge MA 02238
+X+1 617 492 3869
+XInternet: Levine@yale.edu or johnl@esegue.segue.boston.ma.us
+XMCI Mail: 103-7498, WUI telex 6501037498 MCI UW
+XGenie: J.LEVINE3
+SHAR_EOF
+chmod 0644 README || echo "restore of README fails"
+fi
+if test -f makefile; then echo "File makefile exists"; else
+echo "x - extracting makefile (Text)"
+sed 's/^X//' << 'SHAR_EOF' > makefile &&
+X##########################################################################
+X#     Fortran 77 Subset Parser - November 1988                           #
+X#     Copyright 1988 - John R. Levine.  All rights reserved.             #
+X#     Permission is hereby granted to make copies in modified or         #
+X#     unmodified form so long as this copyright notice is preserved      #
+X#     and such copies are not made for direct commercial advantage.      #
+X#                                                                        #
+X#     Any other use such as incorporation in whole or in part in a       #
+X#     product offered for sale requires separate permission.             #
+X#                                                                        #
+X#     John R. Levine                                                     #
+X#     P.O. Box 349                                                       #
+X#     Cambridge MA 02238-0349                                            #
+X#                                                                        #
+X#     Internet/uucp: Levine@yale.edu    MCI Mail:  103-7498              #
+X#                                                                        #
+X##########################################################################
+X
+XCFLAGS=-g
+XCC=gcc
+XYFLAGS=-vdlt
+XOBJS=fparse.o ftnlex.o fmain.o
+X
+Xftn:	$(OBJS)
+X	${CC} $(CFLAGS) -o $@ $(OBJS)
+X
+Xfparse.o:	fparse.c ftn.h
+X
+Xfparse.c fparse.h:	fparse.y
+X		yacc $(YFLAGS) fparse.y
+X		mv y.tab.c fparse.c
+X		mv y.tab.h fparse.h
+X
+Xftnlex.o:	ftnlex.c fparse.h ftn.h
+X
+Xfmain.o:	fmain.c fparse.h ftn.h
+X
+X#%.o:	%.c
+X#	${CC} -c ${CFLAGS} $<
+SHAR_EOF
+chmod 0644 makefile || echo "restore of makefile fails"
+fi
+if test -f ftnlex.c; then echo "File ftnlex.c exists"; else
+echo "x - extracting ftnlex.c (Text)"
+sed 's/^X//' << 'SHAR_EOF' > ftnlex.c &&
+X/*************************************************************************
+X*                                                                        *
+X*     Fortran 77 Subset Parser - November 1988                           *
+X*     Copyright 1988 - John R. Levine.  All rights reserved.             *
+X*     Permission is hereby granted to make copies in modified or         *
+X*     unmodified form so long as this copyright notice is preserved      *
+X*     and such copies are not made for direct commercial advantage.      *
+X*                                                                        *
+X*     Any other use such as incorporation in whole or in part in a       *
+X*     product offered for sale requires separate permission.             *
+X*                                                                        *
+X*     John R. Levine                                                     *
+X*     P.O. Box 349                                                       *
+X*     Cambridge MA 02238-0349                                            *
+X*                                                                        *
+X*     Internet/uucp: Levine@yale.edu    MCI Mail:  103-7498              *
+X*                                                                        *
+X*************************************************************************/
+X
+X#include "ftn.h"
+X#include "fparse.h"
+X#include <ctype.h>
+X#include <malloc.h>
+X#include <stdio.h>
+X#include <string.h>
+X
+Xextern FILE *ifile;
+X
+Xchar stmtbuf[1321];	/* buffer a whole statement */
+Xchar linebuf[100];	/* buffer a line at a time */
+Xchar *lbcp;		/* start of text in linebuf; */
+Xchar *scp;		/* current location in stmtbuf */
+X
+Xlong next_stno = -1;	/* statement number for next statement, from pre */
+Xint lineno = 0;
+Xenum contexts context;
+X
+X/* first, we read in a statement */
+X
+X/* After each statement is read, the read pointer is at the
+X   first line of the next statement because we needed to peek ahead and
+X   see if there was a continuation card.
+X*/
+X
+X/* this reads a line, then looks to see if it's a continuation, and if
+X   not if there's a statement number.
+X   return values: -1 at EOF, 0 for first line, 1 for continuation */
+X
+Xint
+Xrdstno()
+X{
+X	int flg;
+X	int colno;
+X
+X	for(;;) {
+X		register char *cp;
+X
+X		if(!fgets(linebuf, sizeof(linebuf), ifile))
+X			return -1;	/* EOF */
+X		lineno++;
+X		if(linebuf[0] == 'C' || linebuf[0] == 'c'
+X			|| linebuf[0] == '*')
+X			continue;	/* comment */
+X		/* check for totally blank line */
+X		/* and trim at column 72 */
+X		flg = 0;
+X		for(cp = linebuf, colno = 1; *cp; cp++, colno++) {
+X			if(*cp == '\n') {
+X				*cp = 0;
+X				break;
+X			}
+X			if(*cp == '\t' && colno < 5)
+X				colno = 5;	/* tab ahead */
+X			else if(*cp != ' ' && *cp != '\t')
+X				flg = 1;
+X			if(colno == 72) {
+X				cp[1] = 0;	/* white out seq cols */
+X				break;
+X			}
+X		}
+X		if(!flg)
+X			continue;	/* blank line comment */
+X		/* now, get the line number and comment flag */
+X		next_stno = 0;
+X		colno = 0;
+X		for(cp = linebuf; colno < 6; cp++, colno++) {
+X			if(isdigit(*cp))
+X				next_stno = 10*next_stno + *cp-'0';
+X			else if(*cp == '\t')
+X				colno = 5;
+X			else if(*cp != ' ')
+X				yyerror("Bad stmt label");
+X		}
+X		lbcp = cp;
+X		cp--;   /* point at continuation marker */
+X		return(*cp != ' ' && *cp != '\t' && *cp != '0');
+X	}
+X} /* rdstno */
+X		
+Xint stmt_eof;
+X
+X/* at prescan time quoted strings are pulled out and stashed here */
+X/* in the scanned statement, the literal string is replaced by a quote
+X   and a digit indicating which table entry it is */
+X
+Xchar *string_tab[30];    /* quoted strings */
+Xchar **string_tabp = string_tab;
+X
+X/* read and prescan a statement, pull out literal strings and squeeze out
+X   blanks.
+X   return 1 if statement read, 0 at eof */
+X
+Xint
+Xrdstmt()
+X{
+X	char *cp;
+X	int c;
+X	int colno;
+X	int quoteflag = 0;	/* >0 means 3hfoo, -1 means 'foo' */
+X	int quotable = 0;       /* 1 if nnH allowed */
+X	char *quotep, *quotelim;
+X	
+X	/* make sure there's a line ready for us */
+X	if(next_stno < 0)
+X		stmt_eof = rdstno();
+X
+X	if(stmt_eof < 0)
+X		return 0;
+X
+X	/* at this point we might want to do something about the statement
+X	   number */
+X	
+X	/* now read and process lines until we find one that isn't a
+X	   continuation */
+X	
+X	cp = stmtbuf;
+X	do {
+X		char *icp;
+X
+X		for(icp = lbcp; *icp; icp++) {
+X
+X			c = *icp;
+X			/* process a card image */
+X			/* special case for literal strings, keep blanks */
+X			if(quoteflag) {
+X				if(quoteflag < 0 && c == '\'') {
+X					if(icp[1] != '\'') {
+X						*quotep = 0;
+X						string_tabp++;
+X						quoteflag = 0;
+X						continue;
+X					} else
+X						icp++;
+X				}
+X
+X				if(quotep >= quotelim)
+X					yyerror("String too long");
+X				else
+X					*quotep++ = (char)c;
+X				if(quoteflag > 0)
+X					quoteflag--;
+X				if(quoteflag == 0) {
+X					*quotep = 0;
+X					string_tabp++;
+X					quoteflag = 0;
+X				}
+X				continue;
+X			}
+X			/* discard unquoted spaces */
+X			if(c == ' ' || c == '\t')
+X				continue;
+X			
+X			c = toupper(c);
+X			/* literal strings can only occur after (  = or / */
+X			/* consider  REAL*4HELLO */
+X			if(!quotable && (c == '=' || c == '/' || c == '('))
+X				quotable++;	/* could have string */
+X
+X			/* check for quoted literal */
+X			if(c == '\'') {
+X				quoteflag = -1;
+X				*string_tabp = quotep = malloc(80);
+X				quotelim = quotep + 79;
+X				*cp++ = '\'';	/* string flag */
+X				*cp++ = '0'
+X				  + (string_tabp - string_tab);
+X				continue;
+X			}
+X			*cp = (char)c;
+X			/* check for counted (hollerith) literal */
+X			if(c == 'H' && quotable
+X			 && cp > stmtbuf && isdigit(cp[-1])) {
+X				char *tcp = cp-1;
+X				
+X				while(tcp > stmtbuf && isdigit(*tcp))
+X					tcp--;
+X				if(!isalnum(*tcp)) {	/* yes */
+X					tcp++;
+X					cp = tcp;	/* back over digs */
+X					quoteflag = 0;
+X					while(*tcp != 'H')
+X						quoteflag = quoteflag*10
+X							+ *tcp++ - '0';
+X					
+X					*string_tabp = quotep
+X					 = malloc(quoteflag+1);
+X					quotelim = quotep + quoteflag + 1;
+X					*cp++ = '\'';	/* string flag */
+X					*cp++ = '0'
+X					  + (string_tabp - string_tab);
+X					continue;
+X				}
+X			}
+X			cp++;
+X		} /* single line */
+X	} while((stmt_eof = rdstno()) == 1);
+X	if(quoteflag) {
+X		*quotep = 0;
+X		yyerror("Unterminated string");
+X	}
+X	*cp = 0;
+X	return 1;       /* found something */
+X} /* rdstmt */
+X
+X/* prescan to see if this is an arithmetic statement */
+X/* returns 1 if it's an arithmetic stmt, 0 if not */
+X/* this hack involves looking for an equal sign not enclosed in parens
+X   and not followed by a comma not enclosed in parens.  Gross but effective.
+X */
+X
+Xprescan()
+X{
+X	register char *cp;
+X	int parencount = 0;
+X	
+X	/* scan across counting parens and looking for an = */
+X	for(cp = scp; ; cp++) {
+X		switch(*cp) {
+X	case 0:		return 0;	/* no equal found */
+X
+X	case '(':	parencount++;
+X			continue;
+X
+X	case ')':	if(--parencount == 0) /* foo(a,...) = ... */
+X				if(cp[1] == '=')
+X					break;
+X				else
+X					return 0;	/* if(foo)... */
+X			continue;
+X	
+X	case '=':	if(parencount == 0)
+X				break;
+X	default:
+X			continue;       /* ignore anything else */
+X		}
+X		break;
+X	}
+X
+X	/* found an equal, but might be a DO statement */
+X	/* now look for the comma which tells us it might be a DO loop */
+X	for(;;cp++) {
+X		switch(*cp) {
+X	case '(':	parencount++; break;
+X	case ')':	parencount--; break;
+X	case ',':	if(!parencount)
+X				return 0;
+X			break;
+X	case 0:		return 1;	/* it's an arith statement */
+X		} /* switch */
+X	} /* for */
+X} /* prescan */
+X
+X
+X/* keyword tables */
+X
+X/* statement starting keywords */
+Xkwdtab tab_stmt[] = {
+X	{ "CALL",	CALL,	0 },
+X	{ "COMMON",	COMMON, 0 },
+X	{ "CONTINUE",	CONTINUE,	0 },
+X	{ "DATA",	DATA, 0 },
+X	{ "DIMENSION",	DIMENSION,	0 },
+X	{ "DO",		DO,	0 },
+X	{ "ENDIF",	ENDIF,	0 },
+X	{ "END",	END, 0 },
+X	{ "ENTRY",	ENTRY,	0 },
+X	{ "EQUIVALENCE", EQUIVALENCE, 0 },
+X	{ "EXTERNAL",	EXTERNAL, 0 },
+X	{ "FORMAT",	FORMAT, 0 },
+X	{ "FUNCTION",	FUNCTION,	0 },
+X	{ "GOTO",	GOTO,	0 },
+X	{ "IF",		IF,	0 },
+X	{ "IMPLICIT",	IMPLICIT,	0 },
+X	{ "INTRINSIC",	INTRINSIC, 0 },
+X	{ "PROGRAM",	PROGRAM,	0 },
+X	{ "RETURN",	RETURN,	0 },
+X	{ "REWIND",	REWIND, 0 },
+X	{ "SAVE",	SAVE, 0 },
+X	{ "STOP",	STOP,	0 },
+X	{ "SUBROUTINE",	SUBROUTINE,	0 },
+X	{ "THEN",	THEN,	0 },
+X	NULL
+X};
+X
+X/* type declarators */
+Xkwdtab tab_type[] = {
+X	{ "DOUBLEPRECISION",	TYPE,	MTYPE(REAL, 8), },
+X	{ "REAL*8",	TYPE,	MTYPE(REAL, 8), },
+X	{ "REAL*4",	TYPE,	MTYPE(REAL, 4), },
+X	{ "REAL",	TYPE,	MTYPE(REAL, 4), },
+X	
+X	{ "INTEGER*4",	TYPE,	MTYPE(INTEGER, 4), },
+X	{ "INTEGER",	TYPE,	MTYPE(INTEGER, 4), },
+X
+X
+X	{ "LOGICAL*4",	TYPE,	MTYPE(LOGICAL, 4), },
+X	{ "LOGICAL",	TYPE,	MTYPE(LOGICAL, 4), },
+X
+X
+X	{ "DOUBLECOMPLEX",	TYPE,	MTYPE(COMPLEX, 16), },
+X	{ "COMPLEX*16",	TYPE,	MTYPE(COMPLEX, 16), },
+X	{ "COMPLEX*8",	TYPE,	MTYPE(COMPLEX, 8), },
+X	{ "COMPLEX",	TYPE,	MTYPE(COMPLEX, 4), },
+X
+X
+X	{ "CHARACTER",	TYPE,	MTYPE(CHAR, 1), },
+X	NULL
+X};
+X
+X/* normal tokens */
+Xkwdtab tab_toks[] = {
+X	{ "+",	PLUS,	0 },
+X	{ "-",	MINUS,	0 },
+X	{ "(",	OP,	0 },
+X	{ ")",	CP,	0 },
+X	{ "**",	POW,	0 },
+X	{ "*",	STAR,	0 },
+X	{ "//",	CAT,	0 },
+X	{ "/",	DIV,	0 },
+X	{ ",",	CM,	0 },
+X	{ "=",	EQ,	0 },
+X	{ ":",	COLON,	0 },
+X	{ ".NOT.",	NOT,	0 },
+X	{ ".AND.",	AND,	0 },
+X	{ ".OR.",	OR,	0 },
+X	{ ".EQV.",	EQV, 0 },
+X	{ ".NEQV.",	EQV, 1 },
+X	{ ".EQ.",	RELOP,	rel_eq },
+X	{ ".NE.",	RELOP,	rel_ne },
+X	{ ".LT.",	RELOP,	rel_lt },
+X	{ ".LE.",	RELOP,	rel_le },
+X	{ ".GT.",	RELOP,	rel_gt },
+X	{ ".GE.",	RELOP,	rel_ge },
+X	{ ".TRUE.",	CONST,	1 },
+X	{ ".FALSE.",	CONST,	0 },
+X	NULL
+X};
+X
+X
+X/* call this before parsing a statement */
+X/* returns 1 if there's a statement to parse */
+X/* also checks the statement type and sets the context appropriately */
+Xlex0()
+X{
+X	if(!rdstmt())
+X		return 0;	/* EOF */
+X	scp = stmtbuf;
+X	if(prescan())
+X		context = cxt_norm;
+X	else
+X		context = cxt_stmt;
+X	return 1;
+X}
+X
+X/* look to see if the next thing is a recognized keyword */
+Xint
+Xkeyscan(tab)
+Xregister kwdtab *tab;
+X{
+X	while(tab->kwd) {
+X		int len = strlen(tab->kwd);
+X		
+X		if(!strncmp(scp, tab->kwd, len)) {
+X			scp += len;	/* skip over this */
+X			if(tab->ktok == CONST) {	/* hack */
+X				yylval.uuexp.c.t = MTYPE(LOGICAL, 4);
+X				yylval.uuexp.c.u.l = tab->klex;
+X			} else
+X			yylval.uuint = tab->klex;
+X			return tab->ktok;
+X		}
+X		tab++;
+X	}
+X	return 0;
+X} /* keyscan */
+X
+X/* After all this setup, the lexer is quite simple.  It looks for the longest
+X   keyword legal in the current context or, failing that, for a number or
+X   name.  The various contexts are mostly set in the parser; the lexer resets
+X   the context to normal (name, number, or special character token) after
+X   each token. */
+X
+Xyylex()
+X {
+X	int c;
+X
+X	if(!*scp)
+X		return 0;	/* end of statement */
+X
+X	switch(context) {
+X	case cxt_stmt:
+X		c = keyscan(tab_type);
+X		if(c)
+X			break;
+X		c = keyscan(tab_stmt);
+X		if(c)
+X			break;
+X		goto normal;	/* look for normal token */
+X	default:
+X		yyerror("Mystery context");
+X		context = cxt_norm;
+X	case cxt_norm:
+X	case cxt_do:
+Xnormal:
+X		c = keyscan(tab_toks);
+X		if(c)
+X			break;	/* found something */
+X		/* check for literal string */
+X		if(*scp == '\'') {
+X			char *str;
+X
+X			c = CONST;
+X			scp++;
+X			str = string_tab[*scp++ - '0'];
+X			yylval.uuexp.c.t = MTYPE(CHAR, strlen(str));
+X			yylval.uuexp.c.u.c = str;
+X			break;
+X		}
+X
+X		/* must be a number or name */
+X		if(isalpha(*scp)) {
+X			char *ocp = yylval.uuexp.n.name;
+X
+X			yylval.uuexp.n.t = 0;
+X			while(isalnum(*scp)) {
+X				*ocp = *scp;
+X				ocp++;
+X				scp++;
+X			}
+X			*ocp = 0;
+X			c = NAME;
+X			break;
+X		} else {	/* constant */
+X			int dotseen = 0, expseen = 0;
+X			int mytype = MTYPE(INTEGER, 4);
+X			char *sbp;
+X			char sbuf[50];
+X
+X			if(!isdigit(*scp) && *scp != '.') {
+X				yyerror("Unknown character");
+X				c = 0;
+X				break;
+X			}
+X			sbp = sbuf;
+X			for(;;) {
+X				if(isdigit(*scp)) {
+X					*sbp++ = *scp++;
+X					continue;
+X				}
+X				if(!dotseen && *scp == '.') {
+X					dotseen++;
+X					mytype = MTYPE(REAL, 4);
+X					*sbp++ = *scp++;
+X					continue;
+X				}
+X				if(!expseen && context != cxt_do
+X				 && (*scp == 'D' || *scp == 'E')) {
+X					expseen++;
+X					dotseen++;
+X					if(*scp == 'D')
+X						mytype = MTYPE(REAL, 8);
+X					else
+X						mytype = MTYPE(REAL, 4);
+X					*sbp++ = 'E';
+X					scp++;
+X					if(*scp == '+')
+X						scp++;
+X					else if(*scp == '-')
+X						*sbp++ = *scp++;
+X					continue;
+X				}
+X				break;  /* end of number */
+X			} /* for */
+X			*sbp = 0;
+X			yylval.uuexp.c.t = mytype;
+X			if(mytype == MTYPE(INTEGER, 4))
+X				yylval.uuexp.c.u.l = atol(sbuf);
+X			else
+X				yylval.uuexp.c.u.d = atof(sbuf);
+X			c = CONST;
+X			break;
+X		} /* name/const */
+X	} /* switch */
+X	context = cxt_norm;
+X	return c;
+X} /* yylex */
+X
+X/* call this to clean up after lexing a statement */
+X/* It frees the entries in the string table, and emits the statement number
+X   for the next statement if there is one.
+X  */
+Xlex1()
+X{
+X	while(string_tabp > string_tab)
+X		free(*--string_tabp);
+X	if(next_stno)
+X		emit(1, next_stno);
+X}
+SHAR_EOF
+chmod 0644 ftnlex.c || echo "restore of ftnlex.c fails"
+fi
+if test -f fparse.y; then echo "File fparse.y exists"; else
+echo "x - extracting fparse.y (Text)"
+sed 's/^X//' << 'SHAR_EOF' > fparse.y &&
+X/*************************************************************************
+X*                                                                        *
+X*     Fortran 77 Subset Parser - November 1988                           *
+X*     Copyright 1988 - John R. Levine.  All rights reserved.             *
+X*     Permission is hereby granted to make copies in modified or         *
+X*     unmodified form so long as this copyright notice is preserved      *
+X*     and such copies are not made for direct commercial advantage.      *
+X*                                                                        *
+X*     Any other use such as incorporation in whole or in part in a       *
+X*     product offered for sale requires separate permission.             *
+X*                                                                        *
+X*     John R. Levine                                                     *
+X*     P.O. Box 349                                                       *
+X*     Cambridge MA 02238-0349                                            *
+X*                                                                        *
+X*     Internet/uucp: Levine@yale.edu    MCI Mail:  103-7498              *
+X*                                                                        *
+X*************************************************************************/
+X
+X
+X%{
+X#include "ftn.h"
+X%}
+X%union {
+X	expr uuexp;
+X	long uulong;
+X	int uuint;
+X	type uutype;
+X}
+X/* generic tokens */
+X%token PLUS MINUS OP CP STAR POW DIV CAT CM EQ COLON
+X%token NOT AND OR
+X%token <uuint> RELOP EQV
+X%token <uuexp> NAME CONST ICON RCON LCON CCON
+X
+X/* a zillion keywords */
+X%token IF THEN ELSE ELSEIF ENDIF DO GOTO ASSIGN TO CONTINUE STOP
+X%token <uuint> RDWR
+X%token OPEN CLOSE BACKSPACE REWIND ENDFILE FORMAT
+X%token PROGRAM FUNCTION SUBROUTINE ENTRY END CALL RETURN
+X%token <uutype> TYPE DIMENSION
+X%token COMMON EQUIVALENCE EXTERNAL PARAMETER INTRINSIC IMPLICIT
+X%token SAVE DATA
+X
+X%left EQV
+X%left OR
+X%left AND
+X%nonassoc NOT
+X%nonassoc RELOP
+X%left CAT
+X%left PLUS MINUS
+X%left STAR DIV
+X%right POW
+X%nonassoc UMINUS
+X
+X%type <uutype> opttype
+X
+X%%
+X
+Xstatement:	s	{ emit(0); }
+X	;
+X
+Xs:		PROGRAM NAME
+X	;
+X
+Xs:		opttype FUNCTION NAME { emit(FUNCTION, $1, $3.n.name); }
+X			OP funargs CP
+X	;
+X
+Xopttype:	/* empty */ { $$ = 0; }
+X	|	TYPE
+X	;
+X
+Xfunargs:	funarg
+X	|	funargs CM funarg
+X	;
+X
+Xfunarg:		NAME	{ emit(NAME, $1.n.name); }
+X	|	STAR	{ emit(STAR); }
+X	;
+X
+Xs:		ENTRY NAME
+X	|	ENTRY NAME OP funargs CP
+X	;
+X
+Xs:		SUBROUTINE NAME { emit(SUBROUTINE, $2.n.name); }
+X	|	SUBROUTINE NAME { emit(SUBROUTINE, $2.n.name); }
+X			OP funargs CP
+X	;
+X
+X/* we give dimension and explicit type statements the same syntax here
+X   because I'm lazy.  This allows e.g. 
+X	   DIMENSION FOO
+X   which is easier to kick out semantically
+X */
+X
+Xs:		DIMENSION { emit(TYPE, 0); } arydcllist
+X	|	TYPE { emit(TYPE, $1); } arydcllist
+X	;
+X
+Xarydcllist:	arydcl
+X	|	arydcllist CM arydcl
+X	;
+X
+Xarydcl:		NAME { emit(NAME, $1.n.name); } OP dclsublist CP
+X		{ emit(CP); }
+X	|	NAME { emit(NAME, $1.n.name); emit(CP); }
+X	;
+X
+Xdclsublist:	dclsub
+X	|	dclsublist CM { emit(CP); } dclsub
+X	;
+X
+Xdclsub:		exp
+X	|	exp COLON { emit(COLON); } exp
+X	|	STAR
+X	|	exp COLON STAR { emit(COLON); emit(STAR); }
+X	;
+X
+Xs:		COMMON { emit(COMMON); } commonlist
+X	;
+X
+Xcommonlist:	arydcl
+X	|	commonlist CM arydcl
+X	|	blockname
+X	|	commonlist optcomma blockname
+X	;
+X
+Xoptcomma:	CM
+X	|	/* nothing */
+X	;
+X
+X/* note here that the // for blank common looks a lot like the catenation
+X   operator.  Fortunately, there's no semantic ambiguity */
+X
+Xblockname:	DIV NAME DIV { emit(TO, $2.n.name); }
+X	|	CAT { emit(TO, ""); }	/* blank common */
+X	;
+X
+Xs:		EQUIVALENCE quivlist
+X	;
+X
+Xquivlist:	quiv
+X	|	quivlist CM quiv
+X	;
+X
+Xquiv:		OP arydcllist CP
+X	;
+X
+Xs:		IMPLICIT impllist
+X	;
+X
+Ximpllist:	impldcl
+X	|	impllist CM impldcl
+X	;
+X
+Ximpldcl:	TYPE OP implletlist CP
+X	;
+X
+Ximplletlist:	impllet
+X	|	implletlist CM impllet
+X	;
+X
+X/* the NAMEs here actually have to be single letters, but it's easier to
+X   sort this out semantically than to make the parser only allow single
+X   letters for this one case */
+X
+Ximpllet:	NAME
+X	|	NAME MINUS NAME
+X	;
+X
+Xexp:		NAME { emit(NAME, $1.n.name); }
+X	|	CONST {
+X			switch(TYTYPE($1.c.t)) {
+X			case TY_INTEGER:
+X				emit(ICON, $1.c.u.l);	break;
+X			case TY_REAL:
+X				emit(RCON, $1.c.u.d);	break;
+X			case TY_LOGICAL:
+X				emit(ICON, $1.c.u.l);	break;
+X			case TY_CHAR:
+X				emit(CCON, $1.c.u.c);	break;
+X			default:
+X				yyerror("Unsupported constant type");
+X				break;
+X			}
+X		}			
+X
+X	|	OP exp CP
+X	|	exp PLUS exp { emit(PLUS); }
+X	|	exp MINUS exp { emit(MINUS); }
+X	|	exp STAR exp { emit(STAR); }
+X	|	exp DIV exp { emit(DIV); }
+X	|	exp POW exp { emit(POW); }
+X	|	exp CAT exp { emit(CAT); }
+X	|	exp RELOP exp { emit(RELOP, $2); }
+X	|	NOT exp { emit(NOT); }
+X	|	exp AND exp { emit(AND); }
+X	|	exp OR exp { emit(OR); }
+X	|	exp EQV exp { emit(EQV, $2); }
+X	|	MINUS exp	%prec UMINUS  { emit(UMINUS); }
+X	|	OP exp CM exp CP	/* complex constant, sort of */
+X	|	aryref
+X	
+Xaryref:		NAME OP { emit(OP); emit(NAME, $1.n.name); } explist CP
+X			{ emit(CP); }
+X	;
+X		
+Xexplist:	exp
+X	|	explist CM { emit(CM); } exp
+X	;
+X
+X/* assignment statement or arithmetic statement function, they're
+X	syntactically the same */
+X
+Xs:		lhs EQ exp { emit(EQ); }
+X	;
+X
+Xlhs:		NAME { emit(NAME, $1.n.name); }
+X	|	aryref
+X	;
+X
+Xs:		do CONST NAME EQ {
+X			emit(DO, $2.c.u.l);
+X			emit(NAME, $3.n.name);
+X		}
+X		exp CM { emit(CM); } exp optstep
+X	;
+X
+X/* hack - normally you can parse statement numbers as numeric constants
+X	easily enough, except in a case like
+X		DO 10 E5 = 1,1000
+X	where 10E5 looks like a real number.  cxt_do tells the lexer only
+X	to recognize an integer here.
+X */
+X
+Xdo:		DO { context = cxt_do; }
+X	;
+X
+Xoptstep:	CM { emit(CM); } exp
+X	|	/* empty */
+X	;
+X
+Xs:		CONTINUE { emit(CONTINUE); }
+X	;
+X
+X
+Xs:		if exp ifcp s
+X	|	if exp ifcp CONST CM CONST CM CONST {
+X			emit(ICON, $4.c.u.l);
+X			emit(ICON, $6.c.u.l);
+X			emit(ICON, $8.c.u.l);
+X		}
+X	;
+X
+Xif:		IF OP	{ emit(IF); }
+X	;
+X
+X	/* check ahead for target of IF statement */
+X	/* we have to use the same prescan to tell how to lex the target
+X	   statement of the IF.  Arithmetic IFs work OK because three
+X	   integers separated by commas don't look like an assignment
+X	   statement. */
+X	
+Xifcp:		CP {	if(prescan())
+X				context = cxt_norm;
+X			else
+X				context = cxt_stmt;
+X			emit(CP);
+X		}
+X	;
+X
+X/* regular, assigned, and computed GOTO */
+X
+Xs:		GOTO CONST { emit(GOTO, $2.c.u.l); }
+X	|	GOTO NAME { emit(GOTO, 0L); emit(NAME, $2.n.name); }
+X		optstmtlist
+X	|	GOTO OP { emit(GOTO, 0L); } stmtlist CP { emit(CP); }
+X		optcomma exp
+X	;
+X
+Xoptstmtlist:	CM OP stmtlist CP
+X	|	/* empty */
+X	;
+X
+Xstmtlist:	CONST { emit(ICON, $1.c.u.l); }
+X	|	stmtlist CM CONST { emit(ICON, $3.c.u.l); }
+X	;
+X
+Xs:		STOP
+X	;
+X
+Xs:		CALL NAME { emit(CALL, $2.n.name); }
+X	|	CALL NAME { emit(CALL, $2.n.name); } OP cexplist CP
+X	;
+X
+Xcexplist:	cexp
+X	|	cexplist CM { emit(CM); } cexp
+X	;
+X
+Xcexp:		exp
+X	|	STAR CONST { emit(1, $2.c.u.l); }
+X	;
+X
+Xs:		RETURN { emit(RETURN); }
+X	|	RETURN { emit(RETURN); } exp
+X	;
+Xs:		END { emit(END); }
+X	;
+X
+X%%
+X
+X/* your standard error routine */
+Xvoid yyerror(char *s)
+X{
+X	printf("%d: %s\n", lineno, s);
+X}
+SHAR_EOF
+chmod 0644 fparse.y || echo "restore of fparse.y fails"
+fi
+if test -f fmain.c; then echo "File fmain.c exists"; else
+echo "x - extracting fmain.c (Text)"
+sed 's/^X//' << 'SHAR_EOF' > fmain.c &&
+X/*************************************************************************
+X*                                                                        *
+X*     Fortran 77 Subset Parser - November 1988                           *
+X*     Copyright 1988 - John R. Levine.  All rights reserved.             *
+X*     Permission is hereby granted to make copies in modified or         *
+X*     unmodified form so long as this copyright notice is preserved      *
+X*     and such copies are not made for direct commercial advantage.      *
+X*                                                                        *
+X*     Any other use such as incorporation in whole or in part in a       *
+X*     product offered for sale requires separate permission.             *
+X*                                                                        *
+X*     John R. Levine                                                     *
+X*     P.O. Box 349                                                       *
+X*     Cambridge MA 02238-0349                                            *
+X*                                                                        *
+X*     Internet/uucp: Levine@yale.edu    MCI Mail:  103-7498              *
+X*                                                                        *
+X*************************************************************************/
+X
+X/* simple main program that parses a statement at a time and emits Lisp
+X   expressions corresponding to the parsed tokens.
+X */
+X
+X#include <stdio.h>
+X#include <stdarg.h>
+X#include "ftn.h"
+X#include "fparse.h"
+X
+XFILE *ifile;
+XFILE *ofile = stdout;
+Xextern yydebug;
+X
+Xmain(ac, av)
+Xchar **av;
+X{
+X	if(av[1][0] == '-') {
+X		yydebug++;
+X		av++;
+X		ac--;
+X	}
+X
+X	ifile = fopen(av[1], "r");
+X	if(!ifile) {
+X		perror(av[1]);
+X		return 1;
+X	}
+X	if(ac > 2) {
+X		ofile = fopen(av[2], "w");
+X		if(!ofile) {
+X			perror(av[2]);
+X			return 1;
+X		}
+X	}
+X
+X	while(lex0()) {		/* prescan a statement */
+X		yyparse();	/* then parse it */
+X		lex1();		/* then clean it up */
+X	}
+X	return 0;
+X}
+X
+Xchar *relops[] = {
+X	"???", 	"EQ", "NE", "LT", "LE", "GT", "GE" 
+X};
+X
+X/*VARARGS*/
+Xvoid
+Xemit(int tok,...)
+X{
+X	va_list vp;
+X	int ty;
+X	char *s;
+X	
+X	switch(tok) {
+X	case 0:		s = ""; break;
+X	case 1:		s = "STMT"; break;
+X	case AND:	s = "AND"; break;
+X	case CALL:	s = "CALL"; break;
+X	case CAT:	s = "CAT"; break;
+X	case CCON:	s = "CCON"; break;
+X	case CM:	s = "CM"; break;
+X	case COLON:	s = "COLON"; break;
+X	case COMMON:	s = "COMMON"; break;
+X	case CONTINUE:	s = "CONTINUE"; break;
+X	case CP:	s = "CP"; break;
+X	case DIV:	s = "DIV"; break;
+X	case DO:	s = "DO"; break;
+X	case END:	s = "END"; break;
+X	case EQ:	s = "EQ"; break;
+X	case EQV:	s = "EQV"; break;
+X	case FUNCTION:	s = "FUNCTION"; break;
+X	case GOTO:	s = "GOTO"; break;
+X	case ICON:	s = "ICON"; break;
+X	case IF:	s = "IF"; break;
+X	case MINUS:	s = "MINUS"; break;
+X	case NAME:	s = "NAME"; break;
+X	case NOT:	s = "NOT"; break;
+X	case OP:	s = "OP"; break;
+X	case OR:	s = "OR"; break;
+X	case PLUS:	s = "PLUS"; break;
+X	case POW:	s = "POW"; break;
+X	case RCON:	s = "RCON"; break;
+X	case RELOP:	s = "RELOP"; break;
+X	case RETURN:	s = "RETURN"; break;
+X	case STAR:	s = "STAR"; break;
+X	case SUBROUTINE:	s = "SUBROUTINE"; break;
+X	case TO:	s = "TO"; break;
+X	case TYPE:	s = "TYPE"; break;
+X	case UMINUS:	s = "UMINUS"; break;
+X	default:	s = "???"; break;
+X	} /* codes */
+X
+X	fprintf(ofile, "(%s", s);
+X	
+X	va_start(vp, tok);
+X	switch(tok) {
+X	case FUNCTION:
+X		ty = va_arg(vp, type);
+X		s = va_arg(vp, char*);
+X		fprintf(ofile, " %d %d %s", TYTYPE(ty), TYLEN(ty), s);
+X		break;
+X	case CALL:
+X	case NAME:
+X	case SUBROUTINE:
+X	case TO:
+X		s = va_arg(vp, char*);
+X		if(!s || !*s)
+X			s = "Blank";
+X		fprintf(ofile, " %s", s);
+X		break;
+X	case TYPE:
+X		ty = va_arg(vp, type);
+X		fprintf(ofile, " %d %d", TYTYPE(ty), TYLEN(ty));
+X		break;
+X	case ICON:
+X	case DO:
+X	case GOTO:
+X	case 1:	/* hack for *NNN statement numbers in call statements */
+X		fprintf(ofile, " %ld", va_arg(vp, long));
+X		break;
+X	case CCON:
+X		fprintf(ofile, " \"%s\"", va_arg(vp, char *));
+X		break;
+X	case RCON:
+X		fprintf(ofile, " %g", va_arg(vp, double));
+X		break;
+X	case EQV:
+X		fprintf(ofile, " %sEQV", va_arg(vp, int)? "N": "");
+X		break;
+X	case RELOP:
+X		fprintf(ofile, " %s", relops[va_arg(vp, int)]);
+X		break;
+X	}
+X	fprintf(ofile, ")\n");
+X	va_end(vp);
+X} /* emit */
+SHAR_EOF
+chmod 0644 fmain.c || echo "restore of fmain.c fails"
+fi
+if test -f ftn.h; then echo "File ftn.h exists"; else
+echo "x - extracting ftn.h (Text)"
+sed 's/^X//' << 'SHAR_EOF' > ftn.h &&
+X/*************************************************************************
+X*                                                                        *
+X*     Fortran 77 Subset Parser - November 1988                           *
+X*     Copyright 1988 - John R. Levine.  All rights reserved.             *
+X*     Permission is hereby granted to make copies in modified or         *
+X*     unmodified form so long as this copyright notice is preserved      *
+X*     and such copies are not made for direct commercial advantage.      *
+X*                                                                        *
+X*     Any other use such as incorporation in whole or in part in a       *
+X*     product offered for sale requires separate permission.             *
+X*                                                                        *
+X*     John R. Levine                                                     *
+X*     P.O. Box 349                                                       *
+X*     Cambridge MA 02238-0349                                            *
+X*                                                                        *
+X*     Internet/uucp: Levine@yale.edu    MCI Mail:  103-7498              *
+X*                                                                        *
+X*************************************************************************/
+X
+X
+X/* some headers for a Fortran parser */
+X
+Xtypedef unsigned char uchar;
+Xtypedef unsigned short type;	/* stores a Fortran type, high byte type, */
+X				/* low byte length */
+X
+X/* binary expression */
+Xtypedef struct _binexp {
+X	type t;
+X	int expop;
+X	union _expr *el;
+X	union _expr *er;
+X} binexp;
+X
+X/* Fortran constant */
+Xtypedef struct _const {
+X	type t;
+X	union {
+X		long l;
+X		double d;
+X		char *c;
+X	} u;
+X} constant;
+X
+X/* name reference */
+Xtypedef struct _name {
+X	type t;
+X	char name[32];
+X} name;
+X
+X/* more or less generic expression */
+Xtypedef union _expr {
+X	struct _binexp b;
+X	struct _const c;
+X	struct _name n;
+X} expr;
+X
+X/* The Fortran lexical analyzer is very context dependent, here we list the
+X   various contexts that it knows about.
+X */
+X
+Xenum contexts {
+X	cxt_stmt = 0,	/* beginning of statement */
+X	cxt_norm,	/* normal in an expression */
+X	cxt_do,		/* DO stmt seen */
+X	cxt_type,	/* type seen */
+X} context;
+X
+X/* keyword lookup table */
+Xtypedef struct _kwdtab {
+X	char *kwd;	/* text of the keyword */
+X	int ktok;	/* token code */
+X	int klex;	/* lexical value */
+X} kwdtab;
+X
+X
+X/* types */
+X#define TY_NONE		0	/* no type */
+X#define TY_CHAR		1
+X#define	TY_LOGICAL	2
+X#define TY_INTEGER	3
+X#define	TY_REAL		4
+X#define TY_COMPLEX	5
+X
+X#define MTYPE(ty, len) ((TY_##ty)<<8|(len))
+X#define TYTYPE(x) ((x)>>8)	/* type part of a type */
+X#define TYLEN(x) ((x)&0377)	/* length part of a type */
+X
+X/* relops */
+Xenum relops {
+X	rel_eq = 1,
+X	rel_ne,
+X	rel_lt,
+X	rel_le,
+X	rel_gt,
+X	rel_ge
+X};
+X
+X/* some random stuff */
+Xextern int lineno;
+X
+X
+X/* some prototypes */
+Xvoid yyerror(char *);
+Xvoid emit(int,...);
+SHAR_EOF
+chmod 0644 ftn.h || echo "restore of ftn.h fails"
+fi
+exit 0

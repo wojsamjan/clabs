@@ -1,0 +1,28 @@
+% Plik: przyklad04.ps
+
+% Procedury cd.
+
+/inch {
+  72 mul
+} def
+
+/box {
+  newpath moveto
+  1 inch 0 rlineto
+  0 1 inch rlineto
+  -1 inch 0 rlineto
+  closepath
+} def
+
+/fillbox { % stos: szarosc => --
+  setgray
+  fill
+} def
+
+% Program glowny
+
+3.5 inch 4.5 inch box 0 fillbox
+3.75 inch 5 inch box 0.4 fillbox
+4 inch 5.5 inch box 0.8 fillbox
+
+showpage

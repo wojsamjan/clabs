@@ -1,0 +1,26 @@
+% Plik: przyklad01.ps
+
+% Uruchamianie programow:
+%   gs -sDEVICE=x11alpha przyklad01.ps
+% albo
+%   gs -sDEVICE=x11alpha
+% i na terminalu wpisujemy
+%   (przyklad01.ps) run
+%
+% Kolor:
+%   1 0 0 setrgbcolor  -- czerwony
+%   0 1 0 setrgbcolor  -- zielony
+%   0 0 1 setrgbcolor  -- niebieski
+
+% Pudelko
+
+newpath
+  270 360 moveto
+  0 72 rlineto
+  72 0 rlineto
+  0 -72 rlineto
+  -72 0 rlineto
+  4 setlinewidth
+stroke
+
+showpage

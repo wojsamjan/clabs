@@ -1,0 +1,22 @@
+"Pomoc"
+
+Program rozwiazuje labirynt zapisany w pliku tekstowym.
+Standardowo jest to plik 'labirynt.txt', ktory jest ladowany 
+zaraz po uruchomieniu programu.
+Zawiera on labirynt reprezentowany przez specyficzne znaki.
+I tak:
+ # - ozanczaja sciany
+ S - oznacza punkt startowy
+ W(w) - oznaczaja wyjscia (ktorych moze byc wiele)
+Wolne miejsca czyli znaki 'spacji' to sciezki po ktorych
+mozemy sie poruszac.
+
+Program rozwiazuje labirynt metoda rekurencyjnych powrotow
+(ang. Recursive Backtracker).
+Aby rozpoczac nalezy wybrac z menu 'Labirynt' 
+opcje 'Rozwiaz'. Znaleziona droga nie jest droga najkrotsza.
+Aby znalezc najkrotsza droge nalezy z tego samego menu wybrac
+opcje 'Najkrotsza droga'.
+Aby dokonac jakiejs operacji na wczytanym labiryncie
+musi on byc "czysty" tzn. nie moga byc zaznaczone zadne
+sciezki. W tym celu nalezy wybrac opcje 'Wyczysc'.

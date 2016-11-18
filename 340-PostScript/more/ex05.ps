@@ -1,0 +1,27 @@
+%!PS
+
+% Specjalne efekty: charpath
+% Dostêpne fonty: zob. Fontmap.GS
+
+% A4 = 210 mm x 297 mm
+
+/mm { 2.8346 mul } def   % procedura
+
+/ZapfChancery-MediumItalic findfont
+200 mm scalefont         % wybierz font i powiêksz go
+setfont                  % ustwa go jko font bie¿acy
+10 mm 50 mm moveto       % ustaw bie¿±cy punkt
+(Q) false charpath       % pobierz scie¿kê znaku
+gsave
+    10 mm setlinewidth   % wybierz szerokie piórko
+    0 0 .5 setrgbcolor   %
+    stroke               % rysuj sie¿kê znaku
+grestore
+5 mm setlinewidth        % wybierz wê¿sze piórko
+.7 .7 .7 setrgbcolor     % 
+stroke                   % rysuj
+0 0 .4 setrgbcolor
+10 mm 50 mm moveto
+(Q) show
+
+showpage                 % poka¿ stronê

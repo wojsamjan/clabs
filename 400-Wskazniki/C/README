@@ -1,0 +1,44 @@
+
+   JP2 
+   
+   #########################################################
+
+   UWAGA: 
+     Wszystkie polecenia kompilacji maj± byæ zapisane
+     w pliku `Makefile'. Wykonanie polecenia `make'
+     powinno wywo³aæ kompilacjê wszystkich programów
+     w bie¿±cym katalogu.
+
+     Podrêcznik u¿ytkownika (w formacie PDF) dla programu 
+    `make' mo¿na ¶ci±gn±æ z: 
+
+             ftp://web.univ.gda.pl/Dokumentacja/03-Make
+
+     lub w innych formatach (m.in. HTML) z
+
+             ftp://ftp.task.gda.pl/pub/gnu/Manuals/make
+
+ZADANIA DO WYKONANIA:
+
+1. Wykonaæ æwiczenia z ksi±¿ki Kernighan, Ritchie. 
+   ,,Jêzyk ANSI C'': 5.1, 5.2.
+
+   5.1. Tak jak zosta³a napisana, funkcja `getint' traktuje
+        znaki `+' i `-', po których nie nastêpuje cyfra, jako
+        poprawne reprezentacje zera. Zmieñ tê funkcjê tak,
+        aby oddawa³a je z powrotem na wej¶cie.
+        Uwaga: skorzystaæ z funkcji bibliotecznych `getc' i
+        `ungetc'.
+   5.2. Napisz funkcjê `getfloat' -- zmiennopozycyjny odpowiednik
+        funkcji `getint'. Jakiego typu warto¶æ powinna zwracaæ
+        `getfloat' jako swoj± warto¶æ funkcyjn±?
+        Uwaga: mo¿na siê wzorowaæ na funkcji `getint' ale kod
+        oparty na innym pomy¶le bêdzie te¿ OK.
+   X.1. Utworzyæ plik `input.h' zawieraj±cy deklaracje funkcji
+        `getint' i `getfloat' oraz plik `input.c' zawieraj±cy
+        implementacjê tych funkcji.
+        Napisaæ, program testuj±cy kod tych funkcji.
+
+2. Wykonaæ jedno z æwiczeñ 5.3, 5.4 lub 5.5. Porównaæ kod
+   z kodem funkcji z biblioteki `glibc'.
+   Gdzie mo¿na znale¼æ ¼ród³a funkcji z biblioteki C?

@@ -1,0 +1,1992 @@
+<HTML>
+<HEAD>
+<TITLE>Universal Resource identifiers in WWW</TITLE>
+<NEXTID N="z3">
+</HEAD>
+<BODY>
+<H1><A
+NAME="z1" HREF="URI_Overview.html">About this document</A></H1>This document defines the syntax
+used by the World-Wide Web initiative
+to encode the names and addresses
+of objects on the Internet.  The
+web is considered to include objects
+accessed using an extendable number
+of protocols, existing, invented
+for the web itself, or to be invented
+in the future.  Access instructions
+for an individual object under a
+given protocol are encoded into forms
+of address string.  Other protocols
+allow the use of object names of
+various forms.  In order to abstract
+the idea of a generic object, the
+web needs the concepts of the universal
+set of objects, and of the universal
+set of  names or addresses of objects.<P>
+A Universal Resource Identifier (URI)
+is a member of this universal set
+of names in registered name spaces
+and addresses referring to registered
+protocols or name spaces.  A Uniform
+Resource Locator (URL), defined elsewhere,
+is a form of URI which expresses
+an address which maps onto an access
+algorithm using network protocols.
+Existing URI schemes which correspond
+to the (still mutating) concept of
+IETF URLs are listed here. The Uniform
+Resource Name (URN) debate attempts
+to define a name space (and presumably
+resolution protocols) for persistent
+object names. This area is not addressed
+by this document, which is written
+in order to document existing practice
+and provide a reference point for
+URL and URN discussions.<P>
+This document  is therefore to be
+issued under the  <A
+NAME="z2" HREF="1_InfoDisclaimer.html">"informational
+RFC" disclaimer</A> .<P>
+The world-wide web protocols are
+discussed on the mailing list www-talk-request@info.cern.ch
+and the newsgroup comp.infosystems.www
+is preferable for beginner's questions.
+The mailing list uri-request@bunyip.com
+has discussion related particularly
+to the URI issue.  The author may
+be contacted as timbl@info.cern.ch.<P>
+This document is available in hypertext
+form at http://www.w3.org/hypertext/WWW/Addressing/URL/URI_Overview.html</A></BODY>
+</HTML>
+<HTML>
+<HEAD>
+
+<NEXTID N="z2">
+</HEAD>
+<BODY>
+<H3>Status of this memo</H3>This document is an Internet Draft.
+Internet Drafts are working documents
+of the Internet Engineering Task
+Force (IETF), its Areas, and its
+Working Groups.  Note that other
+groups may also distribute working
+documents as Internet Drafts.  <P>
+Internet Drafts are working documents
+valid for a maximum of six months.
+Internet Drafts may be updated, replaced,
+or obsoleted by other documents at
+any time.  It is not appropriate
+to use Internet Drafts as reference
+material or to cite them other than
+as a "working draft" or "work in
+progress".  <P>
+Distribution of this document is
+unlimited. </BODY>
+</HTML>
+<HTML>
+<HEAD>
+
+<NEXTID N="z4">
+</HEAD>
+<BODY>
+<H1><A
+NAME="z3" HREF="URI_Overview.html">The need for a universal syntax</A> </H1>This section describes the concept
+of the URI and does not form part
+of the specification.<P>
+Many protocols and <A
+NAME="z1" HREF="Note_systems.html">systems</A> for document
+search and retrieval are currently
+in use, and many more protocols or
+refinements of existing protocols
+are to be expected in a field whose
+expansion is explosive.  <P>
+These systems are aiming to achieve
+global search and readership of documents
+across differing computing platforms,
+and despite a plethora of protocols
+and data formats.   As protocols
+evolve, gateways can allow global
+access to remain possible. As data
+formats evolve, format conversion
+programs can preserve global access.
+There is one area, however, in which
+it is impractical to make conversions,
+and that is in the names and addresses
+used to identify objects.  This is
+because names and addresses of objects
+are passed on in so many ways, from
+the backs of envelopes to hypertext
+objects, and may have a long life.<P>
+A common feature of almost all the
+data models of past and proposed
+systems is something which can be
+mapped onto a concept of "object"
+and some kind of name, address, or
+identifier for that object.  One
+can therefore define a set of name
+spaces in which these objects can
+be said to exist.<P>
+Practical systems need to access
+and mix objects which are part of
+different existing and proposed systems.
+Therefore, the concept of the universal
+set of all objects, and hence the
+universal set of names and addresses,
+in all name spaces, becomes important.
+This allows names in different spaces
+to be treated in a common way, even
+though names in different spaces
+have differing characteristics, as
+do the objects to which they refer.
+<H2>URIs</H2>This document defines a way to encapsulate
+a name in any registered name space,
+and label it with the the name space,
+producing a member of the universal
+set.  Such an encoded and labelled
+member of this set is known as a
+Universal Resource Identifier, or
+URI.<P>
+The universal syntax allows access
+of objects available using existing
+protocols, and may be extended with
+technology. <P>
+The specification of the URI syntax
+does not imply anything about the
+properties of names and addresses
+in the various name spaces which
+are mapped onto the set of URI strings.
+ The properties follow from the specifications
+of the protocols and the associated
+usage conventions for each scheme.
+<H2>URLs</H2>For existing Internet access protocols,
+it is necessary in most cases to
+define the encoding of the access
+algorithm into something concise
+enough to be termed address.  URIs
+which refer to objects accessed with
+existing protocols are known as "Uniform
+Resource Locators" (URLs) and are
+listed here as used in WWW, but to
+be formally defined  in a <A
+NAME="z2" HREF="Overview.html">separate
+document</A> .
+<H2>URNs</H2>There is currently a drive to define
+a space of more persistent names
+than any URLs.  These "Uniform Resource
+Names" are the subject of an IETF
+working group's discussions.  (See
+Sollins and Masinter, Functional
+Specifications for URNs, circulated
+informally.)<P>
+The URI syntax and URL forms have
+been in widespread use by World-Wide
+Web software since 1990.</BODY>
+</HTML>
+<HTML>
+<HEAD>
+
+<NEXTID N="z3">
+</HEAD>
+<BODY>
+<H1><A
+NAME="z2" HREF="URI_Overview.html">Design criteria and choices</A></H1>This section is not part of the specification:
+it is simply an explanation of the
+way in which the specification was
+derived.
+<H2>Design criteria</H2>The syntax was designed to be
+<DL>
+<DT>Extensible
+<DD> New naming schemes may
+be added later.
+<DT>Complete
+<DD> It is possible to encode
+any naming scheme.
+<DT>Printable
+<DD> It is possible to express
+any URI using 7-bit ASCII characters
+so that  URIs may if necessary be
+passed using pen and ink.
+</DL>
+
+<H2>Choices for a universal syntax </H2>For the syntax itself there is little
+choice except for the order and punctuation
+of the elements, and the acceptable
+characters and escaping rules.<P>
+The extensibility requirement is
+met by allowing an arbitrary (but
+registered) string to be used as
+a prefix.  A prefix is chosen as
+left to right parsing is more common
+than right to left.   The choice
+of a colon as separator of the prefix
+from the rest of the URI was arbitrary.<P>
+The decoding of the rest of the string
+is defined as a function of the prefix.
+New prefixed are introduced for new
+schemes as necessary, in agreement
+with the registration authority.
+The registration of a new scheme
+clearly requires the definition of
+the decoding of the URI into a given
+name space, and a definition of the
+properties and, where applicable,
+resolution protocols, for the name
+space.<P>
+The completeness requirement is easily
+met by allowing particularly strange
+or plain binary names to be encoded
+in base 16 or 64 using the acceptable
+characters.  <P>
+The printability requirement could
+have been met by requiring all schemes
+to encode characters not part of
+a basic set.   This led to many <A
+NAME="z1" HREF="_Note1.html">discussions</A>
+of what the basic set should be.
+A difficult case, for example, is
+when an ISO latin 1 string appears
+in a URL, and within an application
+with ISO Latin-1 capability, it can
+be handled intact.  However, for
+transport in general, the non-ASCII
+characters need to be escaped.<P>
+The solution to this was to specify
+a safe set of characters, and a general
+escaping scheme which may be used
+for encoding "unsafe" characters.
+This "safe" set is suitable, for
+example, for use in electronic mail.
+ This is the canonical form of a
+URI. <P>
+The choice of escape character for
+introducing representations of non-allowed
+characters also tends to be a matter
+of taste. An ANSI standard exists
+in the C language, using the back-slash
+character "\". The use of this character
+on unix command lines, however, can
+be a problem as it is interpreted
+by many shell programs, and would
+have itself to be escaped.   It is
+also a character which is not available
+on certain keyboards.  The equals
+sign is commonly used in the encoding
+of names having attribute=value pairs.
+The percent sign was eventually chosen
+as a suitable escape character.<P>
+There is a conflict between the need
+to be able to represent many characters
+including spaces within a URI directly,
+and the need to be able to use a
+URI in environments which have limited
+character sets or in which certain
+characters are prone to corruption.
+This conflict has been resolved by
+use of an hexadecimal escaping method
+which may be applied to any characters
+forbidden in a given context. When
+URLs are moved between contexts,
+the set of characters escaped may
+be enlarged or reduced unambiguously.<P>
+The use of white space characters
+is risky  in URIs to be printed or
+sent by electronic mail, and the
+use of multiple white space characters
+is very risky.  This is because of
+the frequent introduction of extraneous
+white space when lines are wrapped
+by systems such as mail, or sheer
+necessity of narrow column width,
+and because of the  inter-conversion
+of various forms of white space which
+occurs during character code conversion
+and the transfer of text between
+applications.  This is why the canonical
+form for URIs has all white spaces
+encoded. </A></BODY>
+</HTML>
+<HTML>
+<HEAD>
+
+<NEXTID N="z8">
+</HEAD>
+<BODY>
+<H1><A
+NAME="z0" HREF="URI_Overview.html">Recommendations</A></H1>This section describes the syntax
+for URIs as used in the WorldWide
+Web initiative.  The generic syntax
+provides a framework for new schemes
+for names to be resolved using as
+yet undefined protocols.  
+<H2>URI syntax  </H2>A complete URI consists of a naming
+scheme specifier followed by a string
+whose format is a function of the
+naming scheme. For locators of information
+on the Internet, a common syntax
+is used for the  IP address part.
+A <A
+NAME="z4" HREF="5_URI_BNF.html">BNF description</A> of the URL syntax
+is given in an a later section. The
+components are as follows.  <A
+NAME="z2" HREF="4_2_Fragments.html">Fragment
+identifiers</A> and <A
+NAME="z3" HREF="4_3_Partial.html">relative URIs</A> are
+not involved in the basic URL definition.
+<H3>Scheme  </H3>Within the URI of a object, the first
+element is the name of the scheme,
+separated from the rest of the object
+by a colon. 
+<H3>Path</H3>The rest of the URI follows the colon
+in a format depending on the scheme.
+The path is interpreted in a manner
+dependent on the protocol being used.
+However, when it contains slashes,
+these must imply a hierarchical structure.
+<H2>Reserved characters</H2>The path in the URI has a significance
+defined by the particular scheme.
+Typically it is used to encode a
+name in a given name space, or an
+algorithm for accessing an object.
+In either case, the encoding may
+use those characters allowed by the
+BNF syntax, or hexadecimal encoding
+of other characters.<P>
+Some of the reserved characters have
+special uses as defined here.
+<H3>The percent sign</H3>The percent sign ("%", ASCII 25 hex)
+is used as the escape character in
+the encoding scheme and is never
+allowed for anything else.
+<H3>Hierarchical forms</H3>The slash ("/", ASCII 2F hex) character
+is reserved for the delimiting of
+substrings whose relationship is
+hierarchical.  This enables partial
+forms of the URI.   Substrings consisting
+of single or double dots ("." or
+"..") are similarly reserved. <P>
+The significance of the slash between
+two segments is that the segment
+of the path to the left is more significant
+than the segment of the path to the
+right.  ("Significance" in this case
+refers solely to closeness to the
+root of the hierarchical structure
+and makes no value judgement!)
+<H4>Note</H4>The similarity to unix and other
+disk operating system filename conventions
+should be taken as purely coincidental,
+and should not be taken to indicate
+that URIs should be interpreted as
+file names.
+<H3>Hash for Fragment Identifiers</H3>The hash ("#", ASCII 23 hex) character
+is reserved as a delimiter to separate
+the URI of an object from a <A
+NAME="z5" HREF="4_2_Fragments.html">fragment
+identifier</A> .
+<H3>Query strings</H3>The question mark ("?", ASCII 3F
+hex)  is used to delimit the boundary
+between the URI of a queryable object,
+and a set of words used to express
+a query on that object.  When this
+form is used, the combined URI stands
+for the object which results from
+the query being applied to the original
+object.<P>
+Within the query string, the plus
+sign is reserved as shorthand notation
+for a space.  Therefore, real plus
+signs must be encoded.   This method
+was used to make query URIs easier
+to pass in systems which did not
+allow spaces.<P>
+The query string represents some
+operation applied to the object,
+but this specification gives no common
+syntax or semantics for it.  In practice
+the syntax and sematics may depend
+on the scheme and may even on the
+base URI.
+<H3>Other reserved characters</H3>The astersik ("*", ASCII 2A hex)
+ and exclamation mark ("!" , ASCII
+21 hex) are reserved for use as having
+special signifiance within specific
+schemes.
+<H2>Unsafe characters</H2>In canonical form, certain characters
+such as spaces, control characters,
+some characters whose ASCII code
+is used differently in different
+national character variant 7 bit
+sets, and all 8bit characters beyond
+DEL (7F hex) of the ISO Latin-1 set,
+shall not be used unencoded. This
+is a recommendation for trouble-free
+interchange, and as indicated below,
+the encoded set may be extended or
+reduced.
+<H2><A
+NAME="z1">Encoding reserved characters</A></H2>When a system uses a local addressing
+scheme, it is useful to provide a
+mapping from local addresses into
+URIs so that references to objects
+within the addressing scheme may
+be referred to globally, and possibly
+accessed through gateway servers.<P>
+For a new naming scheme, any mapping
+scheme may be defined provided it
+is unambiguous, reversible, and provides
+valid URIs. It is recommended that
+where hierarchical aspects to the
+local naming scheme exist, they be
+mapped onto the hierarchical URL
+path syntax in order to allow the
+partial form to be used. <P>
+  It is also recommended that the
+conventional scheme below be used
+in all cases except for any scheme
+which encodes binary data as opposed
+to text, in which case a more compact
+encoding such as pure hexadecimal
+or base 64 might be more appropriate.
+For example, the conventional URI
+encoding method is used for mapping
+WAIS, FTP, Prospero and Gopher addresses
+in the URI specification.
+<H3>Conventional URI encoding scheme</H3>Where the local naming scheme uses
+ASCII characters which are not allowed
+in the URI,  these may be represented
+in the URL by a percent sign "%"
+immediately followed by two hexadecimal
+digits (0-9, A-F) giving the ISO
+Latin 1 code for that character.
+Character codes other than those
+allowed by the syntax shall not be
+used unencoded in a URI. 
+<H3>Reduced or increased safe character
+sets</H3>The same encoding method may be used
+for encoding characters whose use,
+although technically allowed in a
+URI, would be unwise due to problems
+of corruption by imperfect gateways
+or misrepresentation due to the use
+of variant character sets, or which
+would simply be awkward in a given
+environment.  Because a % sign always
+indicates an encoded character, a
+URI may be made "safer" simply by
+encoding any characters considered
+unsafe, while leaving already encoded
+characters still encoded.  Similarly,
+in cases where a larger set of characters
+is acceptable, % signs can be selectively
+and reversibly expanded.<P>
+Before two URIs can be compared,
+it is therefore necessary to bring
+them to the same encoding level.<P>
+However, the reserved characters
+mentioned above have a quite different
+significance when encoded, and so
+may NEVER be encoded and unencoded
+in this way.  <P>
+The percent sign intended as such
+must always be encoded, as its presence
+otherwise always indicates an encoding.
+Sequences which start with a percent
+sign but are not followed by two
+hexadecimal characters are reserved
+for future extension. (see <A
+NAME="z7" HREF="#z6">example
+3</A> )
+<H4>Example 1</H4>The URIs 
+<PRE>		http://www.w3.org/albert/bertram/marie-claude
+
+</PRE>and 
+<PRE>		http://www.w3.org/albert/bertram/marie%2Dclaude 
+
+</PRE>are identical, as the %2D encodes
+a hyphen character.
+<H4>Example 2</H4>The URIs
+<PRE> 		http://www.w3.org/albert/bertram/marie-claude
+
+</PRE>and
+<PRE> 		http://www.w3.org/albert/bertram%2Fmarie-claude
+
+</PRE>are NOT identical, as in the second
+case the encoded slash does not have
+hierarchical significance.
+<H4><A
+NAME="z6">Example 3</A></H4>The URIs
+<PRE>		fxqn:/us/va/reston/cnri/ietf/24/asdf%*.fred
+
+</PRE>and
+<PRE>		news:12345667123%asdghfh@info.cern.ch
+
+</PRE>are illegal, as all % characters
+imply encodings, and there is no
+decoding defined for "%*"  or "%as"
+in this recommendation.</BODY>
+</HTML>
+<HTML>
+<HEAD>
+
+<NEXTID N="z5">
+</HEAD>
+<BODY>
+<H2><A
+NAME="z2" HREF="URI_Overview.html">Partial (relative) form</A>  </H2>Within a object whose URI is well
+defined, the URI of another object
+may be given in abbreviated form,
+where parts of the two URIs are the
+same. This allows objects within
+a group to refer to each other without
+requiring the space for a complete
+reference, and it incidentally allows
+the group of objects  to be moved
+without changing any references.
+ It must be emphasized that when
+a reference is passed in anything
+other than a well controlled context,
+the full form must always be used.
+<P>
+In the World-Wide Web applications,
+the context URI is that of the document
+or object containing a reference.
+In this case partial URIs can be
+generated in virtual objects or stored
+in real objects, without the need
+for dramatic change if the higher-order
+parts of a hierarchical naming system
+are modified.   Apart from terseness,
+this gives greater robustness to
+practical systems,  by enabling information
+hiding between system components.<P>
+The partial form relies on a property
+of the URI syntax that certain characters
+("/") and certain path elements ("..",
+".") have a significance reserved
+for representing a hierarchical space,
+and must be recognized as such by
+both clients and servers. <P>
+A partial form can be distinguished
+from an absolute form in that the
+latter must have a colon and that
+colon must occur before any slash
+characters. Systems not requiring
+partial forms should not use any
+unencoded slashes in their naming
+schemes.  If they do, absolute URIs
+will still work, but confusion may
+result. (See <A
+NAME="z4" HREF="#z3">note on Gopher</A> below).<P>
+The rules for the use of a partial
+name relative to the URI of  the
+context are:  
+<UL>
+<LI>If the scheme parts  are different,
+the whole absolute URI must be given.
+Otherwise, the scheme is omitted,
+and:
+<LI>If the partial URI starts with a
+non-zero number of consecutive slashes,
+then everything from the context
+URI up to (but not including) the
+first occurrence of exactly the same
+number of consecutive slashes which
+has no greater number of consecutive
+slashes anywhere to the right of
+it is taken to be the same and so
+prepended to the partial URL to form
+the full URL. Otherwise:
+<LI>The last part of the path of the
+context URI (anything following the
+rightmost slash) is removed, and
+the given partial URI appended in
+its place, and then:
+<LI>Within the result,  all occurrences
+of "xxx/../"  or "/." are recursively
+removed, where xxx, ".." and "."
+are complete path elements.
+</UL>
+<H5>Note: Trailing slashes</H5>If a path of the context locator
+ends in slash, partial URIs are treated
+differently to the URI with the same
+path but without a trailing slash.
+The trailing slash indicates a void
+segment of the path.
+<H5><A
+NAME="z3">Note: Gopher</A></H5>The gopher system does not have the
+concept of relative URIs, and the
+gopher community currently allows
+/ as data characters in gopher URIs
+without escaping them to %2F.  Relative
+forms may not in general be used
+for documents served by gopher servers.
+If they are used, then WWW software
+assumes, normally correctly, that
+in fact they do have hierarchical
+significance despite the specifications.
+The use of HTTP rather than gopher
+protocol is however recommended.
+<H4>Examples</H4>In the context of URI
+<PRE>			magic://a/b/c//d/e/f
+
+</PRE>the partial URIs would expand as
+follows:
+<DL>
+<DT>g
+<DD> magic://a/b/c//d/e/g
+<DT>/g
+<DD> magic://a/g
+<DT>//g
+<DD> magic://g
+<DT>../g
+<DD> magic://a/b/c//d/g
+<DT>g:h
+<DD> g:h
+</DL>
+and in the context of the URI
+<PRE>			magic://a/b/c//d/e/
+
+</PRE>the results would be exactly the
+same. 	</BODY>
+</HTML>
+<HTML>
+<HEAD>
+
+<NEXTID N="z3">
+</HEAD>
+<BODY>
+<H2><A
+NAME="z2" HREF="URI_Overview.html">Fragment-id</A>  </H2>This represents a part of, fragment
+of, or a sub-function within, an
+object . Its syntax and semantics
+are defined by the application responsible
+for the object, or the specification
+of the content type of the object.
+The only definition here is of the
+allowed characters by which it may
+be represented in a URL. <P>
+Specific syntaxes for representing
+fragments in text documents by line
+and character range, or in graphics
+by coordinates, or in structured
+documents using ladders, are suitable
+for standardization but not defined
+here. <P>
+The fragment-id follows the URL of
+the whole object from which it is
+separated by a hash sign (#).  If
+the fragment-id is void, the hash
+sign may be omitted: A void fragment-id
+with or without the hash sign means
+that the URL refers to the whole
+object.<P>
+While this hook is allowed for identification
+of fragments, the question of addressing
+of parts of objects, or of the grouping
+of objects and relationship between
+continued and containing objects,
+is not addressed by this document.<P>
+Fragment identifiers do NOT address
+the question of objects which are
+different versions of a "living"
+object, nor of expressing the relationships
+between different versions and the
+living object.<P>
+There is no implication that a fragment
+identifier refers to anything which
+can be extracted as an object in
+its own right.  It may, for example,
+refer to an indivisible point within
+an object.</A></BODY>
+</HTML>
+<HTML>
+<HEAD>
+
+<NEXTID N="z44">
+</HEAD>
+<BODY>
+<H1><A
+NAME="z0" HREF="Overview.html">Specific Schemes</A>  </H1>The mapping for URIs onto some existing
+standard and experimental protocols
+is outlined in the <A
+NAME="z3" HREF="5_BNF.html">BNF syntax definition</A>
+.  Notes on particular protocols
+follow.   These URIs are frequently
+referred to as URLs, though the exact
+definition of the term URL is still
+under discussion (March 1993). The
+schemes covered are:
+<DL>
+<DT><A
+NAME="z22" HREF="4_1_HTTP.html">http</A>
+<DD> Hypertext Transfer Protocol
+(<A
+NAME="z43" HREF="4_Ex_HTTP.html">examples</A>)
+<DT><A
+NAME="z23" HREF="4_1_FTP.html">ftp</A>
+<DD> File Transfer protocol
+<DT><A
+NAME="z32" HREF="4_1_Gopher.html">gopher</A>
+<DD> Gopher protocol
+<DT><A
+NAME="z31" HREF="4_1_Mailto.html">mailto</A>
+<DD> Electronic mail address
+<DT><A
+NAME="z24" HREF="4_1_News.html">news</A>
+<DD> Usenet news
+<DT><A
+NAME="z30" HREF="4_1_Telnet.html">telnet , rlogin and tn3270</A>
+<DD> Reference
+to interactive sessions
+<DT><A
+NAME="z26" HREF="4_1_WAIS.html">wais</A>
+<DD> Wide Area Information Servers
+<DT><A
+NAME="z42" HREF="4_1_File.html">file</A>
+<DD> Local file access
+</DL>
+The following schemes are proposed
+as essential to the unification of
+the web with electronic mail, but
+not currently (to the author's knowledge)
+implemented:
+<DL>
+<DT><A
+NAME="z38" HREF="4_1_Mid.html">mid</A>
+<DD> Message identifiers for electronic
+mail
+<DT><A
+NAME="z39" HREF="4_1_Cid.html">cid</A>
+<DD> Content identifiers for MIME
+body part 
+</DL>
+The schemes for <A
+NAME="z33" HREF="4_1_FurtherStudy.html">x.500, network management
+database, and whois++</A> have not been
+specified and may be the subject
+of further study.  Schemes for <A
+NAME="z40" HREF="4_1_Prospero.html">Prospero</A>
+, and  <A
+NAME="z37" HREF="4_1_NNTP.html">restricted NNTP</A> use are not
+currently implemented as far as the
+author is aware.<P>
+The "urn" prefix is reserved for
+use in encoding a <A
+NAME="z41" HREF="URI_URN.html">Uniform Resource
+Name</A> when that has been developed
+by the IETF working group.<P>
+New schemes may be <A
+NAME="z36" HREF="4_1_Registration.html">registered</A> at
+a later time.</BODY>
+</HTML>
+<HTML>
+<HEAD>
+
+<NEXTID N="z23">
+</HEAD>
+<BODY>
+<H2>HTTP  </H2>The <A
+NAME="z22" HREF="../../Protocols/HTTP/HTTP2.html">HTTP protocol</A> specifies that
+the path is handled transparently
+by those who handle URLs, except
+for the servers which de-reference
+them.   The path is passed by the
+client to the server with any request,
+but is not otherwise understood by
+the client. <P>
+The host details are not passed on
+to the client when the URL is an
+http URL which refers to the server
+in question.  In this case the string
+sent starts with the slash which
+follows the host details.  However,
+when an http server is being used
+as a gateway (or "proxy") then the
+entire URI, whether HTTP or some
+other scheme, is passed on the HTTP
+command line.The search part, if present, is sent
+as part of the HTTP command, and
+may in this respect be treated as
+part of the path.No fragmentid part of a WWW URI (the
+hash sign and following) is  sent
+with the request.   Spaces and control
+characters in URLs must be escaped
+for transmission in HTTP, as must
+other disallowed characters.</BODY>
+</HTML>
+<HTML>
+<HEAD>
+
+<NEXTID N="z1">
+</HEAD>
+<BODY>
+<H3>Examples</H3>These examples are not part of the
+specification: they are provided
+as illustations only.  The URI of
+ the "welcome" page to a server is
+conventionally
+<PRE>	http://www.my.work.com/
+
+</PRE>As the rest of the URL (after the
+hostname an port) is opaque to the
+client, it shows great variety but
+the  following are all fairly typical.
+<PRE>	http://www.my.uni.edu/info/matriculation/enroling.html
+
+	http://info.my.org/AboutUs/Phonebook
+
+	http://www.library.my.town.va.us/Catalogue/76523471236%2Fwen44--4.98
+
+	http://www.my.org/462F4F2D4241522A314159265358979323846
+
+</PRE>A URL for a server on a different
+port to 80 looks like
+<PRE>	http://www.w3.org:8000/imaginary/test
+
+</PRE>A reference to a particular part
+of a document  may, including the
+fragment identifier, look like
+<PRE>	http://www.myu.edu/org/admin/people#andy
+
+</PRE>in which case the string "#andy"
+is not sent to the server, but is
+retained by the client and used when
+the whole object had been retrieved.<P>
+ A search on a text database might
+look like
+<PRE>	http://info.my.org/AboutUs/Index/Phonebook?dobbins
+
+</PRE>and on another database
+<PRE>	http://www.w3.org/RDB/EMP?*%20where%20name%%3Ddobbins
+
+</PRE>In all cases the client passes the
+path string to the server uninterpreted,
+and for the client to deduce anything
+from </BODY>
+</HTML>
+<HTML>
+<HEAD>
+
+<NEXTID N="z37">
+</HEAD>
+<BODY>
+<H2>FTP  </H2>The ftp: prefix indicates that the
+FTP protocol <A
+NAME="z30" HREF="Note_FTP_Alt.html">is</A> used, as defined
+in <A
+NAME="z11" HREF="../../Protocols/rfc959/Overview.html">RFC957</A> or any successor. The port
+number, if present, gives the port
+of the FTP server if not the FTP
+default. 
+<H4>User name and password</H4>The syntax allows for the inclusion
+of a user name and even a password
+for those systems which do not use
+the anonymous FTP convention. The
+default, however, if no user or password
+is supplied, will be to use that
+convention, viz. that the user name
+is "anonymous" and the password <A
+NAME="z22" HREF="Note_AFTP.html">the
+user's Internet-style mail address</A>
+.<P>
+Where possible, this mail address
+should correspond to a usable mail
+address for the user, and preferably
+give a DNS host name which resolves
+to the IP address of the client.
+Note that servers currently vary
+in their treatment of the anonymous
+password. 
+<H4>Path</H4>The FTP protocol allows for a sequence
+of <A
+NAME="z10" HREF="../../Protocols/rfc959/Overview.html#z0">CWD</A> commands (change working directory)
+and a <A
+NAME="z29" HREF="../../Protocols/rfc959/4_FileTransfer.html#z2">TYPE command</A> prior to  <A
+NAME="z31" HREF="../../Protocols/rfc959/4_FileTransfer.html#z3">service
+commands</A> such as <A
+NAME="z32" HREF="../../Protocols/rfc959/4_FileTransfer.html#z1">RETR</A> (retrieve)
+or <A
+NAME="z33" HREF="../../Protocols/rfc959/4_FileTransfer.html#z5">NLIST</A>  (etc) which actually access
+a file. <P>
+The arguments of any CWD commands<A
+NAME="z34" HREF="Note_FTP_CWD_Alt.html">
+are</A> successive<A
+NAME="z9" HREF="5_BNF.html#z59"> segment</A> parts of the
+URL delimited by slash, and the final
+segment is suitable as the filename
+argument to the <A
+NAME="z12" HREF="../../Protocols/rfc959/4_FileTransfer.html#z1">RETR </A>command for
+retrieval or the directory argument
+to NLIST.<P>
+For some file systems (Unix in particular),
+the "/" used to denote the hierarchical
+structure of the URL corresponds
+to the delimiter used to construct
+a file name hierarchy, and thus,
+the filename will look the same as
+the URL path. This does NOT mean
+that the URL is a Unix filename.
+<H5>Note: Retrieving subsequent URLs
+from the same host</H5>There is no common hierarchical model
+to the FTP protocol, so if a directory
+change command has been given, it
+is impossible in general to deduce
+what sequence should be given to
+navigate to another directory for
+a second retrieval, if the paths
+are different.  The only reliable
+algorithm is to disconnect and reestablish
+the control connection.  
+<H4><A
+NAME="z28">Data type</A></H4>The data content type of a file can
+only, in the general FTP case, be
+deduced from the name, normally the
+suffix of the name. This is not standardized.
+An alternative is for it to be transferred
+in information outside the URL. A
+suitable FTP transfer type (for example
+binary "I"  or text "A") must in
+turn be deduced from the data content
+type.  It is recommended that conventions
+for suffixes of public archives be
+established, but it is outside the
+scope of this standard.<P>
+An FTP URL may optionally specify
+the FTP data transfer type by which
+an object is to be retrieved. Most
+of the methods correspond to the<A
+NAME="z23" HREF="../../Protocols/rfc959/3_DataTransfer.html#z2">
+FTP "Data Types"</A> ASCII and IMAGE
+for the retrieval of a document,
+as specified in FTP by the <A
+NAME="z27" HREF="../../Protocols/rfc959/4_FileTransfer.html#z2">TYPE command</A>
+. One method indicates directory
+access.<P>
+The data type is specified by a suffix
+to the URL. Possible suffixes are:
+<DL>
+<DT>;type = <A
+NAME="z35" HREF="../../Protocols/rfc959/5_Declarative.html#z9">&lt;type-code></A>
+<DD> Use <A
+NAME="z26" HREF="../../Protocols/rfc959/3_DataTransfer.html#z5">FTP type
+as given</A>  to perform data transfer.
+<DT>/
+<DD> Use FTP directory list commands
+to read directory
+<DD>
+</DL>
+The type code is in the format <A
+NAME="z36" HREF="../../Protocols/rfc959/5_Declarative.html#z9">defined
+in RFC959</A> except that THE SPACE IS
+OMITTED FROM THE URL.
+<H4>Transfer Mode</H4><A
+NAME="z24" HREF="../../Protocols/rfc959/3_DataTransfer.html#z3">Stream Mode</A> is always used.</BODY>
+</HTML>
+<HTML>
+<HEAD>
+
+<NEXTID N="z1">
+</HEAD>
+<BODY>
+<H2>Gopher</H2>The gopher URL specifies the host
+and optionally the port to which
+the  client should connect. This
+is followed by a slash and a single
+gopher type  code. This type code
+is used by the client to determine
+how to interpret the  server's reply
+and is is not for sending to server.
+ The command  string to be sent to
+the server immediately follows the
+gopher type character. It consists
+of the gopher selector string followed
+by  any "Gopher plus" syntax, but
+always omitting the trainling CR
+LF pair.<P>
+ When the gopher command string contains
+characters (such a embedded CR LF
+and HT characters) not allowed in
+a URL, these are encoded using the
+conventional encoding.<P>
+ <P>
+Note that some gopher selector strings
+begin with a copy of the gopher type
+character, in which case that character
+will occur twice consecutively. Also
+note that the gopher selector string
+may be an empty string since this
+is how  gopher clients refer to the
+top-level directory on a gopher server.<P>
+If the encoded command string (with
+trailing CR LF stripped) would be
+void then the gopher type character
+may be omiited and "1" (ASCII 31
+hex) is assumed.<P>
+ <P>
+Note that slash "/" in gopher selector
+strings may not correspond  to a
+level in a  hierarchical structure.</BODY>
+</HTML>
+<HTML>
+<HEAD>
+
+<NEXTID N="z31">
+</HEAD>
+<BODY>
+<H2>Mailto</H2>This allows a URL to specify an RFC822<A
+NAME="z1" HREF="../../Protocols/rfc822/Overview.html#z7">
+addr-spec</A> mail address.  Note that
+use of % , for example as used in
+forming a gatewayed mail address,<A
+NAME="z2" HREF="4.1__note1.html">
+requires</A> conversion to %25 in a URL.</A></BODY>
+</HTML>
+<HTML>
+<HEAD>
+
+<NEXTID N="z25">
+</HEAD>
+<BODY>
+<H2>News</H2>The news locators refer to either
+news group names or article message
+identifiers which must conform to
+the <A
+NAME="z24" HREF="../../Protocols/rfc1036/rfc1036.html#z2">rules </A>f<A
+NAME="z24" HREF="../../Protocols/rfc1036/rfc1036.html#z2">o</A>r a Message-Idof <A
+NAME="z23" HREF="../../Protocols/rfc1036/rfc1036.html">RFC 1036 (Horton 1987)</A>.  A message
+identifier may be distinguished from
+a news group name by the presence
+of the commercial at "@" character.
+These rules imply that within an
+article, a reference to a news group
+or to another article will be a valid
+URL (in the partial form). <P>
+A news URL may be dereferenced using<A
+NAME="z21" HREF="../../Protocols/rfc977/rfc977.html">
+NNTP (RFC977, Kantor 86)</A>  (The <A
+NAME="z22" HREF="../../Protocols/rfc977/rfc977.html#z0">ARTICLE
+by message-id command</A> ) or using
+any other protocol for the conveyance
+of usenet news articles, or by reference
+to a body of news articles already
+received.
+<H4>Note1: </H4>Among URLs the "news" URLs are anomalous
+in that they are location-independent.
+They are unsuitable as URN candidates
+because the NNTP architecture relies
+on the expiry of articles and therefore
+a small number of articles being
+available at any time.  When a news:
+URL is quoted, the assumption is
+that the reader will fetch the article
+or group from his or her local news
+host.  News host names are NOT part
+of news URLs.
+<H4>Note 2:</H4>An outstanding problem is that the
+message identifier is insufficient
+to allow the retrieval of an expired
+article, as no algorithm exists for
+deriving an archive site and file
+name. The addition of the date and
+news group set to the article's URL
+would allow this if a directory existed
+of archive sites by news group. Suggested
+subject of study in conjunction with
+NNTP working group.  Further extension
+possible may be to allow the naming
+of subject threads as addressable
+objects.</BODY>
+</HTML>
+<HTML>
+<HEAD>
+
+<NEXTID N="z30">
+</HEAD>
+<BODY>
+<H2>Telnet, rlogin, tn3270  </H2>The use of URLs to represent interactive
+sessions is a convenient extension
+to their uses for objects.  This
+allows access to information systems
+which only provide an interactive
+service, and no information server.
+As information within the service
+cannot be addressed individually
+or, in general, automatically retrieved,
+this is a less desirable, though
+currently common, solution.</A></BODY>
+</HTML>
+<HTML>
+<HEAD>
+
+<NEXTID N="z2">
+</HEAD>
+<BODY>
+<H2>URN</H2>The "Universal Resource Name" is
+currently (March 1993) under development
+in the IETF.   A <A
+NAME="z1" HREF="http://www.acl.lanl.gov/URI/archive/uri-archive.messages/926.html">requirements specification</A>
+is in preparation. It currently looks
+as though it will be a short string
+suitable for encoding in URI syntax,
+for which case the "urn:" prefix
+is reserved.  The URN shall be encoded
+precisely as defined in the (future)
+URN standard, except in that:
+<UL>
+<LI>If the official description of the
+URN syntax includes any constant
+wrapper characters, then they shall
+not be omitted from the URI encoding
+of the URN;
+<LI>If the URN has a hierarchical nature,
+then the slash delimiter shall be
+used in the URI encoding;
+<LI>If the URN has a hierarchical nature,
+the most significant part shall be
+encoded on the left in the URI encoding;
+<LI>Any characters with reserved meanings
+in the URI syntax shall be escape
+encoded
+</UL>These rules of course apply to any
+URI scheme.  It is of course possible
+that the URN syntax will be chosen
+such that the URI encoding will be
+a 1-1 transcription.<P>
+An example might be a name such as
+<PRE>			urn:/iana/dns/ch/cern/cn/techdoc/94/1642-3
+
+</PRE>but the reader should refer to the
+latest URN drafts or specifications.</BODY>
+</HTML>
+<HTML>
+<HEAD>
+
+<NEXTID N="z24">
+</HEAD>
+<BODY>
+<H2><A
+NAME="z5" HREF="5_BNF.html#z51">WAIS</A>  </H2>The current WAIS implementation public
+domain requires that a client know
+the "type" of a object prior to retrieval.
+This value is returned along with
+the internal object identifier in
+the search response. It has been
+encoded into the path part of the
+URL in order to make the URL sufficient
+for the retrieval of the object.
+Within the WAIS world, names do not
+of course need to be prefixed by
+"wais:"  (by the partial form rules).<P>
+The <A
+NAME="z23" HREF="5_BNF.html#z85">wpath</A> of a WAIS URL consists
+of encoded fields of the WAIS identifier,
+in the same order as inthe WAIS identifier.
+For each field, the identifier field
+number is the <A
+NAME="z22" HREF="5_BNF.html#z87">digits</A> before the equals
+sign, and the field contents follow,
+encoded in the conventional encoding,
+terminated by ";".<P>
+ </A></BODY>
+</HTML>
+<HTML>
+<HEAD>
+
+<NEXTID N="z1">
+</HEAD>
+<BODY>
+<H2>file</H2>The other URI schemes (except nntp)
+share the property that they are
+equally valid at any geographical
+place.<P>
+There is however a real practical
+requirement to be able to generate
+a URL for an object in a machine's
+local file system.<P>
+The syntax is similar to the ftp
+syntax, but in this case the slash
+is used to donate boundaries between
+directory levels of a hierarchical
+file system is used.   The "client"
+software converts the file URL into
+a file name in the local file name
+conventions.  This allows local files
+to be treated just as network objects
+without any necessity to use a network
+server for access.  This may be used
+for example for defining a user's
+"home" document in WWW.<P>
+There is clearly a danger of confusion
+that a link made to a local file
+should be followed by someone on
+a different system, with unexpected
+and possibly harmful results.  Therefore,
+the convention is that even a "file"
+URL is provided with a host part.
+ This allows a client on another
+system to know that it cannot access
+the file system, or perhaps to use
+some other local mecahnism to access
+the file.<P>
+The special value "localhost" is
+used in the host field to indicate
+that the filename should really be
+used on whatever host one is.  This
+for example allows links to be made
+to files which are distribted on
+many machines, or to "your unix local
+password file" subject of course
+to consistency across the users of
+the data.<P>
+A void host field is equivalent to
+"localhost".
+<ADDRESS>
+</ADDRESS></BODY>
+</HTML>
+<HTML>
+<HEAD>
+
+<NEXTID N="z22">
+</HEAD>
+<BODY>
+<H2><A
+NAME="z19">Message-Id</A></H2>For systems which include information
+transferred using mail protocols,
+there is a need to be able to make
+cross-references between different
+items of information, even though,
+by the nature of mail, those items
+are only available to a restricted
+set of people.<P>
+Two schemes are defined.  The first,
+"mid:", refers to the <A
+NAME="z14" HREF="../../Protocols/rfc822/Overview.html">RFC822</A> <A
+NAME="z15" HREF="../../Protocols/rfc822/Overview.html#z31">Message-Id</A>
+of a mail message.  This Identifier
+is already used in RFC822 in for
+example the <A
+NAME="z16" HREF="../../Protocols/rfc822/Overview.html#z32">References</A> and <A
+NAME="z13" HREF="../../Protocols/rfc822/Overview.html#z30">In-Reply-to
+field</A> .    The rest of the URL after
+the "mid:"  is the RFC822 <A
+NAME="z17" HREF="../../Protocols/rfc822/Overview.html#z37">msg-id</A>
+with the constant &lt;> wrapper removed,
+leaving an identifier whose format
+in fact happens to be the same as
+<A
+NAME="z18" HREF="../../Protocols/rfc822/Overview.html#z7">addr-spec</A> format for mailboxes (though
+the semantics are different).<P>
+The use of a "mid" URL implies access
+to a body of mail already received.
+If a message has been distributed
+using NNTP or other usenet protocols
+over the news system, then the "news:"
+form should be used.</A></BODY>
+</HTML>
+<HTML>
+<HEAD>
+
+<NEXTID N="z22">
+</HEAD>
+<BODY>
+<H2>Content-Id</H2>The second scheme, "cid:", is similar
+to <A
+NAME="z20" HREF="#z19">"mid:"</A> , but makes reference to
+a body part of a MIME message by
+the value of its content-id field.
+This allows, for example, a master
+document being the first part of
+a multipart/related MIME message
+to refer to component parts which
+are transferred in the same message.
+<H4>Note</H4>Beware however, that content identifiers
+are only required to be unique within
+the context of a given MIME message,
+and so the cid: URL is only meaningful
+with the context the same MIME message.
+For a reference outside the message,
+it would need to be appended to the
+message-id of the whole message.
+A syntax for this has not been defined.</A></BODY>
+</HTML>
+<HTML>
+<HEAD>
+
+<NEXTID N="z33">
+</HEAD>
+<BODY>
+<H2>Schemes for Further Study</H2>
+<H3>x500  </H3>The mapping of x500 names onto URLs
+is not defined here. A decision is
+required as to whether "distinguished
+names" or "user friendly names" (ufn),
+or both, should be allowed. If any
+punctuation conversions are needed
+from the adopted x500 representation
+(such as the use of slashes between
+parts of a ufn) they must be defined.
+This is a subject for study.
+<H3>WHOIS  </H3>This prefix describes the access
+using the "whois++" scheme in the
+process of definition. The host name
+part is the same as for other IP
+based schemes. The path part can
+be either a whois handle for a whois
+object, or it can be a valid whois
+query string. This is a subject for
+further study.
+<H3>Network Management Database  </H3>This is a subject for study.</BODY>
+</HTML>
+<HTML>
+<HEAD>
+
+<NEXTID N="z23">
+</HEAD>
+<BODY>
+<H3><A
+NAME="z4" HREF="5_BNF.html#z25">NNTP</A></H3>This is an alternative form of reference
+for news articles, specifically to
+be used with NNTP servers, and particularly
+those incomplete server implementations
+which do not allow retrieval by message
+identifier.  In all other cases the<A
+NAME="z22" HREF="4_1_News.html">
+"news" scheme</A> should be used.<P>
+The news server name, newsgroup name,
+and index number of an article within
+the newsgroup on that particular
+server are given.   The NNTP protocol
+must be used.
+<H4>Note1.</H4>This form of URL is not of global
+accessability, as typically NNTP
+servers only allow access from local
+clients.   Note that the article
+numbers within groups vary from server
+to server.<P>
+This form or URL should not be quoted
+outside this local area.  It should
+not be used within news articles
+for wider circulation than the one
+server.  This is a local identifier
+for a resource which is often available
+globally, and so is not recommended
+except in the case in which incomplete
+NNTP implementations on the local
+server force its adoption.</BODY>
+</HTML>
+<HTML>
+<HEAD>
+
+<NEXTID N="z22">
+</HEAD>
+<BODY>
+<H2><A
+NAME="z8" HREF="5_BNF.html#z53">Prospero</A>  </H2>The Prospero (Neuman, 1991) directory
+service is used to resolve the URL
+yielding an access method for the
+object (which can then itself be
+represented as a URL if translated).
+The host part contains a host name
+or internet address.  The port part
+is optional.  <P>
+<A
+NAME="z7">The path</A> part contains a host specific
+object name and an optional version
+number. If present, the version number
+is separated from the  host specific
+object name by the characters "%00"
+(percent zero zero), this being an
+escaped string terminator (null).
+External Prospero links are represented
+as URLs of the underlying access
+method and are not represented as
+Prospero URLs.</A></BODY>
+</HTML>
+<HTML>
+<HEAD>
+
+<NEXTID N="z36">
+</HEAD>
+<BODY>
+<H2>Registration of naming schemes  </H2>A new naming scheme may be introduced
+by defining a mapping onto a conforming
+URL syntax, using a new prefix. Experimental
+prefixes may be used by mutual agreement
+between parties, and must start with
+the characters "x-".  The scheme
+name "urn:" is reserved for the work
+in progress on a scheme for more
+persistent names.  <P>
+It is proposed that the Internet
+Assigned Numbers Authority (IANA)
+perform the function of registration
+of new schemes. Any submission of
+a new URI scheme must include a definition
+of an algorithm for the retrieval
+of any object within that scheme.
+The algorithm must take  the URI
+and produce either a set of URL(s)
+which will lead to the desired object,
+or the object itself, in a well-defined
+or determinable format.<P>
+It is recommended that those proposing
+a new scheme demonstrate its utility
+and operability by the provision
+of a gateway which will provide images
+of objects in the new scheme for
+clients using an existing protocol.
+If the new scheme is not a locator
+scheme, then the properties of names
+in the new space should be clearly
+defined.  It is likewise recommended
+that, where a protocol allows for
+retrieval by URL, that the client
+software have provision for being
+configured to use specific gateway
+locators for indirect access through
+new naming schemes.</A><P>
+</BODY>
+</HTML>
+<HTML>
+<HEAD>
+
+<NEXTID N="z61">
+</HEAD>
+<BODY>
+<H1><A
+NAME="z8" HREF="URI_Overview.html">BNF of generic URI syntax</A></H1>This is a BNF-like description of
+the URI syntax. at the level at which
+specific schemes are not considered.<P>
+A vertical  line "|"  indicates alternatives,
+and [brackets]  indicate optional
+parts.  Spaces are represented by
+the word "space", and the vertical
+line character by "vline".   Single
+letters stand for single letters.
+All words of more than one letter
+below are entities described somewhere
+in this description.  <P>
+The "generic" production gives a
+higher level parsing of the same
+URIs as the other productions.  The
+"national" and "punctuation" characters
+do not appear in any productions
+and therefore may not appear in URIs.
+<DL>
+<DT>fragmentaddress
+<DD> <A
+NAME="z57" HREF="#z10">uri</A> [ # fragmentid
+]  
+<DT><A
+NAME="z10">uri</A>
+<DD> scheme :  <A
+NAME="z6" HREF="#z0">path</A> [ ? search ] 
+<DT>scheme
+<DD> <A
+NAME="z58" HREF="#z22">ialpha</A>  
+<DT><A
+NAME="z0">path</A>
+<DD> void |  xpalphas  [  / path
+]  
+<DT>search
+<DD> xalphas [ + search ]  
+<DT>fragmentid
+<DD> xalphas  
+<DT>xalpha
+<DD> alpha | digit | safe | extra
+| escape  
+<DT>xalphas
+<DD> xalpha [ xalphas ]  
+<DT>xpalpha
+<DD> xalpha | +  
+<DT>xpalphas
+<DD> xpalpha [ xpalpha ]  
+<DT><A
+NAME="z22">ialpha</A>
+<DD> alpha [ xalphas ]
+<DT>alpha
+<DD> a | b | c | d | e | f | g |
+h | i | j | k | l | m | n | o  |
+p | q | r | s | t | u | v | w | x
+| y | z | A | B | C  | D | E | F
+| G | H | I | J | K | L | M | N |
+O | P |  Q | R | S | T | U | V |
+W | X | Y | Z  
+<DT><A
+NAME="z59">digit</A>
+<DD> 0 |1 | 2 | 3 | 4 | 5 | 6 |
+7 | 8 | 9  
+<DT>safe
+<DD> $ | - | _ | @ | . | &amp; 
+<DT>extra
+<DD> ! | * | " |  ' | ( | ) | ,
+
+<DT>reserved
+<DD> = | ; | / | # | ? | : |
+space
+<DT>escape
+<DD> % hex hex  
+<DT>hex
+<DD> <A
+NAME="z60" HREF="#z59">digit</A> | a | b | c | d | e | f
+| A | B | C | D | E | F  
+<DT>national
+<DD> { | } | vline | [ | ] |
+\ | ^ | ~  
+<DT>punctuation
+<DD> &lt; | >
+<DT>void
+<DD>
+</DL>
+(end of URI BNF)	</A></BODY>
+</HTML>
+<HTML>
+<HEAD>
+
+<NEXTID N="z136">
+</HEAD>
+<BODY>
+<H2><A
+NAME="z8" HREF="Overview.html">BNF for specific URL schemes</A></H2>This is a BNF-like description of
+the Uniform Resource Locator syntax.
+A vertical  line "|"  indicates alternatives,
+and [brackets]  indicate optional
+parts.  Spaces are represented by
+the word "space", and the vertical
+line character by "vline".   Single
+letters stand for single letters.
+All words of more than one letter
+below are entities described somewhere
+in this description.  <P>
+The <A
+NAME="z49" HREF="Minutes/9310.html#z5">current IETF URI working group
+preference</A>  is for the prefixedurl
+production. (Nov 1993. July 93: url).<P>
+The "national" and "punctuation"
+characters do not appear in any productions
+and therefore may not appear in URLs.<P>
+The "afsaddress" is left in as historical
+note, but is not a url production
+<DL>
+<DT><A
+NAME="z52">prefixedurl</A>
+<DD> u r l : <A
+NAME="z48" HREF="#z9">url</A>
+<DT><A
+NAME="z9">ur</A> l
+<DD> <A
+NAME="z13" HREF="#z12">httpaddress</A> | <A
+NAME="z15" HREF="#z14">ftpaddress</A> | <A
+NAME="z28" HREF="#z27">newsaddress</A>
+| <A
+NAME="z26" HREF="#z25">nntpaddress</A> | <A
+NAME="z54" HREF="#z53">prosperoaddress</A> |
+telnetaddress  | <A
+NAME="z56" HREF="#z55">gopheraddress</A> |<A
+NAME="z66" HREF="#z51">
+waisaddress</A> | <A
+NAME="z17" HREF="#z16">mailtoaddress</A>  |<A
+NAME="z65" HREF="#z64"> midaddress</A>
+| <A
+NAME="z68" HREF="#z67">cidaddress</A>
+<DT>scheme
+<DD> ialpha  
+<DT><A
+NAME="z12">httpaddress</A>
+<DD> h t t p :   / / hostport
+[  / <A
+NAME="z3" HREF="#z0">path</A> ] [ ? search ]  
+<DT><A
+NAME="z14">ftpaddress</A>
+<DD> f t p : / / login / <A
+NAME="z4" HREF="#z0">path</A>
+[  <A
+NAME="z70" HREF="#z69">ftptype</A> ]
+<DT>afsaddress
+<DD> a f s : / / cellname /<A
+NAME="z5" HREF="#z0">
+path</A>  
+<DT><A
+NAME="z27">newsaddress</A>
+<DD> n e w s : <A
+NAME="z33" HREF="#z32">groupart</A>  
+<DT><A
+NAME="z25">nntpaddress</A>
+<DD> n n t p : <A
+NAME="z31" HREF="#z29">group</A> /  <A
+NAME="z42" HREF="#z37">digits</A>
+<DT><A
+NAME="z64">midaddress</A>
+<DD> m i d  :  addr-spec
+<DT><A
+NAME="z67">cidaddress</A>
+<DD> c i d : content-identifier
+<DT><A
+NAME="z16">mailtoaddress</A>
+<DD> m a i l t o : xalphas
+@ <A
+NAME="z21" HREF="#z18">hostname</A>
+<DT><A
+NAME="z51">waisaddress</A>
+<DD> <A
+NAME="z84" HREF="#z83">waisindex</A> | <A
+NAME="z82" HREF="#z81">waisdoc</A> 
+<DT><A
+NAME="z83">waisindex</A>
+<DD> w a i s : / / hostport
+/ database [ ? search ]  
+<DT><A
+NAME="z81">waisdoc</A>
+<DD> w a i s : / / hostport /
+database / wtype  / <A
+NAME="z7" HREF="#z85">wpath</A>
+<DT><A
+NAME="z85">wpath</A>
+<DD><A
+NAME="z87"> digits</A> = path ;  [ <A
+NAME="z86" HREF="#z85">wpath</A> ]
+<DT><A
+NAME="z32">groupart</A>
+<DD> * | <A
+NAME="z30" HREF="#z29">group</A> | <A
+NAME="z36" HREF="#z35">article</A>  
+<DT><A
+NAME="z29">group</A>
+<DD> ialpha [ . <A
+NAME="z34" HREF="#z29">group</A> ]  
+<DT><A
+NAME="z35">article</A>
+<DD> xalphas @ host  
+<DT>database
+<DD> xalphas  
+<DT>wtype
+<DD> xalphas  
+<DT><A
+NAME="z53">prosperoaddress</A>
+<DD> prosperolink  
+<DT>prosperolink
+<DD> p r o s p e r o : /
+/ hostport / hsoname [ %  0 0 version
+[ attributes ] ]  
+<DT>hsoname
+<DD> <A
+NAME="z2" HREF="#z0">path</A>  
+<DT>version
+<DD> <A
+NAME="z115" HREF="#z37">digits</A>  
+<DT>attributes
+<DD> attribute [ attributes
+]  
+<DT>attribute
+<DD> alphanums  
+<DT>telnetaddress
+<DD> t e l n e t : / / login
+<DT><A
+NAME="z55">gopheraddress</A>
+<DD> g o p h e r : / / hostport
+[/ gtype  [ <A
+NAME="z94" HREF="#z93">gcommand</A> ] ] 
+<DT>login
+<DD> [ <A
+NAME="z128" HREF="#z127">user</A> [ : <A
+NAME="z126" HREF="#z125">password</A> ] @ ] <A
+NAME="z124" HREF="#z123">hostport</A>
+<DT><A
+NAME="z123">hostport</A>
+<DD> <A
+NAME="z122" HREF="#z121">host</A> [ : <A
+NAME="z120" HREF="#z119">port</A> ]  
+<DT><A
+NAME="z121">host</A>
+<DD> <A
+NAME="z20" HREF="#z18">hostname</A> | <A
+NAME="z118" HREF="#z117">hostnumber</A>  
+<DT><A
+NAME="z69">ftptype</A>
+<DD> A <A
+NAME="z90" HREF="#z89">formcode</A> | E <A
+NAME="z91" HREF="#z89">formcode</A> |
+I | L <A
+NAME="z92" HREF="#z37">digits</A>
+<DT><A
+NAME="z89">formcode</A>
+<DD> N | T | C
+<DT>cellname
+<DD> <A
+NAME="z19" HREF="#z18">hostname</A>  
+<DT><A
+NAME="z18">hostname</A>
+<DD> <A
+NAME="z23" HREF="#z22">ialpha</A> [  .  <A
+NAME="z24" HREF="#z18">hostname</A> ]
+<DT><A
+NAME="z117">hostnumber</A>
+<DD> <A
+NAME="z38" HREF="#z37">digits</A> . <A
+NAME="z39" HREF="#z37">digits</A> . <A
+NAME="z40" HREF="#z37">digits</A>
+. <A
+NAME="z41" HREF="#z37">digits</A>
+<DT><A
+NAME="z119">port</A>
+<DD> <A
+NAME="z116" HREF="#z37">digits</A>  
+<DT><A
+NAME="z93" HREF="Note_GopherBNF.html">gcommand</A>
+<DD> <A
+NAME="z1" HREF="#z0">path</A>  
+<DT><A
+NAME="z0">path</A>
+<DD> <A
+NAME="z63" HREF="#z62">void</A> |  <A
+NAME="z60" HREF="#z59">segment</A>  [  / <A
+NAME="z61" HREF="#z0">path</A> ]
+<DT><A
+NAME="z59">segment</A>
+<DD><A
+NAME="z58" HREF="#z57"> xpalphas</A>
+<DT><A
+NAME="z113">search</A>
+<DD> <A
+NAME="z99" HREF="#z98">xalphas</A> [ + <A
+NAME="z114" HREF="#z113">search</A> ]  
+<DT><A
+NAME="z127">user</A>
+<DD> <A
+NAME="z130" HREF="#z129">alphanum2</A> [ <A
+NAME="z131" HREF="#z127">user</A> ] 
+<DT><A
+NAME="z125">password</A>
+<DD> <A
+NAME="z132" HREF="#z129">alphanum2</A> [ <A
+NAME="z133" HREF="#z125">password</A> ]
+<DT>fragmentid
+<DD> <A
+NAME="z102" HREF="#z98">xalphas</A>  
+<DT>gtype
+<DD> <A
+NAME="z104" HREF="#z103">xalpha</A>  
+<DT><A
+NAME="z129">alphanum2</A>
+<DD><A
+NAME="z134" HREF="#z79">alpha</A> | <A
+NAME="z135" HREF="#z77">digit</A> | - | _ |
+. | + 
+<DT><A
+NAME="z103">xalpha</A>
+<DD> <A
+NAME="z80" HREF="#z79">alpha</A> | <A
+NAME="z78" HREF="#z77">digit</A> | <A
+NAME="z76" HREF="#z75">safe</A> | <A
+NAME="z72" HREF="#z71">extra</A>
+| <A
+NAME="z74" HREF="#z73">escape</A>  
+<DT><A
+NAME="z98">xalphas</A>
+<DD> <A
+NAME="z106" HREF="#z103">xalpha</A> [ <A
+NAME="z111" HREF="#z98">xalphas</A> ]  
+<DT><A
+NAME="z108">xpalpha</A>
+<DD> <A
+NAME="z107" HREF="#z103">xalpha</A> | +  
+<DT><A
+NAME="z57">xpalphas</A>
+<DD> <A
+NAME="z109" HREF="#z108">xpalpha</A> [ <A
+NAME="z110" HREF="#z57">xpalphas</A> ]  
+<DT><A
+NAME="z22">ialpha</A>
+<DD> <A
+NAME="z105" HREF="#z79">alpha</A> [ <A
+NAME="z112" HREF="#z98">xalphas</A> ]
+<DT><A
+NAME="z79">alpha</A>
+<DD> a | b | c | d | e | f | g |
+h | i | j | k | l | m | n | o  |
+p | q | r | s | t | u | v | w | x
+| y | z | A | B | C  | D | E | F
+| G | H | I | J | K | L | M | N |
+O | P |  Q | R | S | T | U | V |
+W | X | Y | Z  
+<DT><A
+NAME="z77">digit</A>
+<DD> 0 |1 | 2 | 3 | 4 | 5 | 6 |
+7 | 8 | 9  
+<DT><A
+NAME="z75">safe</A>
+<DD> $ | - | _ | @ | . | &amp;  | <A
+NAME="z50">+</A> |
+-
+<DT><A
+NAME="z71">extra</A>
+<DD>! | * |  " |  ' | ( | )  | ,
+
+<DT><A
+NAME="z88">reserved</A>
+<DD>  =  |  ;  |  /  |  #  |
+? |  : | space
+<DT><A
+NAME="z73">escape</A>
+<DD> % hex hex  
+<DT>hex
+<DD> digit | a | b | c | d | e | f
+| A | B | C | D | E | F  
+<DT>national
+<DD> { | } | vline | [ | ] |
+\ | ^ | ~  
+<DT>punctuation
+<DD> &lt; | >
+<DT><A
+NAME="z37">digits</A>
+<DD> <A
+NAME="z45" HREF="#z77">digit</A> [ <A
+NAME="z43" HREF="#z37">digits</A> ]  
+<DT>alphanum
+<DD> alpha | digit  
+<DT>alphanums
+<DD> alphanum [ alphanums ]
+<DT><A
+NAME="z62">void
+<DD>
+</DL>
+(end of URL BNF)</A>	</BODY>
+</HTML>
+<HTML>
+<HEAD>
+
+<NEXTID N="z19">
+</HEAD>
+<BODY>
+<H1><A
+NAME="z13" HREF="Overview.html">References</A></H1>
+<DL>
+<DT>Alberti, R., et.al.  (1991)
+<DD> "Notes
+on the Internet Gopher  Protocol"
+University of Minnesota, December
+1991,  <A
+NAME="z3" HREF="ftp://boombox.micro.umn.edu/pub/gopher/gopher_protocol">&lt;ftp://boombox.micro.umn.edu/pub/gopher/gopher_protocol></A>
+. See also  <A
+NAME="z2" HREF="gopher://gopher.micro.umn.edu/00/Information About Gopher/About Gopher">&lt;gopher://gopher.micro.umn.edu/00/Information
+About Gopher/About Gopher></A>
+<DT><A
+NAME="z1" HREF="#z0">Berners-Lee, T</A> ., (1991)
+<DD> <A
+NAME="z12" HREF="../../Protocols/HTTP/HTTP2.html">"Hypertext
+Transfer Protocol (HTTP)"</A> , CERN,
+December 1991, as updated from time
+to time,  <A
+NAME="z11" HREF="ftp://ftp.w3.org./pub/www/doc/http-spec.txt">&lt;ftp://ftp.w3.org/pub/www/doc/http-spec.txt></A>
+<DT>Crocker 
+<DD><A
+NAME="z14" HREF="../../Protocols/rfc822/Overview.html">"Standard for ARPA Internet
+Text Messages"</A> . David H. Crocker,
+RFC822, 
+<DT>Davis, F, et  al., (1990)
+<DD> "WAIS Interface
+Protocol: Prototype  Functional Specification",
+Thinking Machines Corporation,  April
+23, 1990  <A
+NAME="z5" HREF="ftp://quake.think.com/pub/wais/doc/protspec.txt">&lt;ftp://quake.think.com/pub/wais/doc/protspec.txt></A>
+<DT>International Standards Organization,
+(1991)
+<DD> Information and  Documentation
+- Search and Retrieve Application
+Protocol  Specification for open
+Systems Interconnection, ISO-10163
+<DT><A
+NAME="z16" HREF="../../Protocols/rfc1036/rfc1036.html">Horton (1987)</A>
+<DD> M. Horton, R. Adams,
+"Standard for interchange of USENET
+messages", Internet <A
+NAME="z17" HREF="../../Protocols/rfc1036/rfc1036.html">RFC 1036</A> , 12/01/1987.
+<DT>Huitema, C., (1991)
+<DD> "Naming: strategies
+and techniques",  Computer Networks
+and ISDN Systems 23 (1991) 107-110.
+<DT>Kahle, Brewster, (1991) 
+<DD>"Document
+Identifiers,  or  International Standard
+Book Numbers for the Electronic Age",<A
+NAME="z4" HREF="ftp://quake.think.com/pub/wais/doc/doc-ids.txt">
+&lt;ftp://quake.think.com/pub/wais/doc/doc-ids.txt></A>
+<DT>Kantor, B., and Lapsley, P., (1986)
+<DD><A
+NAME="z15" HREF="../../Protocols/rfc977/rfc977.html">
+"A proposed standard for  the stream-based
+transmission of news"</A> , Internet
+RFC-977, February 1986. <A
+NAME="z6" HREF="ftp://ds.internic.net/rfc/rfc977.txt">&lt;ftp://ds.internic.net/rfc/rfc977.txt></A>
+<DT>Kunze, 1994
+<DD> J. Kunze, Requirements
+for URLs, to be published.
+<DT>Lynch, C., Coallition for Networked
+Information: (1991)  
+<DD>"Workshop on
+ID and Reference Structures for Networked
+Information", November 1991. See<A
+NAME="z7" HREF="wais://quake.think.com/wais-discussion-archives?lynch">
+&lt;wais://quake.think.com/wais-discussion-archives?lynch></A>
+<DT>Mockapetris, P., (1987)
+<DD> "Domain names
++ concepts and  facilities", RFC-1034,
+USC-ISI, November 1987,  &lt;ftp://ds.internic.net/rfc/rfc1034.txt>
+<DT>Neuman, B. Clifford, (1992)
+<DD> "Prospero:
+A Tool for Organizing  Internet Resources",
+Electronic Networking: Research,
+Applications and Policy, Vol 1 No
+2, Meckler Westport CT  USA.  See
+also  <A
+NAME="z8" HREF="ftp://prospero.isi.edu/pub/prospero/oir.ps">&lt;ftp://prospero.isi.edu/pub/prospero/oir.ps></A>
+<DT><A
+NAME="z18" HREF="../../Protocols/rfc959/Overview.html">Postel, J. and Reynolds, J. (1985)</A>
+<DD>
+"File Transfer Protocol  (FTP)",
+Internet RFC-959, October 1985. <A
+NAME="z9" HREF="ftp://prospero.isi.edu/pub/prospero/oir.ps">&lt;ftp://ds.internic.net/rfc/rfc959.txt></A>
+<DT>Sollins 1994
+<DD> K. Sollins and L. Masinter,
+Requiremnets for URNs, to be published.
+<DT>Yeong, W., (1991a)
+<DD> "Towards Networked
+Information Retrieval",  Technical
+report 91-06-25-01, June 1991, Performance
+Systems International, Inc.  <A
+NAME="z10" HREF="ftp://uu.psi.com/wp/nir.txt">&lt;ftp://uu.psi.com/wp/nir.txt></A>
+<DT>Yeong, W., (1991b),
+<DD> "Representing
+Public Archives in the  Directory",
+Internet Draft, November 1991, now
+expired.
+</DL>
+.</BODY>
+</HTML>
+<HTML>
+<HEAD>
+
+<NEXTID N="z15">
+</HEAD>
+<BODY>
+<H1><A
+NAME="z0">Author's address</A>  </H1>
+<PRE>Tim Berners-Lee  
+</PRE>
+<PRE>Address:   World-Wide Web project  
+</PRE>
+<PRE>CERN,
+</PRE>
+<PRE>1211 Geneva 23,
+</PRE>
+<PRE>Switzerland
+ 
+</PRE>
+<PRE>Telephone: +41 (22)767 3755
+</PRE>
+<PRE>Fax:       +41 (22)767 7155 
+</PRE>
+<PRE>Email:     timbl@info.cern.ch
+
+</PRE></A></BODY>
+</HTML>

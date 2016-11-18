@@ -1,0 +1,20 @@
+"Othello"
+
+Jest to gra dla dwoch graczy na planszy o 64. polach (8x8) z pionkami (po
+jednej stronie czarnymi, po drugiej bialymi). Gracze stawiaja na przemian
+pionki na wolnych polach planszy oflankowujac pionki przeciwnika z jednej
+strony nowo postawionym pionkiem i z drugiej istniejacym(i) juz na planszy w
+linii poziomej, pionowej lub na ukos. Oflankowane pionki przeciwnika sa
+przewracane na druga strone (zmieniaja kolor na kolor gracza).
+
+Celem gry jest posiadanie na koncu partii wiekszej od przeciwnika liczby 
+pionkow na planszy.
+
+Rozpoczyna gracz posiadajacy czarne dostawiajac swoj pionek w taki sposob,
+aby wygrac co najmniej jeden pionek przeciwnika.
+
+Postawionych na planszy pionkow nie zdejmuje sie ani nie przesuwa.
+
+Gra konczy sie, gdy wszystkie pola sa juz zajete lub gdy zaden z graczy nie
+moze wykonac prawidlowego ruchu. W przypadku gdy tylko jeden z graczy nie 
+moze wykonac ruchu, traci kolejke na rzecz przeciwnika.

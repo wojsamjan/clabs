@@ -1,0 +1,37 @@
+
+      $URL: http://manta.univ.gda.pl/svn/wb/labs/c/535-Zbiory/README $
+      $Revision: 177 $
+
+      Uwaga: 
+
+      program ten nie rozpoznaje poprawnie s³ów je¶li napisy s± kodowane
+      wielobajtowo, na przyk³ad je¶li s± kodowane w UTF-8
+
+
+      Propozycje zadañ
+
+   1. Przerobiæ program `wf' tak aby rozpoznawa³ polskie znaki
+      diakrytyczne, je¶li zmienna `LANG' ma warto¶æ `pl_PL'
+      Wskazówka: skorzystaæ z kodu programu `tl.c'.
+
+   2. Napisaæ program `miesiac', który po podaniu o nazwy miesi±ca
+      w lini poleceñ wypisze, jego numer:
+
+         $miesiac kwiecieñ
+         IV
+    
+   3. Napisaæ program, który po wczytaniu do hasza listy polskich
+      s³ów z pliku `/usr/dict/words-pl' (ok. 1 mln s³ów) wypisze
+      statystkê hasza. W tym celu zmodyfikuj kod `tables.c'
+      Nowy kod umie¶æ w pliku `tables2.c'. Oto przyk³adowy wynik:
+
+         $hasz_test
+            0:  10
+            1:  23
+            .    .
+            .    .
+         1001:   2
+
+      gdzie 10 oznacza, ¿e w kube³ku nr 0 zosta³o umieszczonych na
+      li¶cie 10 s³ów, w kube³ku 1 -- 23 s³owa, i w ostatnim kube³ku --
+      2 s³owa.

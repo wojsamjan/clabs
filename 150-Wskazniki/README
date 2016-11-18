@@ -1,0 +1,25 @@
+
+Mechanizm wołania funkcji w C:
+
+1. W miejscu wywołania obliczane są wartości każdego
+   argumentu funkcji (argumenty są zazwyczaj wyrażeniami
+   zawierającymi wywołania innych funkcji).
+2. System tworzy tzw. `stack frame' (ramka stosowa?) rezerwując
+   w pamięci miejsce dla wszystkich zmiennych lokalnych
+   funkcji -- włączając parametry funkcji.
+3. Obliczone wartości są kopiowane do odpowiadających
+   im zmiennych na stosie (jednocześnie, jeśli jest to
+   konieczne, wykonywana jest konwersja typów).
+4. Instrukcje zawarte w ciele funkcji są wykonywane kolejno
+   aż do napotkania instrukcji `return' bądź do wyczerpania
+   wszystkich poleceń.
+5. Obliczona wartość wyrażenia w instrukcji `return' zostaje
+   zwrócona do miejsca wywołania (wykonywana jest konwersja
+   typów o ile jest to konieczne).
+6. Ramka jest usuwana ze stosu (zmienne lokalne `znikają').
+7. Program kontynuuje działanie ze zwróconą wartością
+   podstawioną w miejsce wywołania.
+
+
+
+

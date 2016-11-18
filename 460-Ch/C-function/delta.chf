@@ -1,0 +1,10 @@
+#include <stdio.h>
+#include <math.h>
+#include <complex.h>  // rozszerzenie Ch
+
+complex delta(complex a, b, c)
+{
+  complex delta;
+  delta = sqrt(b*b-4*a*c);
+  return delta;
+}

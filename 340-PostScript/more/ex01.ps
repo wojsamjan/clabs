@@ -1,0 +1,16 @@
+%!PS
+%%BoundingBox: 42 42 548 355
+%%HiResBoundingBox: 42.519000 42.519000 547.077798 354.324993
+% gs -sDEVICE=bbox ex01.ps -dbatch -dNOPAUSE -c quit
+
+% Prostok±t
+
+% A4 = 210 mm x 297 mm
+
+/mm { 2.8346 mul } def      % procedura
+
+10 mm setlinewidth          % gruba kreska
+0 0 1 setrgbcolor           % kolor niebieski
+20 mm 20 mm 168 mm 100 mm   % x y szeroko¶æ wysoko¶æ
+rectstroke                  % rysuj prostok±t
+showpage                    % poka¿ stronê

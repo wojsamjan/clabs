@@ -1,0 +1,27 @@
+
+   Rozwiązać zadania podane w plikach:
+
+	     Count.c (Zadanie 1)
+	     GetNth.c (Zadanie 2)
+	     DeleteList.c (Zadanie 3)
+	     Pop.c (Zadanie 4)
+	     InsertNth.c (Zadanie 5)
+	     SortedInsert.c (Zadanie 6)
+	     InsertSort.c (Zadanie 7)
+	     Append.c (Zadanie 8)
+
+   Zadanie dodatkowe, dla znających się na rekurencji:
+
+	     RecursiveReverse.c (Zadanie 18) 
+
+   Przykładowe zadanie z rozwiązaniem znajdziesz w pliku:
+
+	     skeleton.c
+
+   Techniki, które można wykorzystać w rozwiązaniach zostaną
+   omówione na wykładzie i znajdziesz je w pliku:
+
+	    list_techniques.c
+
+   Powodzenia!
+

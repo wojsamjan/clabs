@@ -1,0 +1,30 @@
+/* 
+   Przyk³ad programu w C na sk³adaj±cego siê 
+   z kilku plików (te¿ napisanych w C).
+
+   Je¶li uruchomimy interpreter
+   jêzyka Ch za pomoc± polecenia
+     
+      ch -d
+
+   to plik startowy .chrc z CHHOME
+   zostanie skopiowany do katalogu
+   domowego u¿ytkownika.
+   W pliku tym dodajemy bie¿±cy katalog
+   do ¶cie¿ki poszukiwañ poleceñ:
+
+     _path=stradd(_path,".;")
+ 
+   Je¶li tego nie zrobimy to pliki
+   `cdemo_ch/plik[12].c' nie zostan± odszukane.
+*/
+
+/* Szukaj pliku `cdemo_ch/cdemo.c' w bie¿±cym katalogu
+   a nastêpnie w katalogach okre¶lonych przez zmienn±
+   `_path'. */
+#pragma import "cdemo_ch/cdemo.c"
+
+/* Szukaj plików `cdemo_ch/plik[12].c' w katalogach 
+   okre¶lonych przez zmienn± `_path'. */
+#pragma import <cdemo_ch/plik1.c>
+#pragma import <cdemo_ch/plik2.c>

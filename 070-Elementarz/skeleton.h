@@ -1,0 +1,4 @@
+#ifndef SKELETON_INCLUDED
+#define SKELETON_INCLUDED
+
+#endif

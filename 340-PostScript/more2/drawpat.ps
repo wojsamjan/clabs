@@ -1,0 +1,59 @@
+%!PS-Adobe-3.0
+
+<<					% s³ownik na szablon deseniu
+    /PaintType 1			% kolorowy deseñ
+    /PatternType 1  /TilingType 1 	% wymagane parametry
+    /BBox [ -30 0 30 55 ] 		% ,,rêcznie'' wyliczony bounding box
+    /XStep 70  /YStep 70 		% wielko¶æ komórki na deseñ
+    /serduszko {
+	gsave
+	0 0 moveto
+	50 50 12.5 62.5 0 50 curveto	% prawa strona
+	-12.5 62.5 -50 50 0 0 curveto	% lewa strona
+	fill
+	grestore
+    }
+    /PaintProc {
+	begin
+	0.9 0 0 setrgbcolor
+	serduszko
+	end
+    }
+>>					% koniec s³ownika na szablon deseniu
+[ 0.4 0 0 0.4 0 0]			% skalujemy do 40% wielko¶ci pocz±tkowej
+makepattern  				% Tworzymy deseñ
+/serduszka exch def				% zapamiêtujemy ,,na potem'' deseñ
+
+
+70 200 360 240 4 copy			% dwa prostok±ty
+
+% wybieramy deseñ do malowania i malujemy pierwszy prostok±
+
+/Pattern setcolorspace
+serduszka setcolor
+rectfill
+
+% rysujemy drugi prostok±t
+
+0 setgray
+1 setlinewidth
+rectstroke
+
+% dodajemy tekst
+
+/Times-Roman 370 selectfont
+200 200 translate
+0.6 setgray
+0 0 moveto
+(Q) show
+serduszka setpattern
+0 0 moveto
+(Q) show
+
+/Times-Roman 50 selectfont
+240 0 translate
+0.6 setgray
+0 0 moveto
+(Tobie) show
+
+showpage

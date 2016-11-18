@@ -1,0 +1,227 @@
+  -*- coding: utf-8 -*-
+  
+  keywords: ucs-insert, unicode.org, 
+            math operators (U2200: empty set = 2205, intersection == 22C2,
+            not equal == 2260)
+
+
+  $URL: http://manta.univ.gda.pl/svn/wb/labs/c/550-ParsingElementarz/README $
+  $Revision: 183 $
+  $Date: 2006-11-19 16:29:41 +0100 (nie, 19 lis 2006) $
+
+
+Słowniczek angielsko-polski:
+
+  parse tree                            drzewo wyprowadzenia  
+  abstract syntax tree (AST)            (abstrakcyjne) drzewo składniowe
+  lexical analysis                      analiza leksykalna
+  syntax analysis, parsing              analiza składniowa
+  recursive decent parsing              metoda zejść rekurencyjnych
+                                        metoda rekurencyjna zstępująca
+  predictive recursive decent parsing   metoda przewidujących zejść rekurencyjnych
+  context free grammar                  gramatyka bezkontekstowa
+  first sets
+  follow sets
+  terminal symbol                       symbol terminalny (końcowy)
+  nonterminal symbol                    symbol nieterminalny
+  
+Literatura:
+
+  AV Aho, R Sethi, JD Ullman, Kompilatory. Reguły, metody i narzędzia. WNT 2002
+  (tzw. Dragon Book), strony 39--51, 51--57, 66--74, 160--162 oraz
+  rozdział 4.4 Analiza zstępująca (metoda zejść rekurencyjnych, analizatory przewidujące
+  diagramy przejść, nierekurencyjna analiza składniowa z przewidywaniem, zbiory
+  FIRST i FOLLOW)
+
+  D Grune, CJH Jacobs, Parsing Techniques — A Practical Guide. 
+  http://www.cs.vu.nl/~dick/PTAPG.html
+
+  Do obliczania zbiorów FIRST i FOLLOW można wykorzystać program `slk'
+  (jest zainstalowany na mancie; strona domowa: http://home.earthlink.net/~slkpg)
+
+  Warto też zapoznać się z:
+
+   `general-purpose parser generator': http://www.gnu.org/software/bison/bison.html 
+   `scannerless GLR parser': http://dparser.sourceforge.net/
+    
+
+------------------------------------------------------------------
+  
+Analiza programu źródłowego (Dragon Book, s. 5)
+
+  Analiza liniowa == analiza leksykalna
+  Analiza hierarchiczna == analiza składniowa
+
+  poz:=pocz+tempo*60
+
+  analiza leksykalna: 
+    identyfikator (poz)
+    symbol przypisania (:=)
+    identyfikator (pocz)
+    symbol plus (+)
+    identyfikator (tempo)
+    symbol mnożenia (*)
+    liczba (60)
+
+  analiza składniowa
+
+    instrukcja przypisania -> 
+                 identyfikator := wyrażenie
+    wyrażenie -> identyfikator | liczba
+    wyrażenie -> wyrażenie + wyrażenie | 
+                 wyrażenie * wyrażenie |
+                 ( wyrażenie )
+
+  (zob. parse-tree.svg)
+
+Metoda zejść przewidujących: zbiory FIRST i FOLLOW
+--------------------------------------------------
+
+Gramatyka:
+
+  S -> if E then S else S
+       begin S L
+       print E
+
+  L -> end
+       ; S L
+      
+  E -> num = num
+
+
+Parser:
+
+  enum token { IF, THEN, ELSE, BEGIN, END, PRINT, SEMI, NUM, EQ };
+  extern enum token get_token(void);
+
+  enum token tok;
+  void advance() { tok=get_token(); }
+  void eat(enum token t) { if (tok==t) advance(); else error(); }
+
+  void S(void) {
+    switch (tok) {
+    case IF:     eat(IF); E(); eat(THEN); S(); eat(ELSE); S(); break;
+    case BEGIN:  eat(BEGIN); S(); L(); break;
+    case PRINT:  eat(PRINT); E(); break;  
+    default: error();
+    }
+  }
+  void L(void) {
+    switch (tok) {
+    case END: eat(END); break;
+    case SEMI: eat(SEMI); S(); L(); break;
+    default: error();
+    }
+  }
+  void E(void) {
+    switch (tok) {
+    eat(NUM); eat(EQ); eat(NUM);
+  }
+
+  i wystarczy zdefiniować funkcje error() i get_token(), aby otrzymać
+  parser. Ale nie zawsze życie jest takie proste...
+
+
+Gramatyka:
+
+  S -> E $                                         # $ -- koniec pliku
+  
+  E -> E + T       T -> T * F       F -> id
+       E - T            T / F            num
+       T                F                ( E )
+  
+
+Parser:
+
+  void S(void) {
+    E(); eat(EOF);
+  }
+  void E(void) {
+    switch(tok) {
+    case ? : E(); eat(PLUS); T(); break;
+    case ? : E(); eat(MINUS); T(); break;
+    case ? : F(); break;
+    default: error();
+    }  
+  }
+  void T(void) {
+    switch(tok) {
+    case ? : T(); eat(TIMES); F(); break;
+    case ? : T(); eat(DIV); F(); break;
+    case ? : F(); break;
+    default: error();
+    }
+  }
+
+  Powyżej mamy `konflikt': w funkcji E nie wiadomo jaki
+  warunek wybrać. Rozważmy dwa napisy: 
+
+    (1*2-3)+4  i  (1*2-3)
+
+  W pierwszym przypadku powinniśmy zacząć od produkcji
+  E -> E + T a w drugim -- od produkcji E -> T
+  chociaż oba napisy zaczynają się od leksemu `('
+
+  Metoda leksykalna przewidująca będzie działać
+  dla gramatyk w których pierwszy symbol końcowy
+  dla każdej prawej strony produkcji umożliwia
+  przewidzenie, którą produkcję wybrać.
+  
+
+FIRST
+-----
+
+  FIRST(γ) jest zbiorem składającym się z symboli
+  terminalnych, które mogą zaczynać jakikolwiek napis
+  wyprowadzony z γ. Na przykład, dla gramatyki
+
+    S -> E $
+  
+    E -> E + T       T -> T * F       F -> id
+         E - T            T / F            num
+         T                F                ( E )
+
+  mamy
+
+       FIRST(T * F) = { id, num, ( }
+       FIRST(T / F) = { id, num, ( }
+
+  Jeśli dla dwóch różnych produkcji X -> β i X -> δ mamy
+  FIRST(β) ⋂ FIRST(δ) ≠ ∅, to gramatyki zawierającej
+  te produkcje nie można parsować za pomocą przewidującej
+  metody zejść rekurencyjnych z jednym tokenem podglądu.
+
+FOLLOW
+
+  zob. K&R, strony 179--183
+
+
+
+Demo kompilator i interpreter
+-----------------------------
+
+  Kompilator rozpoznaje następujący język:
+
+  exp    ->  digit | '(' exp op exp ')'
+  op     ->  '+' | '*'
+  digit  ->  '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' 
+
+  (wyrażenia w nawiasach)
+
+
+  Projekt składa się z następujących plików:
+
+  Makefile
+  main.c  -- drajwer kompilatora
+  lex.h, lex.c  -- analizator leksykalny
+  flex.l -- analizator leksykalny napisany w Flexie
+  parse.h, parse.c  --  procedury parsujące
+  backend.h, 
+  code_gen.c, interpret.c  -- `backends'
+  error.h, error.c -- procedura error()
+
+
+
+
+
+

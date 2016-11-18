@@ -1,0 +1,70 @@
+1. expression grammars
+
+   expr: T
+     |   expr '-' expr ;
+
+
+2. if-then-else conflict
+
+   stmt: IF '(' cond ')' stmt
+     |   IF '(' cond ')' stmt ELSE stmt
+     |   T ;
+   cond: T ;
+
+
+3. nested list grammars
+
+   start:          outerList Z ;
+   outerList:      @ 
+     |             outerList outerListItem ;
+   outerListItem:  innerList ;
+   innerList:      @
+     |             innerList innerListItem ;
+   innerListItem:  I ;
+
+   fix:
+
+   start:          outerList Z ;
+   outerList:      @ 
+     |             outerList outerListItem ;
+   outerListItem:  I ;
+
+
+4. limited lookahead
+
+   rule:        command opt_keyword '(' id_list ') ;
+   opt_keyword: @
+     |          '(' keyword ')' ;    
+
+   fix:
+ 
+   rule:        command '(' keyword ')' '(' id_list ')'
+     |          command '(' id_list ')' ;
+
+
+5. limited lookahead (overlap of alternatives)
+
+   rule:  cmd_1 ':' '[' anything ;
+     |    cmd_2 ':' '(' anything ;
+   cmd_1: CMD_1 | CMD_2 | CMD_COMMON ;
+   cmd_2: CMD_A | CMD_A | CMD_COMMON ;
+
+   rule:  girls | boys ;
+   girls: ALICE | BETTY | DARRYL ;
+   boys:  ALLEN | BOB   | DARRYL ;
+
+   fix 1:
+   
+   rule:   girls | boys | either ;
+   girls:  ALICE | BETTY ;
+   boys:   ALLEN | BOB ;
+   either: DARRYL ;
+
+   fix 2:
+
+   rule:        girls | boys ;
+   girls:       just_girls | either ;
+   boys:        just_boys  | either ;
+   just_girls:  ALICE | BETTY ;
+   just_boys:   ALLEN | BOB ;
+   either:      DARRYL ;

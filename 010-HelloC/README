@@ -1,0 +1,60 @@
+
+$Date: 2004/02/22 13:48:48 $
+$Version:$
+
+Przyk³ady:
+
+1. hello.c -- 
+
+     interpreter:  ch ./hello.c
+      kompilacja:  cc hello.c ; ./a.out
+
+2. pierw.c -- pierwiastki
+
+     analiza skladniowa (parsing)
+     interpretacja:
+    
+        $ ch
+        > parse ./pierw.c
+        > run
+        > exit
+
+     program liczacy pierwiastki ca³kowite: cheong (ObfuscatedC);
+     skompilowaæ: make cheong;
+     uruchomiæ: ./cheong n, gdzie n>9;
+     obejrzeæ ¼ród³o (ang. obfuscate -- zaciemniæ);
+
+3. proste wyra¿enia (WWW); gramatyka Pascal'a
+
+4. pierw2.c -- math.h 
+
+     pliki nag³ówkowe -- interfejsy
+     biblioteki -- libm.a
+
+5. cplx.c -- liczby zespolone: ANSI C99
+
+6. pierw3.c -- pierwiastki zespolone
+
+    program wykonywalny `#!', rozszerzenia
+
+7. Jêzyk `Ch', zob. http://www.softintegration.com
+
+    rozszerzenia: witaj.ch, sinus.ch, linsolve.ch
+    dodawanie funkcji do funkcji wbudowanych jêzyka: add.chf
+      
+       $ ch
+       > add(2,2)
+         4
+       > exit
+
+8. Dziel i rz±d¼: podzia³ programu pierw.c na modu³y:
+
+       $ cc -c main.c
+       $ cc -c delta.c
+       $ cc main.o delta.o -o pierw -lm
+       $ ./pierw
+9. make:
+
+       $ make clean
+       $ make pierw
+       $ ./pierw
