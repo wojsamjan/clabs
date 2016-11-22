@@ -28,7 +28,7 @@ void foo(char *fmt, ...)
 }
 
 int main() {
-  foo ("s", "napis");
-  foo ("d", 1234);
-  foo ("sdc", "napis", 1234, 'x');
+  foo("s", "napis");
+  foo("d", 1234);
+  foo("sdc", "napis", 1234, 'x');
 }
