@@ -14,5 +14,4 @@ int main() {
   int i;
   for (i = 1; i <= 91; i++)
     printf("\tfib(%i)=%lli\n", i, Fibonacci(i));
-  return 0;
 }

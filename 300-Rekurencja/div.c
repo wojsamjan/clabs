@@ -10,7 +10,7 @@ Result_T divmod(int x, int y) {
   int r, q, rr, qq;
   Result_T result;
 
-  if (x < y) { 
+  if (x < y) {
     q = 0;
     r = x;
   } else {
@@ -46,6 +46,4 @@ int main(int argc, char *argv[]) {
   w = divmod(x, y);
 
   printf("\t%d = %d * %d + %d\n", x, y, w.q, w.r);
-
-  return EXIT_SUCCESS;
 }
