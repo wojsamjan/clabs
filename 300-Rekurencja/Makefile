@@ -1,10 +1,12 @@
-CFLAGS=-std=c99 -Wall 
+CFLAGS = -std=c99 -Wall
 
-csources =  fact.c fib1.c fib2.c fib3.c palindrome.c isoe.c isoe-1.c \
+csources =  fact.c fib1.c fib2.c fib3.c palindrome.c isoe.c \
   permutacje.c digit-sum.c div.c
 
 objects = $(csources:.c=.o)
 programs = $(csources:.c=)
+
+all : $(programs)
 
 fact : fact.c
 	cc $(CFLAGS) -o $@ $<
@@ -14,24 +16,26 @@ fib2 : fib2.c
 	cc $(CFLAGS) -o $@ $<
 fib3 : fib3.c
 	cc $(CFLAGS) -o $@ $<
+
+
 palindrome : palindrome.c
 	gccx $(CFLAGS) -o $@ $<
 isoe : isoe.c
 	gccx $(CFLAGS) -o $@ $<
-isoe-1 : isoe-1.c
-	gccx $(CFLAGS) -o $@ $<
 permutacje : permutacje.c
 	gccx $(CFLAGS) -o $@ $<
+
 digit-sum : digit-sum.c
 	cc $(CFLAGS) -o $@ $<
 
 div : div.c
 	cc $(CFLAGS) -o $@ $<
 
-.PHONY : clean 
+.PHONY : clean
 
 clean:
-	rm -f core \#* *~ $(objects) $(programs) programs.{ps,ljet4}
+	rm -f core \#* *~ $(objects) $(programs)
+	rm -rf *.dSYM
 
 # programs.ps: $(csources)
 # 	enscript -GE -p$@ $^
