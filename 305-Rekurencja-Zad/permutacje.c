@@ -2,8 +2,8 @@
 #include <stdlib.h> /* EXIT_SUCCESS */
 #include <string.h> /* strlen */
 
-char napis[] = "ABCD"; /* napis którego litery bedziemy przestawiać */
-/* char napis = "ABCD"; -- a może by tak? */
+char napis[] = "ABC"; /* napis którego litery bedziemy przestawiać */
+/* char napis = "ABC"; -- a może by tak? */
 
 static void ListPermutations(char *s);
 static void RecursivePermute(char *s, int k);
