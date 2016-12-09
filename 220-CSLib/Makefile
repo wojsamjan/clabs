@@ -16,3 +16,4 @@ all : oddeven euclid
 
 clean :
 	rm -f core *.o *~ *.ps a.out $(programs)
+	rm -rf *.dSYM
