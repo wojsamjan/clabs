@@ -26,6 +26,7 @@ static void RecursivePermute(string prefix, string suffix) {
   int i, len;
   string newprefix, newsuffix;
   len = StringLength(suffix);
+
   if (len == 0)
     printf("%s\n", prefix);
   else {

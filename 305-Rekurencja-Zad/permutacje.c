@@ -13,7 +13,7 @@ int main() {
 }
 
 static void ListPermutations(char *s) {
-  RecursivePermute(s,0);
+  RecursivePermute(s, 0);
 }
 static void RecursivePermute(char *s, int k) {
   int i;
