@@ -1,26 +1,21 @@
-/*  
- *  File: graycode.c
- *
- *  $Revision: 97 $
- *  $Date: 2003/10/12 16:49:34 $
- *
-    Liczby z przedzia³u [0..7], mo¿emy ponumerowaæ inaczej
-    ni¿ w `binarycode.c'. Na przyk³ad w taki sposób:
+/*
+    Liczby z przedziaÅ‚u [0..7], moÅ¼emy ponumerowaÄ‡ inaczej
+    niÅ¼ w `binarycode.c'. Na przykÅ‚ad w taki sposÃ³b:
 
       000 -> 0   110 -> 4
       001 -> 1   111 -> 5
       011 -> 2   101 -> 6
       010 -> 3   100 -> 7
- 
-    Zauwa¿my, ¿e przy takiej numeracji kolejne liczby
-    ró¿ni± siê tylko na jednym bicie, np. reprezentacje
-    bitowe liczb 3 i 4 ró¿ni± siê pierwszym bitem.
+
+    ZauwaÅ¼my, Å¼e przy takiej numeracji kolejne liczby
+    rÃ³Å¼niÄ… siÄ™ tylko na jednym bicie, np. reprezentacje
+    bitowe liczb 3 i 4 rÃ³Å¼niÄ… siÄ™ pierwszym bitem.
     Taki kodowanie liczb nazywamy kodowaniem Gray'a.
-    Napisz funkcjê `GenerateGrayCode(nBits)' wypisuj±c±
+    Napisz funkcjÄ™ `GenerateGrayCode(nBits)' wypisujÄ…cÄ…
     dla podanej liczby `nBits' kody Gray'a dla kolejnych
     liczb naturalnych od 0 do 2^N-1.
-    Czy wiesz do czego takie kodowanie mo¿e siê przydaæ?
-    UWAGA: jest wiele rozwi±zañ.
+    Czy wiesz do czego takie kodowanie moÅ¼e siÄ™ przydaÄ‡?
+    UWAGA: jest wiele rozwiÄ…zaÅ„.
  */
 
 #include <stdio.h>
@@ -30,8 +25,7 @@
 static void GenerateGrayCode(int nBits);
 
 int main() {
-  GenerateGrayCode(3); 
-  return EXIT_SUCCESS;
+  GenerateGrayCode(3);
 }
 
 static void GenerateGrayCode(int nBits) {

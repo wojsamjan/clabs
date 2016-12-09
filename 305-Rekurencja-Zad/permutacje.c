@@ -2,16 +2,15 @@
 #include <stdlib.h> /* EXIT_SUCCESS */
 #include <string.h> /* strlen */
 
-char napis[] = "ABCD"; /* napis którego litery bedziemy przestawiaæ */
-/* char napis = "ABCD"; -- a mo¿e by tak? */
+char napis[] = "ABCD"; /* napis ktÃ³rego litery bedziemy przestawiaÄ‡ */
+/* char napis = "ABCD"; -- a moÅ¼e by tak? */
 
 static void ListPermutations(char *s);
 static void RecursivePermute(char *s, int k);
 static void ExchangeCharacters(char *s, int p1, int p2);
 
 int main() {
-  ListPermutations(napis); 
-  return EXIT_SUCCESS;
+  ListPermutations(napis);
 }
 
 static void ListPermutations(char *s) {
@@ -19,18 +18,18 @@ static void ListPermutations(char *s) {
 }
 static void RecursivePermute(char *s, int k) {
   int i;
-  if (k==strlen(s)) 
-    printf("%s\n",s);
+  if (k == strlen(s))
+  printf("%s\n", s);
   else
-    for (i=k; i<strlen(s); i++) {
-      ExchangeCharacters(s,k,i);
-      RecursivePermute(s,k+1);
-      ExchangeCharacters(s,k,i);
-    }
+  for (i = k; i < strlen(s); i++) {
+    ExchangeCharacters(s, k, i);
+    RecursivePermute(s, k+1);
+    ExchangeCharacters(s, k, i);
+  }
 }
 static void ExchangeCharacters(char *s, int p1, int p2) {
   char tmp;
-  tmp=s[p1];
-  s[p1]=s[p2];
-  s[p2]=tmp;
+  tmp = s[p1];
+  s[p1] = s[p2];
+  s[p2] = tmp;
 }

@@ -1,34 +1,34 @@
-/*  
+/*
     Na przyciskach mojego telefonu przy cyfrach wydrukowano
-    nastêpuj±ce litery:
+    nastÄ™pujÄ…ce litery:
 
        1 -       6 - MNO
        2 - ABC   7 - PRS
        3 - DEF   8 - TUV
        4 - GHI   9 - WXZ
-       5 - JKL   0 - 
+       5 - JKL   0 -
 
-    Czasami, aby u³atwiæ zapamiêtanie numeru, operator
-    podaje s³owo. Na przyk³ad
+    Czasami, aby uÅ‚atwiÄ‡ zapamiÄ™tanie numeru, operator
+    podaje sÅ‚owo. Na przykÅ‚ad
 
        767   (SOS)
        4357  (HELP)
- 
+
     itp.
 
-    Napisaæ funkcjê `ListMnemonics' generuj±c± wszystkie
-    mo¿liwe kombinacje liter odpowiadaj±ce podanej
-    liczbie, podanej jako napis z³o¿ony z cyfr.
-    Na przyk³ad, wywo³anie ListMnemonics("723")
-    powinno wygenerowaæ nastêpuj±cych 27 trójek:
+    NapisaÄ‡ funkcjÄ™ `ListMnemonics' generujÄ…cÄ… wszystkie
+    moÅ¼liwe kombinacje liter odpowiadajÄ…ce podanej
+    liczbie, podanej jako napis zÅ‚oÅ¼ony z cyfr.
+    Na przykÅ‚ad, wywoÅ‚anie ListMnemonics("723")
+    powinno wygenerowaÄ‡ nastÄ™pujÄ…cych 27 trÃ³jek:
 
        PAD PBD PCD RAD RBD RCD SAD SBD SCD
        PAE PBE PCE RAE RBE RCE SAE SBE SCE
        PAF PBF PCF RAF RBF RCF SAF SBF SCF
 
-    Jakie kombinacje liter s± przy cyfrach na telefonie
-    komórkowym. Czy w tym wypadku Twoje rozwi±zanie 
-    te¿ zadzia³a?
+    Jakie kombinacje liter sÄ… przy cyfrach na telefonie
+    komÃ³rkowym. Czy w tym wypadku Twoje rozwiÄ…zanie
+    teÅ¼ zadziaÅ‚a?
  */
 
 #include <stdio.h>
@@ -40,8 +40,7 @@ char telephone[] = "ABCDEFGHIJKLMNOPRSTUVWXZ";
 static void ListMnemonics(char *s);
 
 int main() {
-  ListMnemonics("731"); 
-  return EXIT_SUCCESS;
+  ListMnemonics("731");
 }
 
 static void ListMnemonics(char *s) {

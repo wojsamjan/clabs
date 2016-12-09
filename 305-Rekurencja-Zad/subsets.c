@@ -1,12 +1,12 @@
-/*  
-    Napisz funkcjê `ListSubsets' generuj±c± wszystkie
-    mo¿liwe podzbiory podanego zbioru, gdzie zbiór
-    sk³ada siê z liter podanych w postaci napisu.
-    Na przyk³ad po wywo³aniu `ListSubsets("ABC")'
-    na terminalu powinni¶my otrzymaæ (byæ mo¿e 
-    w innej kolejno¶ci):
+/*
+    Napisz funkcjÄ™ `ListSubsets' generujÄ…cÄ… wszystkie
+    moÅ¼liwe podzbiory podanego zbioru, gdzie zbiÃ³r
+    skÅ‚ada siÄ™ z liter podanych w postaci napisu.
+    Na przykÅ‚ad po wywoÅ‚aniu `ListSubsets("ABC")'
+    na terminalu powinniÅ›my otrzymaÄ‡ (byÄ‡ moÅ¼e
+    w innej kolejnoÅ›ci):
 
-       {ABC}   {BC}  
+       {ABC}   {BC}
        {AB}    {B}
        {AC}    {C}
        {A}     {}
@@ -21,8 +21,7 @@ char napis[] = "ABC";
 static void ListSubsets(string str);
 
 int main() {
-  ListSubsets(napis); 
-  return EXIT_SUCCESS;
+  ListSubsets(napis);
 }
 
 static void ListSubsets(string str) {

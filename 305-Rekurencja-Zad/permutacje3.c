@@ -1,15 +1,14 @@
-/*  
-   Tym razem chcemy otrzymaæ co¶ takiego:
-      ListPermutations("AABB") => AABB
-                                  ABAB
-                                  ABBA
-                                  BAAB
-                                  BABA
-                                  BBAA
-   Teraz podany napis mo¿e zawieraæ powtarzaj±ce
-   siê litery. Funkcja rekurencyjna nie powinna
-   generowaæ dodatkowych permutacji
- */
+/* Tym razem chcemy otrzymaÄ‡ coÅ› takiego:
+ListPermutations("AABB") =>
+    AABB
+    ABAB
+    ABBA
+    BAAB
+    BABA
+    BBAA
+Teraz podany napis moÅ¼e zawieraÄ‡ powtarzajÄ…ce
+siÄ™ litery. Funkcja rekurencyjna nie powinna
+generowaÄ‡ dodatkowych permutacji */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -20,8 +19,7 @@ char napis[] = "AABB";
 static void ListPermutations(string str);
 
 int main() {
-  ListPermutations(napis); 
-  return EXIT_SUCCESS;
+  ListPermutations(napis);
 }
 
 static void ListPermutations(string str) {
