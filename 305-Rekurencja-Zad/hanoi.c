@@ -10,15 +10,15 @@ int main() {
 }
 
 void MoveSingleDisk(char start, char finish) {
-  printf("%c -> %c\n",start,finish);
+  printf("%c -> %c\n", start, finish);
 }
 
 void MoveTower(int n, char start, char finish, char temp) {
-  if (n==1)
+  if (n == 1)
     MoveSingleDisk(start, finish);
   else {
-    MoveTower(n-1, start, temp, finish);
+    MoveTower(n - 1, start, temp, finish);
     MoveSingleDisk(start, finish);
-    MoveTower(n-1, temp, finish, start);
+    MoveTower(n - 1, temp, finish, start);
   }
 }
