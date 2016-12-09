@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <stdlib.h> /* EXIT_SUCCESS */
 #include <string.h> /* strlen */
 
 char napis[] = "ABC"; /* napis którego litery bedziemy przestawiać */
