@@ -17,15 +17,17 @@ static void ListPermutations(char *s) {
 }
 static void RecursivePermute(char *s, int k) {
   int i;
+
   if (k == strlen(s))
-  printf("%s\n", s);
+    printf("%s\n", s);
   else
-  for (i = k; i < strlen(s); i++) {
-    ExchangeCharacters(s, k, i);
-    RecursivePermute(s, k+1);
-    ExchangeCharacters(s, k, i);
-  }
+    for (i = k; i < strlen(s); i++) {
+      ExchangeCharacters(s, k, i);
+      RecursivePermute(s, k + 1);
+      ExchangeCharacters(s, k, i);
+    }
 }
+
 static void ExchangeCharacters(char *s, int p1, int p2) {
   char tmp;
   tmp = s[p1];

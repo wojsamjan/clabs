@@ -23,17 +23,18 @@ static void ListPermutations(string str) {
 }
 
 static void RecursivePermute(string prefix, string suffix) {
-  int i, len;
+  int i, suffix_len;
   string newprefix, newsuffix;
-  len = StringLength(suffix);
 
-  if (len == 0)
+  suffix_len = StringLength(suffix);
+
+  if (suffix_len == 0)
     printf("%s\n", prefix);
   else {
-    for (i = 0; i < len; i++) {
+    for (i = 0; i < suffix_len; i++) {
       newprefix = Concat(prefix, SubString(suffix, i, i));
-      newsuffix = Concat(SubString(suffix, 0, i-1), SubString(suffix, i+1, len));
+      newsuffix = Concat(SubString(suffix, 0, i - 1), SubString(suffix, i + 1, suffix_len));
       RecursivePermute(newprefix, newsuffix);
-   }
+    }
   }
 }
