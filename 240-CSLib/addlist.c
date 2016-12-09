@@ -8,20 +8,18 @@
 #include "simpio.h"
 #include "strlib.h"
 
-int main()
-{
-    int total;
-    string line;
+int main() {
+  int total;
+  string line;
 
-    printf("This program adds a list of numbers.\n");
-    printf("Signal end of list with a blank line.\n");
-    total = 0;
-    while (TRUE) {
-        printf(" ? ");
-        line = GetLine();
-        if (StringEqual(line, "")) break;
-        total += StringToInteger(line);
-    }
-    printf("The total is %d\n", total);
-    return 0;
+  printf("This program adds a list of numbers.\n");
+  printf("Signal end of list with a blank line.\n");
+  total = 0;
+  while (TRUE) {
+    printf(" ? ");
+    line = GetLine();
+    if (StringEqual(line, "")) break;
+    total += StringToInteger(line);
+  }
+  printf("The total is %d\n", total);
 }

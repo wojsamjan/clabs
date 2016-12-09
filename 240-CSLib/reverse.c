@@ -1,7 +1,7 @@
 /*
- * This file defines the function ReverseString(str),
- * which returns str with its characters reversed.
- */
+* This file defines the function ReverseString(str),
+* which returns str with its characters reversed.
+*/
 
 #include <stdio.h>
 #include "genlib.h"
@@ -14,32 +14,29 @@ string ReverseString(string str);
 
 /* Main program */
 
-int main()
-{
-    string str;
+int main() {
+  string str;
 
-    printf("Enter a string: ");
-    str = GetLine();
-    printf("\"%s\" backwards is \"%s\"\n", str, ReverseString(str));
-    return 0;
+  printf("Enter a string: ");
+  str = GetLine();
+  printf("\"%s\" backwards is \"%s\"\n", str, ReverseString(str));
 }
 
 /*
- * Function: ReverseString
- * Usage: newstr = ReverseString(str);
- * -----------------------------------
- * Returns a new string consisting of the characters in
- * str in reverse order.
- */
+* Function: ReverseString
+* Usage: newstr = ReverseString(str);
+* -----------------------------------
+* Returns a new string consisting of the characters in
+* str in reverse order.
+*/
 
-string ReverseString(string str)
-{
-    string result;
-    int i;
+string ReverseString(string str) {
+  string result;
+  int i;
 
-    result = "";
-    for (i = 0; i < StringLength(str); i++) {
-        result = Concat(CharToString(IthChar(str, i)), result);
-    }
-    return (result);
+  result = "";
+  for (i = 0; i < StringLength(str); i++) {
+    result = Concat(CharToString(IthChar(str, i)), result);
+  }
+  return (result);
 }
