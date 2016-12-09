@@ -15,7 +15,8 @@
     dla podanej liczby `nBits' kody Gray'a dla kolejnych
     liczb naturalnych od 0 do 2^N-1.
     Czy wiesz do czego takie kodowanie może się przydać?
-    UWAGA: jest wiele rozwiązań.
+    UWAGA: jest wiele rozwiązań, zob. np.
+      https://en.wikipedia.org/wiki/Gray_code
  */
 
 #include <stdio.h>
