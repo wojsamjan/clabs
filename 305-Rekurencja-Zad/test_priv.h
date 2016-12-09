@@ -106,8 +106,8 @@
 
 #include <signal.h>	/* include before curses.h to work around glibc bug */
 
-#include <ncurses/curses.h>
-#include <ncurses/term.h>
+#include <ncurses.h>
+#include <term.h>
 
 #if NCURSES_NOMACROS
 #include <nomacros.h>
@@ -139,7 +139,7 @@ extern int optind;
 #define GCC_UNUSED /* nothing */
 #endif
 
-/* 
+/*
 #ifndef HAVE_GETNSTR
 #define getnstr(s,n) getstr(s)
 #endif
