@@ -1,7 +1,7 @@
 CFLAGS = -std=c99 -Wall
 
 csources =  fact.c fib1.c fib2.c fib3.c palindrome.c isoe.c \
-  permutacje.c digit-sum.c div.c
+  permutacje.c digit-sum.c div.c print_numbers.c
 
 objects = $(csources:.c=.o)
 programs = $(csources:.c=)
@@ -34,7 +34,7 @@ div : div.c
 .PHONY : clean
 
 clean:
-	rm -f core \#* *~ $(objects) $(programs)
+	rm -f a.out \#* *~ $(objects) $(programs) zeros1
 	rm -rf *.dSYM
 
 # programs.ps: $(csources)
