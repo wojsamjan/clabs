@@ -33,5 +33,7 @@ char *format_commas(long int n, char *out) {
 
 int main() {
   char factorial20[100];
-  printf("%s\n", format_commas(2432902008176640000, factorial20));
+  // printf("%s\n", format_commas(2432902008176640000, factorial20));
+  format_commas(2432902008176640000, factorial20);
+  printf("%s\n", factorial20);
 }
