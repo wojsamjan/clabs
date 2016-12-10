@@ -2,6 +2,9 @@
 #include <string.h>
 #include <stdlib.h>
 
+// see http://stackoverflow.com/questions/1449805/how-to-format-a-number-from-1123456789-to-1-123-456-789-in-c
+// for recursive solutions
+
 char *format_commas(long int n, char *out) {
   long int c;
   char buf[100];
