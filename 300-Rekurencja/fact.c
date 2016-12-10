@@ -10,6 +10,7 @@ long unsigned int Fact(int n) {
 
 int main() {
   setlocale(LC_NUMERIC, ""); // use the native environment
+  // setlocale(LC_ALL, "");
 
   for (int i = 0; i <= 20; i++)
     printf("%4d %'28ld\n", i, Fact(i));
