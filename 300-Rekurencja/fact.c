@@ -15,3 +15,6 @@ int main() {
   for (int i = 0; i <= 20; i++)
     printf("%4d %'28ld\n", i, Fact(i));
 }
+
+// zob. też How to format a number from 1123456789 to 1,123,456,789 in C?
+//   http://stackoverflow.com/questions/1449805/how-to-format-a-number-from-1123456789-to-1-123-456-789-in-c
