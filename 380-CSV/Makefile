@@ -1,8 +1,4 @@
-#
-# JP1
-#
-
-CFLAGS = -ansi -Wall -g
+CFLAGS = -std=c11 -Wall
 
 compare = cmp -s
 
@@ -24,20 +20,19 @@ csvtest3 : csvtest3.o csv2.o
 clean :
 	rm -f *~ \#* core csv[1].o csvtest[123].o csvtest[123] [123456789]
 
-# Moøna tak testowaÊ
+# Mo≈ºna tak testowaƒá
 
 make_test = @ $(1) < test-input/$(3) > $(3) ; \
 	if $(compare) $(3) $(2)/$(3) ; then \
-           echo "OK" ; else echo "¨LE" ; fi
+           echo "OK" ; else echo "≈πLE" ; fi
 
 test1 : csvtest1
-	@printf "Test 2. Pola ograniczone znakiem cudzys≥owu..\t"
+	@printf "Test 2. Pola ograniczone znakiem cudzys≈Çowu..\t"
 	$(call make_test,./csvtest1,ok,2)
 
-# a tak jest pro∂ciej (ale czy lepiej?)
+# a tak jest pro≈õciej (ale czy lepiej?)
 
 test2 : csvtest2
-	@printf "Test 2. Pola ograniczone znakiem cudzys≥owu..\t"
+	@printf "Test 2. Pola ograniczone znakiem cudzys≈Çowu..\t"
 	@./csvtest2 < test-input/2 > 2
-	@if $(compare) 2 ok/2 ; then echo OK ; else "¨LE" ; fi
-
+	@if $(compare) 2 ok/2 ; then echo OK ; else "≈πLE" ; fi
