@@ -1,14 +1,14 @@
 /*
  Zadanie 1:
-   Napisa� funkcj� Count zliczaj�c� ile razy podana liczba
-   ca�kowita wyst�puje na li�cie. */
+   Napisac funkcję Count zliczającą ile razy podana liczba
+   całkowita występuje na liście. */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include "utils.h"
 
 int Count(struct node* head, int searchFor) {
-  // tw�j kod
+  // twój kod
 }
 
 void BasicCaller() {
@@ -20,9 +20,9 @@ void BasicCaller() {
   Push(&head,13);
   Push(&head,13);
   n=13;
-  k=Count(head,n); /* k powinno by� r�wne 3 */
+  k=Count(head,n); /* k powinno być równe 3 */
   ShowLinkedList(head);
-  printf("\tLiczba %d wyst�puje %d razy na li�cie.\n", n, k);
+  printf("\tLiczba %d występuje %d razy na liście.\n", n, k);
 }
 
 int main() {
