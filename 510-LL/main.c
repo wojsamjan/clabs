@@ -1,7 +1,3 @@
-/* Plik: main.c
-         22 X 2002
-*/
-
 #include <stdio.h>
 #include <stdlib.h>
 #include "build123.h"
@@ -30,6 +26,4 @@ int main() {
   printf("\tBuduję listę {1, 2, 3}\n");
   head=BuildOneTwoThree();
   ShowLinkedList(head);
-
-  return EXIT_SUCCESS;
 }

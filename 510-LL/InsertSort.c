@@ -1,10 +1,8 @@
-/*   Plik: InsertSort.c
-   Wersja: 22 X 2002
-
- Zadanie 7:
-   Napisaæ funkcjê InsertSort, która przestawiaj±c wêz³y 
-   podanej listy uporz±dkuje je rosn±co. Funkcja ta powinna
-   korzystaæ z funkcji SortedIndex z zadania 6. */
+/*
+  Zadanie 7:
+    Napisaï¿½ funkcjï¿½ InsertSort, ktï¿½ra przestawiajï¿½c wï¿½zï¿½y
+    podanej listy uporzï¿½dkuje je rosnï¿½co. Funkcja ta powinna
+    korzystaï¿½ z funkcji SortedIndex z zadania 6. */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -15,7 +13,7 @@
 void SortedInsert(struct node** headRef, struct node* newNode);
 
 void InsertSort(struct node** headRef) {
-  // twój kod
+  // twï¿½j kod
 }
 
 void BasicCaller() {
@@ -31,5 +29,4 @@ void BasicCaller() {
 
 int main() {
   BasicCaller();
-  return EXIT_SUCCESS;
 }

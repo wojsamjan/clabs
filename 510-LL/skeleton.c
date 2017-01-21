@@ -1,13 +1,11 @@
-/*   Plik: skeleton.c
-   Wersja: 22 X 2002
+/*
+  Przykï¿½adowy kod, pokazujï¿½cy jak przygotowaï¿½
+  rozwiï¿½zania zadaï¿½ dotyczï¿½cych list powiï¿½zanych.
 
-   Przyk³adowy kod, pokazuj±cy jak przygotowaæ
-   rozwi±zania zadañ dotycz±cych list powi±zanych.
-
- Zadanie 0:
-   Zbudowaæ listê {13, 1, 2, 3}. Nastêpnie, korzystaj±c
-   z Push, wstawiæ element `42' na drugiej pozycji
-   otrzymuj±c listê {13, 42, 1, 2, 3}. */
+  Zadanie 0:
+    Zbudowaï¿½ listï¿½ {13, 1, 2, 3}. Nastï¿½pnie, korzystajï¿½c
+    z Push, wstawiï¿½ element `42' na drugiej pozycji
+    otrzymujï¿½c listï¿½ {13, 42, 1, 2, 3}. */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -25,5 +23,4 @@ void BasicCaller() {
 
 int main() {
   BasicCaller();
-  return EXIT_SUCCESS;
 }

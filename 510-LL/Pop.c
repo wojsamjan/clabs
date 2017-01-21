@@ -1,12 +1,10 @@
-/*   Plik: Pop.c
-   Wersja: 22 X 2002
-
- Zadanie 4:
-   Napisaæ funkcjê Pop -- przeciwieñstwo Push.
-   Pop powinna z niepustej listy usun±æ jej pocz±tkowy
-   wêze³ i zwróciæ warto¶æ przechowywan± w tym wê¼le.
-   Wykorzystaj standardow± funkcjê `assert', je¶li nie
-   bêdzie wêz³a do usuniêcia (lista jest pusta). */
+/*
+  Zadanie 4:
+    Napisaï¿½ funkcjï¿½ Pop -- przeciwieï¿½stwo Push.
+    Pop powinna z niepustej listy usunï¿½ï¿½ jej poczï¿½tkowy
+    wï¿½zeï¿½ i zwrï¿½ciï¿½ wartoï¿½ï¿½ przechowywanï¿½ w tym wï¿½ï¿½le.
+    Wykorzystaj standardowï¿½ funkcjï¿½ `assert', jeï¿½li nie
+    bï¿½dzie wï¿½zï¿½a do usuniï¿½cia (lista jest pusta). */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -14,21 +12,20 @@
 #include "utils.h"
 
 int Pop(struct node** headRef) {
-  // twój kod
+  // twï¿½j kod
 }
 
 void BasicCaller() {
   struct node* myList=BuildOneTwoThree();
   int a, b, c;
   ShowLinkedList(myList);
-  a=Pop(&myList); 
+  a=Pop(&myList);
   b=Pop(&myList);
   c=Pop(&myList);
-  printf("\tUsuniêto elementy: %d %d %d z listy.\n",a,b,c);
-  a=Pop(&myList); /* próba usuniêcia elementu z pustej listy */  
+  printf("\tUsuniï¿½to elementy: %d %d %d z listy.\n",a,b,c);
+  a=Pop(&myList); /* prï¿½ba usuniï¿½cia elementu z pustej listy */
 }
 
 int main() {
   BasicCaller();
-  return EXIT_SUCCESS;
 }

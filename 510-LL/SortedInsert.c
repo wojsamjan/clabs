@@ -1,10 +1,8 @@
-/*   Plik: SortedInsert.c
-   Wersja: 22 X 2002
-
- Zadanie 6:
-   Napisaæ funkcjê SortedInsert, która dla listy o danych 
-   uporz±dkowanych rosn±co i wêz³a, wstawia ten wêze³
-   do listy zachowuj±c jej uporz±dkowanie. */
+/*
+  Zadanie 6:
+    Napisaï¿½ funkcjï¿½ SortedInsert, ktï¿½ra dla listy o danych
+    uporzï¿½dkowanych rosnï¿½co i wï¿½zï¿½a, wstawia ten wï¿½zeï¿½
+    do listy zachowujï¿½c jej uporzï¿½dkowanie. */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -12,7 +10,7 @@
 #include "utils.h"
 
 void SortedInsert(struct node** headRef, struct node* newNode) {
-  // twój kod
+  // twï¿½j kod
 }
 
 void BasicCaller() {
@@ -30,5 +28,4 @@ void BasicCaller() {
 
 int main() {
   BasicCaller();
-  return EXIT_SUCCESS;
 }

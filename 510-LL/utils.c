@@ -1,6 +1,3 @@
-/*   Plik: utils.c
-   Wersja: 24 X 2002 */
-
 #include <stdio.h>
 #include <stdlib.h>
 #include "utils.h"
@@ -26,7 +23,7 @@ struct node* BuildOneTwoThree() {
   struct node* head=NULL;
   Push(&head,3);
   Push(&head,2);
-  Push(&head,1);  
+  Push(&head,1);
   return head;
 }
 
@@ -38,6 +35,6 @@ void ShowLinkedList(struct node* head) {
     current=current->next;
   }
   printf("\n");
-  printf("\tD³ugo¶æ listy: %d\n",Length(head));
+  printf("\tDï¿½ugoï¿½ï¿½ listy: %d\n",Length(head));
 
 }

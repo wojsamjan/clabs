@@ -1,7 +1,3 @@
-/* Plik: build123.h
-         22 X 2002
-*/
-
 #ifndef build123_h
 #define build123_h
 

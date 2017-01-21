@@ -1,7 +1,4 @@
-/*   Plik: list_techniques.c
-   Wersja: 22 X 2002
-
-   Kilka technik do wykorzystania w zadaniach. */
+/* Kilka rzeczy do wykorzystania w zadaniach. */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -82,5 +79,4 @@ int main() {
   printf("  3. Lokalny odnośnik.\n");
   head=BuildWithLocalReference();
   ShowLinkedList(head);
-  return EXIT_SUCCESS;
 }

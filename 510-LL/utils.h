@@ -6,17 +6,17 @@ struct node {
   struct node* next;
 };
 
-/* Zwróæ liczbê wêz³ów na li¶cie. */
+/* zwrï¿½ï¿½ liczbï¿½ wï¿½zï¿½ï¿½w na liï¿½cie. */
 int Length(struct node* head);
 
-/* Dodaj nowy wêze³, do listy *headRef
-   i umie¶æ w wê¼le w polu .data liczbê newData. */
+/* dodaj nowy wï¿½zeï¿½, do listy *headRef
+   i umieï¿½ï¿½ w wï¿½ï¿½le w polu .data liczbï¿½ newData. */
 void Push(struct node** headRef, int newData);
 
-/* Zbuduj listê {1, 2, 3} i zwróæ wska¼nik do niej. */
+/* zbuduj listï¿½ {1, 2, 3} i zwrï¿½ï¿½ wskaï¿½nik do niej. */
 struct node* BuildOneTwoThree(void);
 
-/* Wypisz wszystkie elementy listy head. */
+/* wypisz wszystkie elementy listy head. */
 void ShowLinkedList(struct node* head);
 
 #endif

@@ -1,13 +1,11 @@
-/*   Plik: GetNth.c
-   Wersja: 22 X 2002
-
+/*
  Zadanie 2:
-   Napisaæ funkcjê GetNth, która dla podanej listy i indeksu
-   zwraca warto¶æ przechowywan± w wê¼le na pozycji podanej
-   w indeksie. Pierwszy wêze³ ma pozycjê `0', drugi -- `1' itd.
-   Na przyk³ad, dla listy {3,44,1,17} funkcja GetNth wywo³ana
-   z indeksem 1 powinna zwróciæ 44.
-   Indeks powinien byæ w zakresie [0..d³ugo¶æ_listy). */
+   Napisaï¿½ funkcjï¿½ GetNth, ktï¿½ra dla podanej listy i indeksu
+   zwraca wartoï¿½ï¿½ przechowywanï¿½ w wï¿½ï¿½le na pozycji podanej
+   w indeksie. Pierwszy wï¿½zeï¿½ ma pozycjï¿½ `0', drugi -- `1' itd.
+   Na przykï¿½ad, dla listy {3,44,1,17} funkcja GetNth wywoï¿½ana
+   z indeksem 1 powinna zwrï¿½ciï¿½ 44.
+   Indeks powinien byï¿½ w zakresie [0..dï¿½ugoï¿½ï¿½_listy). */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -15,8 +13,8 @@
 #include "utils.h"
 
 int GetNth(struct node* head, int index) {
-  // twój kod
-  assert(0); /* funkcja wo³aj±ca ¿±da nie istniej±cego wêz³a */
+  // twï¿½j kod
+  assert(0); /* funkcja woï¿½ajï¿½ca ï¿½ï¿½da nie istniejï¿½cego wï¿½zï¿½a */
 }
 
 void BasicCaller() {
@@ -26,10 +24,9 @@ void BasicCaller() {
   nodeIndex=1;
   nodeData=GetNth(myList,nodeIndex); /* nodeData==2 */
   ShowLinkedList(myList);
-  printf("\tW %d. wê¼le znajduje siê %d.\n", nodeIndex, nodeData);
+  printf("\tW %d. wï¿½ï¿½le znajduje siï¿½ %d.\n", nodeIndex, nodeData);
 }
 
 int main() {
   BasicCaller();
-  return EXIT_SUCCESS;
 }

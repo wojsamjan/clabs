@@ -1,9 +1,7 @@
-/*   Plik: DeleteList.c
-   Wersja: 22 X 2002
-
+/*
  Zadanie 3:
-   Napisaæ funkcjê DeleteList, która dla podanej listy zwalnia
-   pamiêæ jej przydzielon± oraz zeruje wska¼nik na pocz±tek
+   Napisaï¿½ funkcjï¿½ DeleteList, ktï¿½ra dla podanej listy zwalnia
+   pamiï¿½ï¿½ jej przydzielonï¿½ oraz zeruje wskaï¿½nik na poczï¿½tek
    listy (pusta lista). */
 
 #include <stdio.h>
@@ -11,7 +9,7 @@
 #include "utils.h"
 
 void DeleteList(struct node** headRef) {
-  // twój kod
+  // twï¿½j kod
 }
 
 void BasicCaller() {
@@ -22,5 +20,4 @@ void BasicCaller() {
 
 int main() {
   BasicCaller();
-  return EXIT_SUCCESS;
 }

@@ -1,8 +1,4 @@
-#   Plik:  Makefile do zadañ z list powi±zanych
-# Wersja:  22 X 2002
-#  Autor:  W. Bzyl, <matwb@univ.gda.pl>
-
-CFLAGS = -Wall -ggdb
+CFLAGS = -Wall -std=c11
 
 CSOURCES = build123.h build123.c main.c list_techniques.c \
 utils.h utils.c skeleton.c
@@ -105,14 +101,3 @@ Count GetNth DeleteList Pop InsertNth \
 SortedInsert InsertSort Append FrontBackSplit RemoveDuplicates \
 MoveNode AlternatingSplit ShuffleMerge SortedMerge MergeSort \
 SortedIntersect Reverse RecursiveReverse
-
-
-dist :
-	tar zcvf 03-LinkedLists.tar.gz $(SOURCES)
-
-programs.ps: $(CSOURCES)
-	enscript -GE -p$@ $^
-#	enscript -Xlatin2 -G2rE -U2 -p$@ $< 
-
-programs.ljet4 : programs.ps
-	gs -dNOPAUSE -dBATCH -sDEVICE=ljet4 -sOutputFile=programs.ljet4 $<

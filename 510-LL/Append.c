@@ -1,10 +1,8 @@
-/*   Plik: SortedInsert.c
-   Wersja: 22 X 2002
-
- Zadanie 8:
-   Napisaæ funkcjê Append o dwóch argumentach `dest' i `src' 
-   bêd±cych listami, która listê `src' dopisze na koñcu listy `dest'
-   i ustawi `src' na NULL (,,wyzeruje'' listê `src'). */
+/*
+  Zadanie 8:
+    Napisaï¿½ funkcjï¿½ Append o dwï¿½ch argumentach `dest' i `src'
+    bï¿½dï¿½cych listami, ktï¿½ra listï¿½ `src' dopisze na koï¿½cu listy `dest'
+    i ustawi `src' na NULL (,,wyzeruje'' listï¿½ `src'). */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -12,7 +10,7 @@
 #include "utils.h"
 
 void Append(struct node** dest, struct node** src) {
-  // twój kod
+  // twï¿½j kod
 }
 
 void BasicCaller() {
@@ -34,5 +32,4 @@ void BasicCaller() {
 
 int main() {
   BasicCaller();
-  return EXIT_SUCCESS;
 }

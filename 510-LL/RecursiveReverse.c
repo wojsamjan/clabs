@@ -1,9 +1,7 @@
-/*   Plik: RecursiveReverse.c
-   Wersja: 22 X 2002
-
-*Zadanie 18:
-   Napisaæ rekurencyjn± funkcjê RecursiveReverse odwracaj±c±
-   kolejno¶æ elementów na podanej li¶cie. */
+/*
+  Zadanie 18:
+    Napisaï¿½ rekurencyjnï¿½ funkcjï¿½ RecursiveReverse odwracajï¿½cï¿½
+    kolejnoï¿½ï¿½ elementï¿½w na podanej liï¿½cie. */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -11,7 +9,7 @@
 #include "utils.h"
 
 void RecursiveReverse(struct node** headRef) {
-  // twój kod
+  // twï¿½j kod
 }
 
 void BasicCaller() {
@@ -28,5 +26,4 @@ void BasicCaller() {
 
 int main() {
   BasicCaller();
-  return EXIT_SUCCESS;
 }
