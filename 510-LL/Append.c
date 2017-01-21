@@ -1,8 +1,8 @@
 /*
   Zadanie 8:
-    Napisa� funkcj� Append o dw�ch argumentach `dest' i `src'
-    b�d�cych listami, kt�ra list� `src' dopisze na ko�cu listy `dest'
-    i ustawi `src' na NULL (,,wyzeruje'' list� `src'). */
+    Napisać funkcję Append o dwóch argumentach `dest' i `src'
+    bądących listami, która listę `src' dopisze na końcu listy `dest'
+    i ustawi `src' na NULL (,,wyzeruje'' listę `src'). */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -10,7 +10,7 @@
 #include "utils.h"
 
 void Append(struct node** dest, struct node** src) {
-  // tw�j kod
+  // twój kod
 }
 
 void BasicCaller() {
